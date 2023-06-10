@@ -1,13 +1,8 @@
-import { Box, Button, Container, TextField, ThemeProvider, Typography, createTheme } from '@mui/material';
+import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import { useState, ChangeEvent, useEffect } from 'react';
 import { Author } from '../../types';
 import { addAuthor, getAuthors } from '../../apis/booksApi';
 import { BasicTable } from './AuthorTable';
-// const theme = createTheme({
-//   palette: {
-//     mode: 'dark',
-//   },
-// });
 const AddAuthor = () => {
   const [authorData, setAuthorData] = useState<Author>({
     name: '',
@@ -51,11 +46,7 @@ const AddAuthor = () => {
   };
 
   return (
-    // <ThemeProvider theme={createTheme({
-    //   palette: {
-    //     mode: 'dark',
-    //   },
-    // })}>
+
     <>
       <Container maxWidth="sm" >
         <Box sx={{ mt: 3 }}>
@@ -83,7 +74,6 @@ const AddAuthor = () => {
 
 </>
 
-    // </ThemeProvider>
   );
 };
 

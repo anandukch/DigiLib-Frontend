@@ -28,16 +28,17 @@ const AuthProvider: React.FC<any> = ({ children }) => {
   const setRole = (newRole: string | null) => {
     setRole_(newRole);
   };
-
+  
   useEffect(() => {
-    if (token) {
+    if (token && role) {
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
       localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
     } else {
       delete axios.defaults.headers.common["Authorization"];
       localStorage.removeItem("token");
     }
-  }, [token]);
+  }, [token,role]);
 
   // Memoized value of the authentication context
   const contextValue = useMemo(

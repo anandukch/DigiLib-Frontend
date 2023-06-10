@@ -114,6 +114,8 @@ const LoginForm: React.FC = () => {
     login(formData.email, formData.password).then((res) => {
       const token = res.data.access_token;
       setToken(token);
+      console.log(res.data.role);
+      
       setRole(res.data.role)
       navigate("/dashboard", { replace: true });
     }).catch((err) => {

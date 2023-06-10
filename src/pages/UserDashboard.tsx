@@ -7,7 +7,7 @@ import IssueBookPage from './IssuePage';
 import { LogoutOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 
-const IssuerDashboard: React.FC<any> = () => {
+const UserDashboard: React.FC<any> = () => {
   const [renderComp, setRenderComp] = useState("addBook");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width: 600px)');
@@ -53,7 +53,7 @@ const IssuerDashboard: React.FC<any> = () => {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Issuer Dashboard
+                Admin Dashboard
               </Typography>
             </Toolbar>
           </AppBar>
@@ -86,7 +86,7 @@ const IssuerDashboard: React.FC<any> = () => {
               <ListItemIcon>
                 {/* Add your own icons here */}
               </ListItemIcon>
-              <ListItemText primary="Add book" />
+              <ListItemText primary="user  aanee" />
             </ListItemButton>
 
             <ListItemButton onClick={() => handleMenuClick("addAuthor")} style={{ backgroundColor: renderComp === "addAuthor" ? "#3f51b5" : "" }}>
@@ -121,4 +121,4 @@ const IssuerDashboard: React.FC<any> = () => {
   );
 };
 
-export default IssuerDashboard;
+export default UserDashboard;

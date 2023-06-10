@@ -1,110 +1,107 @@
-import  { useState } from 'react';
-import { Box, Button, Container, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { AppBar, Box, Container, createTheme, CssBaseline, IconButton, Toolbar, Typography, ThemeProvider, TextField, Select, MenuItem, Grid, SelectChangeEvent } from '@mui/material';
+import { useEffect, useState } from 'react';
+// import { Book } from '../types';
+import { AccountCircle } from '@mui/icons-material';
+import { getBooks } from '../apis/booksApi';
+import { Book } from '../types';
+import { useNavigate } from 'react-router';
 
 const theme = createTheme({
     palette: {
-        // mode: 'light',
+        mode: 'dark',
     },
 });
 
 const HomePage = () => {
-    const [searchText, setSearchText] = useState('');
-    const [selectedSubject, setSelectedSubject] = useState('');
-    const [selectedSemester, setSelectedSemester] = useState('');
-    const [books, setBooks] = useState(Array.from(Array(20).keys()));
-
-    const handleSearch = () => {
-        // Logic to handle book search
+    const [books, setBooks] = useState<Book[]>([]);
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [selectedSubject, setSelectedSubject] = useState<string>('all');
+    const navigate = useNavigate();
+    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
     };
 
-    const handleLoadMore = () => {
-        const nextBatch = Array.from(Array(20).keys());
-        setBooks(prevBooks => [...prevBooks, ...nextBatch]);
+    const handleSubjectChange = (event: SelectChangeEvent<string>) => {
+        setSelectedSubject(event.target.value);
     };
 
+    const filteredBooks = books.filter(book => {
+        const matchesSearchTerm = book.title.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesSubject = selectedSubject == 'all' || book.subject == selectedSubject;
+        return matchesSearchTerm && matchesSubject;
+    });
+
+    useEffect(() => {
+        getBooks().then(res => setBooks(res.data))
+            .catch(err => console.log(err))
+    }, [])
+
+    const profileHandler = () => {
+        navigate('/dashboard', { replace: true })
+    }
     return (
         <ThemeProvider theme={theme}>
-            <Container maxWidth="lg">
-                <Box sx={{ mt: 3 }}>
-                    <Typography variant="h4" gutterBottom>
-                        Book Search
+            <CssBaseline />
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                        Digilib
                     </Typography>
-                    <Box component="form" noValidate autoComplete="off" sx={{ mb: 3 }}>
-                        <Box sx={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                            <TextField
-                                label="Search Books"
-                                size="small"
-                                value={searchText}
-                                onChange={e => setSearchText(e.target.value)}
-
-                            />
-                            <FormControl sx={{ minWidth: '120px' }}>
-                                <InputLabel id="subject-label">Subject</InputLabel>
-                                <Select
-                                    labelId="subject-label"
-                                    size="small"
-                                    value={selectedSubject}
-                                    onChange={e => setSelectedSubject(e.target.value)}
-                                >
-                                    <MenuItem value="">All</MenuItem>
-                                    <MenuItem value="math">Math</MenuItem>
-                                    <MenuItem value="science">Science</MenuItem>
-                                    <MenuItem value="history">History</MenuItem>
-                                </Select>
-                            </FormControl>
-                            <FormControl sx={{ minWidth: '120px' }}>
-                                <InputLabel id="semester-label">Semester</InputLabel>
-                                <Select
-                                    labelId="semester-label"
-                                    size="small"
-                                    value={selectedSemester}
-                                    onChange={e => setSelectedSemester(e.target.value)}
-                                >
-                                    <MenuItem value="">All</MenuItem>
-                                    <MenuItem value="1">Semester 1</MenuItem>
-                                    <MenuItem value="2">Semester 2</MenuItem>
-                                    <MenuItem value="3">Semester 3</MenuItem>
-                                </Select>
-                            </FormControl>
-                            <Button variant="contained" color="primary" onClick={handleSearch} size="small">
-                                Search
-                            </Button>
-                        </Box>
+                    <IconButton color="inherit" edge="end" aria-label="profile" onClick={profileHandler}>
+                        <AccountCircle />
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
+            <Box sx={{ p: 3 }}>
+                <Container maxWidth="md">
+                    <Box sx={{ mt: 3, display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <TextField
+                            label="Search"
+                            variant="filled"
+                            size="small"
+                            value={searchTerm}
+                            onChange={handleSearch}
+                        />
+                        <Select
+                            value={selectedSubject}
+                            onChange={handleSubjectChange}
+                            variant="filled"
+                            size="small"
+                        >
+                            <MenuItem value="all">All Subjects</MenuItem>
+                            <MenuItem value="science">Science</MenuItem>
+                            <MenuItem value="history">History</MenuItem>
+                            <MenuItem value="fiction">Fiction</MenuItem>
+                        </Select>
                     </Box>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                        {books.map(book => (
-                            <Box
-                                key={book}
-                                sx={{
-                                    width: 'calc(20% - 20px)',
-                                    margin: '10px',
-                                    padding: '20px',
-                                    backgroundColor: '#e91e63',
-                                    color: '#fff',
-                                    borderRadius: '4px',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                }}
-                            >
-                                <img src="https://via.placeholder.com/150" alt={`Book ${book + 1}`} />
-                                <Typography variant="subtitle1" sx={{ mt: 2 }}>
-                                    Book {book + 1}
-                                </Typography>
-                            </Box>
-                        ))}
+                    <Box sx={{ mt: 3 }}>
+                        <Grid container spacing={3}>
+                            {filteredBooks.map(book => (
+                                <Grid item xs={6} sm={3} key={book.ISBN}>
+                                    <Box
+                                        onClick={() => alert(book.title)}
+                                        sx={{
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            gap: '8px',
+                                            p: 2,
+                                            borderRadius: '8px',
+                                            backgroundColor: '#424242',
+                                        }}
+                                    >
+                                        <img src={book.image} alt={book.title} width={120} height={180} />
+                                        <Typography variant="body2" align="center">
+                                            {book.title}
+                                        </Typography>
+                                    </Box>
+                                </Grid>
+                            ))}
+                        </Grid>
                     </Box>
-                    {books.length < 100 && (
-                        <Box sx={{ mt: 3 }}>
-                            <Button variant="contained" color="primary" onClick={handleLoadMore}>
-                                Load More
-                            </Button>
-                        </Box>
-                    )}
-                </Box>
-            </Container>
+                </Container>
+            </Box>
         </ThemeProvider>
     );
 };

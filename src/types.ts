@@ -18,6 +18,7 @@ export type Book={
   subject:string;
   publisher:string;
   author:string;
-  no_of_copies:number
+  no_of_copies:number;
+  image:string;
 }
 

@@ -1,6 +1,8 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Button, TextField } from '@mui/material';
 import { registerUser } from '../apis/authApi';
+import { useAuth } from '../provider/authProvider';
+import { useNavigate } from 'react-router';
 
 type FormData = {
   name: string;
@@ -18,6 +20,7 @@ type RegistrationFormProps = {
 };
 
 const RegistrationForm: React.FC<RegistrationFormProps> = ({ userType }) => {
+  const { setToken, setRole } = useAuth();
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -33,29 +36,23 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ userType }) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
+  const navigate=useNavigate()
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Handle form submission based on the user type
-    switch (userType) {
-      case 'student':
-        registerUser({
-          ...formData,
-          role: 'student',
-        }).then((res) => {
-          console.log(res);
-        }).catch((err) => {
-          console.log(err);
-        });
-        break;
-      case 'teacher':
-        console.log('Teacher Registration Form Submitted:', {
-          ...formData,
-          role: 'faculty',
-        });
-        break;
-      default:
-        break;
-    }
+    registerUser({
+      ...formData,
+      role: userType,
+    }).then((res) => {
+      const token = res.data.access_token;
+      setToken(token);
+      setRole(res.data.role);
+      navigate('/dashboard', { replace: true });
+    }).catch((err) => {
+      console.log(err);
+    });
+
+
   };
 
   const renderFormFields = () => {
