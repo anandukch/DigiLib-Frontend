@@ -17,13 +17,9 @@ const AddAuthor = () => {
   useEffect(() => {
     getAuthors()
       .then(response => {
-        console.log(response.data);
-
-        // Handle successful response
         setAuthors(response.data);
       })
       .catch(error => {
-        // Handle error
         console.error('Error fetching authors:', error);
       });
   }, [])
@@ -55,11 +51,12 @@ const AddAuthor = () => {
   };
 
   return (
-    <ThemeProvider theme={createTheme({
-      palette: {
-        mode: 'dark',
-      },
-    })}>
+    // <ThemeProvider theme={createTheme({
+    //   palette: {
+    //     mode: 'dark',
+    //   },
+    // })}>
+    <>
       <Container maxWidth="sm" >
         <Box sx={{ mt: 3 }}>
           <Typography variant="h4" gutterBottom>
@@ -84,9 +81,9 @@ const AddAuthor = () => {
         <BasicTable authors={authors} />
       </div>
 
+</>
 
-
-    </ThemeProvider>
+    // </ThemeProvider>
   );
 };
 

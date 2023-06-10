@@ -47,10 +47,8 @@ const MainPage: React.FC = () => {
                     <FaBookOpen size={150} />
                   ) : selectedTab === 1 ? (
                     <FaUserGraduate size={150} />
-                  ) : selectedTab === 2 ? (
-                    <FaUserTie size={150} />
                   ) : (
-                    <FaUserShield size={150} />
+                    <FaUserTie size={150} />
                   )}
                 </Box>
               </Grid>
@@ -69,8 +67,6 @@ const MainPage: React.FC = () => {
                     >
                       <Tab label="Student" />
                       <Tab label="Teacher" />
-                      <Tab label="Issuer" />
-                      <Tab label="Admin" />
                     </Tabs>
                     {selectedTab === 0 && (
                       <Box sx={{ p: 3 }}>
@@ -88,7 +84,7 @@ const MainPage: React.FC = () => {
                         <RegisterPage userType="teacher" />
                       </Box>
                     )}
-                    {selectedTab === 2 && (
+                    {/* {selectedTab === 2 && (
                       <Box sx={{ p: 3 }}>
                         <Typography variant="h6" gutterBottom>
                           Issuer Registration Form
@@ -103,7 +99,7 @@ const MainPage: React.FC = () => {
                         </Typography>
                         <RegisterPage userType="admin" />
                       </Box>
-                    )}
+                    )} */}
                   </Box>
                 </Box>
               </Grid>

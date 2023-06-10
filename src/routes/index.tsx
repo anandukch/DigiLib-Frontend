@@ -3,20 +3,21 @@ import { useAuth } from "../provider/authProvider";
 import Login from "../pages/Login";
 import ProtectedRoute from "./ProtectedRoute";
 import AdminDashboard from "../pages/AdminDashboard";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getProfile } from "../apis/userApi";
 
 const RoutesComp: React.FC = () => {
   const { token } = useAuth();
+  const [userRole, setUserRole] = useState<any>(null)
   useEffect(() => {
     getProfile()
       .then(res => {
-        console.log(res.data);
-
+        setUserRole(res.data.role === "admin" ? "admin" : "user")
       }).catch(err => {
         console.log(err);
-
       })
+
+
   }, [])
 
   // Define public routes accessible to all users
@@ -41,7 +42,7 @@ const RoutesComp: React.FC = () => {
           path: "/",
           element: (
             <Routes>
-              <Route path="/" element={<AdminDashboard />} />
+              {userRole == "admin" && <Route path="/" element={<AdminDashboard />} />}
             </Routes>
           )
         },

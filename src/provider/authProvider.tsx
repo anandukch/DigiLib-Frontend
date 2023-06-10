@@ -4,6 +4,8 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 interface AuthContextType {
   token: string | null;
   setToken: (newToken: string | null) => void;
+  role: string | null;
+  setRole: (newRole: string | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -14,9 +16,17 @@ const AuthProvider: React.FC<any> = ({ children }) => {
     localStorage.getItem("token")
   );
 
+  const [role, setRole_] = useState<string | null>(
+    localStorage.getItem("role")
+  );
+
   // Function to set the authentication token
   const setToken = (newToken: string | null) => {
     setToken_(newToken);
+  };
+
+  const setRole = (newRole: string | null) => {
+    setRole_(newRole);
   };
 
   useEffect(() => {
@@ -34,6 +44,8 @@ const AuthProvider: React.FC<any> = ({ children }) => {
     () => ({
       token,
       setToken,
+      role,
+      setRole
     }),
     [token]
   );

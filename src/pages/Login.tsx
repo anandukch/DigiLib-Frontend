@@ -96,7 +96,7 @@ type FormData = {
 };
 const LoginForm: React.FC = () => {
 
-  const { setToken } = useAuth();
+  const { setToken,setRole } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
@@ -114,13 +114,18 @@ const LoginForm: React.FC = () => {
     login(formData.email, formData.password).then((res) => {
       const token = res.data.access_token;
       setToken(token);
-      navigate("/", { replace: true });
+      setRole(res.data.role)
+      navigate("/dashboard", { replace: true });
     }).catch((err) => {
       console.log(err);
     }).finally(() => {
       setLoading(false);
     }
     );
+  }
+
+  const handleRegister = () => {
+    navigate("/register", { replace: true });
   }
   return (
     <>
@@ -153,6 +158,9 @@ const LoginForm: React.FC = () => {
 
         <Button variant="contained" color="primary" type="submit">
           Login
+        </Button>
+        <Button variant="outlined" color="primary" onClick={handleRegister}>
+          Register
         </Button>
       </form>
     </>

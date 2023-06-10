@@ -1,16 +1,22 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../provider/authProvider";
+import { useEffect } from "react";
 
-const ProtectedRoute: React.FC = () => {
-  const { token } = useAuth();  
-  // Check if the user is authenticated
-  if (!token) {
-    // If not authenticated, redirect to the login page
-    return <Navigate to="/login" />;
-  }
 
+
+const ProtectedRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
+  const { token } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/login")
+    }
+  }, [])
+
+  
   // If authenticated, render the child routes
-  return <Outlet />;
+  return children;
 };
 
 export default ProtectedRoute;

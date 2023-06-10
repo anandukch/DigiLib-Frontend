@@ -1,42 +1,52 @@
-import React, { useState } from 'react'
-import "./App.css"
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import HomePage from './pages/Home'
-// import AddBook from './components/AddBook';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import HomePage from './pages/Home';
 import MainPage from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
-import RegistrationForm from './pages/RegisterPage';
-// import Routes from './routes';
 import ProtectedRoute from './routes/ProtectedRoute';
-import AddBook from './components/AdminDashBoard/AddBook';
-import AddAuthor from './components/AdminDashBoard/AddAuthor';
-import RoutesComp from './routes';
+import Login from './pages/Login';
+import { useAuth } from './provider/authProvider';
+import { getProfile } from './apis/userApi';
+import IssueBookPage from './pages/IssuePage';
+
 function App() {
-    // const [theme, colorMode] = useMode(); 
+    const [userRole, setUserRole] = useState<string>('user');
+    const { token,role } = useAuth();
+
+    useEffect(() => {
+        if (token) {
+            getProfile()
+                .then((res) => {
+                    console.log(res.data.role);
+
+                    const role = res.data.role;
+                    setUserRole(role);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+    }, [token]);
+
     return (
         <>
-            <RoutesComp />
-
-            {/* <Router>
+            <Router>
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/register" element={<MainPage />} />
-                    <Route path="/admin" element={<AdminDashboard/>} />
+                    <Route path="/login" element={<Login />} />
+                    {/* {
+                        userRole == 'admin' && (
+                            <Route path="/dashboard" element={<AdminDashboard />} />
+                        ) 
+                    } */}
+                    <Route path="/dashboard" element={
+                        role == "admin" && <AdminDashboard/>
+                    } />
                 </Routes>
-            </Router > */}
+            </Router>
         </>
-    )
+    );
 }
 
-export default App
-
-
-
-
-{/* <Router>
-<Routes>
-    <Route path="/" element={<HomePage />} />
-    <Route path="/admin" element={<AdminDashboard />} />
-    <Route path="/register" element={<MainPage />} />
-</Routes>
-</Router> */}
+export default App;

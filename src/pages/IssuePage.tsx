@@ -18,6 +18,7 @@ import {
     Typography,
     createTheme,
     ThemeProvider,
+    useMediaQuery,
 } from '@mui/material';
 import { Edit } from '@mui/icons-material';
 
@@ -25,13 +26,11 @@ const theme = createTheme({
     palette: {
         mode: 'dark',
     },
-    typography: {
-        fontWeightBold: 700,
-    },
 });
 
 const IssueBookPage: React.FC = () => {
     const [openDialog, setOpenDialog] = useState(false);
+    const isMobile = useMediaQuery('(max-width: 600px)');
 
     const handleOpenDialog = () => {
         setOpenDialog(true);
@@ -60,20 +59,17 @@ const IssueBookPage: React.FC = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Box
-                sx={{
-                    backgroundColor: '#f5f5f5',
-                    minHeight: '100vh',
-                    padding: '20px',
-                }}
-            >
-                <Container maxWidth="xl">
+            <Box>
+                <Container maxWidth="xl" style={{
+                    width: !isMobile ? "80%":"auto",
+                    marginLeft:!isMobile? '300px':"auto",
+                }}>
                     <Typography variant="h4" align="center" gutterBottom>
                         Issue Book
                     </Typography>
                     <TableContainer component={Paper} sx={{ border: '1px solid black' }}>
                         <Table>
-                            <TableHead sx={{ backgroundColor: '#e6f2ff' }}>
+                            <TableHead sx={{ backgroundColor: '#140f0f' }}>
                                 <TableRow>
                                     <TableCell sx={{ fontWeight: 'bold' }}>Book Number</TableCell>
                                     <TableCell sx={{ fontWeight: 'bold' }}>Cover Image</TableCell>
@@ -84,7 +80,7 @@ const IssueBookPage: React.FC = () => {
                             </TableHead>
                             <TableBody>
                                 {bookList.map((book, index) => (
-                                    <TableRow key={book.bookNumber} sx={{ backgroundColor: index % 2 === 0 ? '#f9f9f9' : 'white' }}>
+                                    <TableRow key={book.bookNumber} sx={{ backgroundColor: index % 2 === 0 ? '#515151' : '#3b3b3b' }}>
                                         <TableCell>{book.bookNumber}</TableCell>
                                         <TableCell>
                                             <img src={book.coverImage} alt="Cover" style={{ width: '50px' }} />
