@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import { useAuth } from './provider/authProvider';
 import { getProfile } from './apis/userApi';
 import IssueBookPage from './pages/IssuePage';
+import RoutesComp from './routes';
 
 function App() {
     const [userRole, setUserRole] = useState<string>('user');
@@ -30,21 +31,18 @@ function App() {
 
     return (
         <>
-            <Router>
+            {/* <Router>
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/register" element={<MainPage />} />
                     <Route path="/login" element={<Login />} />
-                    {/* {
-                        userRole == 'admin' && (
-                            <Route path="/dashboard" element={<AdminDashboard />} />
-                        ) 
-                    } */}
+              
                     <Route path="/dashboard" element={
                         role == "admin" && <AdminDashboard/>
                     } />
                 </Routes>
-            </Router>
+            </Router> */}
+        <RoutesComp/>
         </>
     );
 }
