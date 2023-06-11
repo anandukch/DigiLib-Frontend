@@ -10,7 +10,7 @@ import {
   createTheme,
   ThemeProvider,
 } from '@mui/material';
-import { FaBookOpen, FaUserGraduate, FaUserShield, FaUserTie } from 'react-icons/fa'; // Importing React Icons
+import { FaBookOpen, FaUserGraduate, FaUserTie } from 'react-icons/fa'; // Importing React Icons
 import RegisterPage from './RegisterPage';
 
 const theme = createTheme({
@@ -84,22 +84,6 @@ const MainPage: React.FC = () => {
                         <RegisterPage userType="teacher" />
                       </Box>
                     )}
-                    {/* {selectedTab === 2 && (
-                      <Box sx={{ p: 3 }}>
-                        <Typography variant="h6" gutterBottom>
-                          Issuer Registration Form
-                        </Typography>
-                        <RegisterPage userType="issuer" />
-                      </Box>
-                    )}
-                    {selectedTab === 3 && (
-                      <Box sx={{ p: 3 }}>
-                        <Typography variant="h6" gutterBottom>
-                          Admin Registration Form
-                        </Typography>
-                        <RegisterPage userType="admin" />
-                      </Box>
-                    )} */}
                   </Box>
                 </Box>
               </Grid>

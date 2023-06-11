@@ -1,13 +1,15 @@
-import { Box, Button, Container, TextField, Typography, Grid, MenuItem } from '@mui/material';
+import { Box, Button, Container, TextField, Typography, Grid, MenuItem, Backdrop, CircularProgress } from '@mui/material';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { AuthorData, Book } from '../../types';
 import { addBook, getAuthors, getBooks } from '../../apis/booksApi';
 import { BookTable } from './BookTable';
 
+
 const AddBook = () => {
     const [books, setBooks] = useState<any>([]);
     const [imagePreview, setImagePreview] = useState<any>(null);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [loading, setLoading] = useState<boolean>(false);
     const [bookData, setBookData] = useState<Book>({
         ISBN: "",
         title: "",
@@ -26,6 +28,7 @@ const AddBook = () => {
 
         formData.append("upload_preset", "ofqbrex9")
         formData.append("cloud_name", "anandukch")
+        setLoading(true);
         fetch("https://api.cloudinary.com/v1_1/anandukch/image/upload", {
             method: "post",
             body: formData
@@ -38,6 +41,7 @@ const AddBook = () => {
                     .then(response => {
                         console.log(response.data);
                         setBooks([...books, response.data]);
+                        setLoading(false);
                     })
                     .catch(error => {
                         console.error('Error adding book:', error);
@@ -60,7 +64,7 @@ const AddBook = () => {
         getBooks()
             .then(response => {
                 console.log(response.data);
-                
+
                 setBooks(response.data)
             })
             .catch(error => {
@@ -90,6 +94,12 @@ const AddBook = () => {
     }
     return (
         <>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme:any) => theme.zIndex.drawer + 1 }}
+                open={loading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <Container maxWidth="sm">
                 <Box sx={{ mt: 3 }}>
                     <Typography variant="h4" gutterBottom>
@@ -117,7 +127,6 @@ const AddBook = () => {
                                     </Typography>
                                 )}
                             </Box>
-                            {/* Image Upload Icon */}
                             <Box
                                 sx={{
                                     display: 'flex',

@@ -10,7 +10,7 @@ import IssuerDashboard from './pages/IssuerDashboard';
 import BookDetail from './pages/Book';
 
 function App() {
-    const { token, role } = useAuth();
+    const {role } = useAuth();
     return (
         <>
             <Router>

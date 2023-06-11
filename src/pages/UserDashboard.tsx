@@ -6,20 +6,21 @@ import MenuIcon from '@mui/icons-material/Menu';
 import IssueBookPage from './IssuePage';
 import { LogoutOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
+import TransactionTable from '../components/UserDashboard/TransactionTable';
 
 const UserDashboard: React.FC<any> = () => {
-  const [renderComp, setRenderComp] = useState("addBook");
+  const [renderComp, setRenderComp] = useState("transactions");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width: 600px)');
 
   const addComponentHandler = (comp: string) => {
     switch (comp) {
-      case "addBook":
-        return <AddBook />;
-      case "addAuthor":
-        return <AddAuthor />;
-      default:
-        return <IssueBookPage />;
+      case "transactions":
+        return <TransactionTable />;
+      // case "addAuthor":
+      //   return <AddAuthor />;
+      // default:
+      // return <IssueBookPage />;
     }
   };
 
@@ -31,11 +32,16 @@ const UserDashboard: React.FC<any> = () => {
     setRenderComp(comp);
     setIsDrawerOpen(false);
   };
- const navigate=useNavigate();
+  const navigate = useNavigate();
   const logOutHandler = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("role")
     navigate("/login");
   };
+
+  const exploreHandler = () => {
+    navigate("/");
+  }
 
   return (
     <>
@@ -60,7 +66,7 @@ const UserDashboard: React.FC<any> = () => {
         )}
 
         <Drawer
-          title='Admin Dashboard'
+          title='User Dashboard'
           variant={isMobile ? "temporary" : "permanent"}
           open={!isMobile || isDrawerOpen}
           onClose={() => setIsDrawerOpen(false)}
@@ -79,33 +85,38 @@ const UserDashboard: React.FC<any> = () => {
             <Toolbar />
           )}
           <Typography variant="h6" component="div" sx={{ p: 3 }}>
-            Admin Dashboard
+            User Dashboard
           </Typography>
           <List>
-            <ListItemButton onClick={() => handleMenuClick("addBook")} style={{ backgroundColor: renderComp === "addBook" ? "#3f51b5" : "" }}>
+            <ListItemButton onClick={exploreHandler}>
               <ListItemIcon>
                 {/* Add your own icons here */}
               </ListItemIcon>
-              <ListItemText primary="user  aanee" />
+              <ListItemText primary="Explore Books" />
             </ListItemButton>
-
-            <ListItemButton onClick={() => handleMenuClick("addAuthor")} style={{ backgroundColor: renderComp === "addAuthor" ? "#3f51b5" : "" }}>
+            <ListItemButton onClick={() => handleMenuClick("transactions")} style={{ backgroundColor: renderComp === "transactions" ? "#3f51b5" : "" }}>
               <ListItemIcon>
                 {/* Add your own icons here */}
+              </ListItemIcon>
+              <ListItemText primary="All Transactions" />
+            </ListItemButton>
+
+
+            {/* <ListItemButton onClick={() => handleMenuClick("addAuthor")} style={{ backgroundColor: renderComp === "addAuthor" ? "#3f51b5" : "" }}>
+              <ListItemIcon>
               </ListItemIcon>
               <ListItemText primary="Add author" />
             </ListItemButton>
 
             <ListItemButton onClick={() => handleMenuClick("issueBook")} style={{ backgroundColor: renderComp === "issueBook" ? "#3f51b5" : "" }}>
               <ListItemIcon>
-                {/* Add your own icons here */}
               </ListItemIcon>
               <ListItemText primary="Issue book" />
-            </ListItemButton>
+            </ListItemButton> */}
 
             <ListItemButton onClick={logOutHandler}>
               <ListItemIcon>
-                <LogoutOutlined/>
+                <LogoutOutlined />
               </ListItemIcon>
               <ListItemText primary="LogOut" />
             </ListItemButton>

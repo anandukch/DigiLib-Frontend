@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import { Book } from '../../types';
 import { Delete } from '@mui/icons-material';
 import { Box, Container, IconButton, Typography, useMediaQuery } from '@mui/material';
+import {v4} from "uuid";
 
 export const BookTable = ({ books }: { books: Book[] }) => {
   const isMobile = useMediaQuery('(max-width: 600px)');
@@ -43,7 +44,7 @@ export const BookTable = ({ books }: { books: Book[] }) => {
             <TableBody>
               {books.map((row, index) => (
                 <TableRow
-                  key={row.ISBN}
+                  key={v4()}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 }, backgroundColor: index % 2 === 0 ? '#515151' : '#3b3b3b' }}
                 >
                   <TableCell scope="row" align="center">

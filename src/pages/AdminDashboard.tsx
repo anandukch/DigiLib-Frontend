@@ -4,8 +4,9 @@ import AddBook from '../components/AdminDashBoard/AddBook';
 import AddAuthor from '../components/AdminDashBoard/AddAuthor';
 import MenuIcon from '@mui/icons-material/Menu';
 import IssueBookPage from './IssuePage';
-import { LogoutOutlined } from '@mui/icons-material';
+import { BookOutlined, LogoutOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
+import { FaPlus } from 'react-icons/fa';
 
 const AdminDashboard: React.FC<any> = () => {
   const [renderComp, setRenderComp] = useState("addBook");
@@ -31,7 +32,7 @@ const AdminDashboard: React.FC<any> = () => {
     setRenderComp(comp);
     setIsDrawerOpen(false);
   };
- const navigate=useNavigate();
+  const navigate = useNavigate();
   const logOutHandler = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -84,7 +85,7 @@ const AdminDashboard: React.FC<any> = () => {
           <List>
             <ListItemButton onClick={() => handleMenuClick("addBook")} style={{ backgroundColor: renderComp === "addBook" ? "#3f51b5" : "" }}>
               <ListItemIcon>
-                {/* Add your own icons here */}
+                <FaPlus />
               </ListItemIcon>
               <ListItemText primary="Add book" />
             </ListItemButton>
@@ -95,17 +96,15 @@ const AdminDashboard: React.FC<any> = () => {
               </ListItemIcon>
               <ListItemText primary="Add author" />
             </ListItemButton>
-
             <ListItemButton onClick={() => handleMenuClick("issueBook")} style={{ backgroundColor: renderComp === "issueBook" ? "#3f51b5" : "" }}>
               <ListItemIcon>
-                {/* Add your own icons here */}
+                <BookOutlined />
               </ListItemIcon>
-              <ListItemText primary="Issue book" />
+              <ListItemText primary="Manage book" />
             </ListItemButton>
-
             <ListItemButton onClick={logOutHandler}>
               <ListItemIcon>
-                <LogoutOutlined/>
+                <LogoutOutlined />
               </ListItemIcon>
               <ListItemText primary="LogOut" />
             </ListItemButton>
