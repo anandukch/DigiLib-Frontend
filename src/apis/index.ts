@@ -1,7 +1,7 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
-
-const api_url="https://digilib-7ff9.onrender.com"
-// const api_url="http://localhost:8000"
+const { VITE_API } = import.meta.env;
+const api_url=VITE_API
+// const api_url = VITE_LOCAL_API;
 const api = axios.create({
   baseURL: api_url,
   headers: {
@@ -12,7 +12,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const authToken = localStorage.getItem("token")
+    const authToken = localStorage.getItem("token");
     const newConfig = config;
     if (authToken) {
       newConfig.headers!.Authorization = `Bearer ${authToken}`;

@@ -3,11 +3,6 @@ import {
   Box,
   Button,
   Container,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
   Paper,
   Table,
   TableBody,
@@ -24,8 +19,7 @@ import {
   Backdrop,
   CircularProgress,
 } from '@mui/material';
-import { Edit } from '@mui/icons-material';
-import { getAllUsers, getNonVerifiedUsers, verifyUser } from '../../apis/userApi';
+import { getAllUsers, verifyUser } from '../../apis/userApi';
 import { UserData } from '../../types';
 import { v4 } from 'uuid';
 

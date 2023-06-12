@@ -3,6 +3,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { Book } from '../../types';
 import { addBook, getBooks } from '../../apis/booksApi';
 import { BookTable } from './BookTable';
+const { VITE_CLOUDINARY_UPLOAD_PRESENT, VITE_CLOUDINARY_NAME } = import.meta.env
 
 
 const AddBook = () => {
@@ -24,10 +25,8 @@ const AddBook = () => {
 
         const formData = new FormData();
         formData.append("file", selectedFile!)
-        console.log(selectedFile);
-
-        formData.append("upload_preset", "ofqbrex9")
-        formData.append("cloud_name", "anandukch")
+        formData.append("upload_preset", VITE_CLOUDINARY_UPLOAD_PRESENT)
+        formData.append("cloud_name", VITE_CLOUDINARY_NAME)
         setLoading(true);
         fetch("https://api.cloudinary.com/v1_1/anandukch/image/upload", {
             method: "post",
@@ -35,13 +34,21 @@ const AddBook = () => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data.url)
                 setBookData({ ...bookData, image: data.url })
-                addBook(bookData)
+                addBook({ ...bookData, image: data.url })
                     .then(response => {
-                        console.log(response.data);
                         setBooks([...books, response.data]);
                         setLoading(false);
+                        setBookData({
+                            ISBN: "",
+                            title: "",
+                            subject: "",
+                            publisher: "",
+                            language: "",
+                            no_of_copies: 0,
+                            author: "",
+                            image: ""
+                        })
                     })
                     .catch(error => {
                         console.error('Error adding book:', error);
@@ -54,8 +61,6 @@ const AddBook = () => {
     useEffect(() => {
         getBooks()
             .then(response => {
-                console.log(response.data);
-
                 setBooks(response.data)
             })
             .catch(error => {
