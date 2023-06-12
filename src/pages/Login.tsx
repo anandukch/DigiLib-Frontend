@@ -113,13 +113,11 @@ const LoginForm: React.FC = () => {
     setLoading(true);
     login(formData.email, formData.password).then((res) => {
       const token = res.data.access_token;
-      setToken(token);
-      console.log(res.data.role);
-      
+      setToken(token);      
       setRole(res.data.role)
       navigate("/dashboard", { replace: true });
     }).catch((err) => {
-      console.log(err);
+      alert(err.response.data.detail);
     }).finally(() => {
       setLoading(false);
     }

@@ -47,7 +47,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ userType }) => {
       const token = res.data.access_token;
       setToken(token);
       setRole(res.data.role);
-      navigate('/dashboard', { replace: true });
+      navigate('/login', { replace: true });
     }).catch((err) => {
       console.log(err);
     });

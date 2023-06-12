@@ -1,7 +1,7 @@
-import { Box, Button, Container, TextField, Typography, Grid, MenuItem, Backdrop, CircularProgress } from '@mui/material';
+import { Box, Button, Container, TextField, Typography, Grid, Backdrop, CircularProgress } from '@mui/material';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { AuthorData, Book } from '../../types';
-import { addBook, getAuthors, getBooks } from '../../apis/booksApi';
+import { Book } from '../../types';
+import { addBook, getBooks } from '../../apis/booksApi';
 import { BookTable } from './BookTable';
 
 
@@ -51,16 +51,7 @@ const AddBook = () => {
 
 
     };
-    const [authors, setAuthors] = useState<AuthorData[]>([]);
     useEffect(() => {
-        getAuthors()
-            .then(response => {
-                setAuthors(response.data);
-            })
-            .catch(error => {
-                console.error('Error fetching authors:', error);
-            }
-            );
         getBooks()
             .then(response => {
                 console.log(response.data);
@@ -95,7 +86,7 @@ const AddBook = () => {
     return (
         <>
             <Backdrop
-                sx={{ color: '#fff', zIndex: (theme:any) => theme.zIndex.drawer + 1 }}
+                sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
                 open={loading}
             >
                 <CircularProgress color="inherit" />
@@ -170,19 +161,15 @@ const AddBook = () => {
 
                                 <TextField
                                     label="Author"
-                                    select
+
                                     fullWidth
                                     sx={{ mt: 2 }}
                                     name="author"
                                     onChange={handleInputChange}
                                     value={bookData.author}
-                                >
-                                    {authors.map(author => (
-                                        <MenuItem key={author.id} value={author.name}>
-                                            {author.name}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                                />
+
+
 
                                 <Grid container spacing={2}>
                                     <Grid item xs={6}>

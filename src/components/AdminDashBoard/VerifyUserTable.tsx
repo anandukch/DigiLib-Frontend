@@ -25,9 +25,7 @@ import {
     CircularProgress,
 } from '@mui/material';
 import { Edit } from '@mui/icons-material';
-import { BookTransaction } from '../types';
-import { getAllTransactions, issueBook, returnBook } from '../apis/booksApi';
-import { formatDate } from '../utils';
+import { getNonVerifiedUsers } from '../../apis/userApi';
 
 
 const theme = createTheme({
@@ -36,9 +34,9 @@ const theme = createTheme({
     },
 });
 
-const TransactionTable: React.FC = () => {
+const VerifyUserTable: React.FC = () => {
     // const [openDialog, setOpenDialog] = useState(false);
-    const [transactions, setTransactions] = useState<BookTransaction[]>([]);
+    // const [transactions, setTransactions] = useState<BookTransaction[]>([]);
     // const [transIndx, setTransIndx] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const isMobile = useMediaQuery('(max-width: 600px)');
@@ -55,55 +53,27 @@ const TransactionTable: React.FC = () => {
 
 
     useEffect(() => {
-        getAllTransactions()
+        setLoading(true)
+        getNonVerifiedUsers()
             .then(response => {
-                setTransactions(response.data);
+                console.log(response.data);
+                // setTransactions(response.data);
+                setLoading(false)
             }).catch(error => {
-                console.error('Error fetching book:', error);
+                alert(error.response.data.detail);
+                setLoading(false)
             }
             );
+        // getAllTransactions()
+        //     .then(response => {
+        //         setTransactions(response.data);
+        //     }).catch(error => {
+        //         console.error('Error fetching book:', error);
+        //     }
+        //     );
     }, [])
 
-    const issueBookHandler = (transIndx:number) => {
-        setLoading(true);
-        const transId = transactions[transIndx].id;
-        issueBook(transId)
-            .then(_ => {
-                getAllTransactions()
-                    .then(response => {
-                        setTransactions(response.data);
-                        setLoading(false);
-                    }).catch(error => {
-                        console.error('Error fetching book:', error);
-                    }
-                    );
-
-            }
-            ).catch(error => {
-                console.error('Error fetching book:', error);
-            }
-            );
-    }
-
-    const returnBookHandler = (index: number) => {
-        setLoading(true);
-        returnBook(transactions[index].id)
-            .then(_ => {
-                getAllTransactions()
-                    .then(response => {
-                        setTransactions(response.data);
-                        setLoading(false);
-                    }
-                    ).catch(error => {
-                        console.error('Error fetching book:', error);
-                    }
-                    );
-            }).catch(error => {
-                console.log(error);
-
-            })
-
-    }
+    
     return (
         <ThemeProvider theme={theme}>
             <Backdrop
@@ -139,7 +109,7 @@ const TransactionTable: React.FC = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {transactions.map((transaction, index) => (
+                                {/* {transactions.map((transaction, index) => (
                                     <TableRow key={transaction.id} sx={{ backgroundColor: index % 2 === 0 ? '#515151' : '#3b3b3b' }}>
                                         <TableCell>{transaction.book_item.acc_no}</TableCell>
                                         <TableCell>
@@ -180,30 +150,14 @@ const TransactionTable: React.FC = () => {
 
                                         </TableCell>
                                     </TableRow>
-                                ))}
+                                ))} */}
                             </TableBody>
                         </Table>
                     </TableContainer>
-
-                    {/* Floating Dialog */}
-                    {/* <Dialog open={openDialog} onClose={handleCloseDialog}>
-                        <DialogTitle>Issue Book Details</DialogTitle>
-                        <DialogContent>
-                            Render complete details of student and book
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={issueBookHandler} color="primary">
-                                Confirm Issue
-                            </Button>
-                            <Button onClick={handleCloseDialog} color="secondary">
-                                Cancel
-                            </Button>
-                        </DialogActions>
-                    </Dialog> */}
                 </Container>
             </Box>
         </ThemeProvider>
     );
 };
 
-export default TransactionTable;
+export default VerifyUserTable;

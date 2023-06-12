@@ -7,6 +7,7 @@ import IssueBookPage from './IssuePage';
 import { BookOutlined, LogoutOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import { FaPlus } from 'react-icons/fa';
+import VerifyUserTable from '../components/AdminDashBoard/VerifyUserTable';
 
 const AdminDashboard: React.FC<any> = () => {
   const [renderComp, setRenderComp] = useState("addBook");
@@ -17,8 +18,8 @@ const AdminDashboard: React.FC<any> = () => {
     switch (comp) {
       case "addBook":
         return <AddBook />;
-      case "addAuthor":
-        return <AddAuthor />;
+      case "verifyUser":
+        return <VerifyUserTable />;
       default:
         return <IssueBookPage />;
     }
@@ -90,17 +91,17 @@ const AdminDashboard: React.FC<any> = () => {
               <ListItemText primary="Add book" />
             </ListItemButton>
 
-            <ListItemButton onClick={() => handleMenuClick("addAuthor")} style={{ backgroundColor: renderComp === "addAuthor" ? "#3f51b5" : "" }}>
+            <ListItemButton onClick={() => handleMenuClick("verifyUser")} style={{ backgroundColor: renderComp === "verifyUser" ? "#3f51b5" : "" }}>
               <ListItemIcon>
                 {/* Add your own icons here */}
               </ListItemIcon>
-              <ListItemText primary="Add author" />
+              <ListItemText primary="Verify User" />
             </ListItemButton>
-            <ListItemButton onClick={() => handleMenuClick("issueBook")} style={{ backgroundColor: renderComp === "issueBook" ? "#3f51b5" : "" }}>
+            <ListItemButton onClick={() => handleMenuClick("manageTrans")} style={{ backgroundColor: renderComp === "manageTrans" ? "#3f51b5" : "" }}>
               <ListItemIcon>
                 <BookOutlined />
               </ListItemIcon>
-              <ListItemText primary="Manage book" />
+              <ListItemText primary="Manage Transactions" />
             </ListItemButton>
             <ListItemButton onClick={logOutHandler}>
               <ListItemIcon>
