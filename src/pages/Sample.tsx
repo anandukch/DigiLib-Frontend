@@ -25,9 +25,6 @@ const theme = createTheme({
     palette: {
         mode: 'dark',
     },
-    typography: {
-        fontWeightBold: 700,
-    },
 });
 
 const SamplePage: React.FC = () => {
@@ -62,7 +59,7 @@ const SamplePage: React.FC = () => {
         <ThemeProvider theme={theme}>
             <Box
                 sx={{
-                    backgroundColor: '#f5f5f5',
+                    // backgroundColor: '#f5f5f5',
                     minHeight: '100vh',
                     padding: '20px',
                 }}

@@ -1,15 +1,15 @@
 // create a types.ts file in the src folder and add the following code:
 // Path: src/types.ts
-export type Author= {
-  name: string;
-  description: string;
-}
+// export type Author= {
+//   name: string;
+//   description: string;
+// }
 
-export type AuthorData ={
-  id: string;
-  name: string;
-  description: string;
-}
+// export type AuthorData ={
+//   id: string;
+//   name: string;
+//   description: string;
+// }
 
 export type Book={
   ISBN:string;
@@ -47,7 +47,7 @@ export type BookTransaction={
   id:string;
   book:BookData;
   book_item:BookItem;
-  user:UserData;
+  user:UserDataTrans;
   date_of_issue:string;
   date_of_return:string;
   status:string;
@@ -57,9 +57,17 @@ export type BookTransaction={
 
 }
 
-type UserData={
+type UserDataTrans={
   id:string;
   name:string;
   email:string;
+}
+
+export type UserData={
+  id:string;
+  name:string;
+  email:string;
+  role:string;
+  verified:boolean;
 }
 

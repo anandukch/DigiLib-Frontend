@@ -1,7 +1,7 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
-// const api_url="https://digilib-backend.onrender.com"
-const api_url="http://localhost:8000"
+const api_url="https://digilib-7ff9.onrender.com"
+// const api_url="http://localhost:8000"
 const api = axios.create({
   baseURL: api_url,
   headers: {
