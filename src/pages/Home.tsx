@@ -1,11 +1,10 @@
 import { AppBar, Box, Container, createTheme, CssBaseline, IconButton, Toolbar, Typography, ThemeProvider, TextField, Select, MenuItem, Grid, SelectChangeEvent } from '@mui/material';
-import { JSXElementConstructor, Key, ReactElement, ReactFragment, useEffect, useState } from 'react';
+import {useEffect, useState } from 'react';
 // import { Book } from '../types';
 import { AccountCircle } from '@mui/icons-material';
 import { getBooks } from '../apis/booksApi';
 import { BookData } from '../types';
 import { useNavigate } from 'react-router';
-import { getProfile } from '../apis/userApi';
 import { useAuth } from '../provider/authProvider';
 
 const theme = createTheme({
