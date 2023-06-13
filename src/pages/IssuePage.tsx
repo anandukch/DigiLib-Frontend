@@ -1,24 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { DataGrid, GridApi, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef} from '@mui/x-data-grid';
 import {
     Box,
     Container,
     IconButton,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
     Typography,
     createTheme,
     ThemeProvider,
     useMediaQuery,
-    Stack,
     Chip,
-    Backdrop,
-    CircularProgress,
 } from '@mui/material';
 import { Edit } from '@mui/icons-material';
 import { BookTransaction } from '../types';
@@ -52,16 +42,18 @@ const TransactionTable: React.FC = () => {
 
 
     useEffect(() => {
+        setLoading(true);
         getAllTransactions()
             .then(response => {
                 setTransactions(response.data);
+                setLoading(false);
             }).catch(error => {
                 console.error('Error fetching book:', error);
             }
             );
     }, [])
 
-    const issueBookHandler = (transIndx:number) => {
+    const issueBookHandler = (transIndx: number) => {
         setLoading(true);
         const transId = transactions[transIndx].id;
         issueBook(transId)
@@ -102,134 +94,160 @@ const TransactionTable: React.FC = () => {
 
     }
 
-
     const columns: GridColDef[] = [
-        { 
-            field: 'acc_no', 
-        headerName: 'Accession No', 
-        width: 120 
-    },
         {
-          field: 'img',
-          headerName: 'Book Image',
-          width: 100,
-          editable: true,
-          renderCell: (params) => {
-            // console.log(params.value);
-            
-            return <img style={{width:"100%"}} src={params.value}></img>;
-          }
+            field: 'acc_no',
+            headerName: 'Accession No',
+            width: 120,
+            // headerClassName: "super-app-theme--header"
         },
         {
-          field: 'title',
-          headerName: 'Book Title',
-          width: 100,
-          editable: true,
+            field: 'img',
+            headerName: 'Book Image',
+            width: 100,
+            // headerClassName: "super-app-theme--header",
+            renderCell: (params) => {
+
+                return <img style={{ width: "100%" }} src={params.value}></img>;
+            }
         },
         {
-          field: 'name',
-          headerName: 'User Name',
-          width: 100,
-          editable: true,
+            field: 'title',
+            headerName: 'Book Title',
+            width: 100,
+            editable: true,
+            // headerClassName: "super-app-theme--header",
+
         },
         {
-          field: 'res_date',
-          headerName: 'Reservation Date',
-          width: 100,
-          editable: true,
+            field: 'name',
+            headerName: 'User Name',
+            width: 110,
+            editable: true,
+            // headerClassName: "super-app-theme--header",
+
+        },
+        {
+            field: 'res_date',
+            headerName: 'Reservation Date',
+            width: 130,
+            editable: true,
+            // headerClassName: "super-app-theme--header",
+
         },
         {
             field: 'iss_date',
             headerName: 'Issue Date',
             width: 100,
             editable: true,
-          },
-          {
+            // headerClassName: "super-app-theme--header",
+
+        },
+        {
             field: 'return_date',
             headerName: 'Date of return',
             width: 100,
             editable: true,
-          },
-          {
+            // headerClassName: "super-app-theme--header",
+
+        },
+        {
             field: 'act_return_date',
             headerName: 'Actual Date of return',
-           width: 120,
+            width: 120,
             editable: true,
-          },
-          {
+            // headerClassName: "super-app-theme--header",
+
+        },
+        {
             field: 'fine',
             headerName: 'Fine',
             width: 100,
             editable: true,
-          },
-          {
+            // headerClassName: "super-app-theme--header",
+
+        },
+        {
             field: 'status',
             headerName: 'Status',
             width: 100,
             editable: true,
-          },          
-          {
+            // headerClassName: "super-app-theme--header",
+            renderCell: (params) => {
+
+                const { status } = params.value
+                return status == 'reserved' ?
+                    (<Chip label="Reserved" color="primary" />) : status == 'issued' ?
+                        (<Chip label="Issued" color="secondary" />) :
+                        (<Chip label="Returned" color="success" />)
+            }
+
+
+        },
+        {
             field: 'action',
+            // headerClassName: "super-app-theme--header",
+
             headerName: 'Action',
             width: 100,
             editable: true,
             renderCell: (params) => {
 
-                const {status,index}= params.value
+                const { status, index } = params.value
                 return status == 'reserved' ?
-                (<IconButton color="primary" onClick={() => issueBookHandler(index)} style={{ fontSize: 'small' }}>
-                    Issue
-                    <Edit fontSize="small" />
-                </IconButton>) : status == 'issued' ?
-                    (<IconButton color="primary" style={{ fontSize: 'small' }} onClick={() => returnBookHandler(index)}>
-                        Return
+                    (<IconButton color="primary" onClick={() => issueBookHandler(index)} style={{ fontSize: 'small' }}>
+                        Issue
                         <Edit fontSize="small" />
-                    </IconButton>) :
-                    (<IconButton color="primary" style={{ fontSize: 'small' }} disabled>
-                        Return
-                        <Edit fontSize="small" />
-                    </IconButton>)
-              }
-          },
-      ];
-      
-      const rows = transactions.map((transaction,index)=>{
-        return{
-            "id":v4(),
-          "acc_no":transaction.book_item.acc_no,
-          "img":transaction.book.image,
-          "title":transaction.book.title,
-          "status":transaction.status,
-          "fine":transaction.fine,
-          "act_return_date":transaction.actual_date_of_return,
-          "return_date":transaction.date_of_return,
-          "iss_date":transaction.date_of_issue,
-          "res_date":transaction.date_of_reservation,
-          "name":transaction.user.name,
-          "action":{
-            "status":transaction.status,
-            "index":index
-          }
+                    </IconButton>) : status == 'issued' ?
+                        (<IconButton color="primary" style={{ fontSize: 'small' }} onClick={() => returnBookHandler(index)}>
+                            Return
+                            <Edit fontSize="small" />
+                        </IconButton>) :
+                        (<IconButton color="primary" style={{ fontSize: 'small' }} disabled>
+                            Return
+                            <Edit fontSize="small" />
+                        </IconButton>)
+            }
+        },
+    ];
+
+    const rows = transactions.map((transaction, index) => {
+        return {
+            "id": v4(),
+            "acc_no": transaction.book_item.acc_no,
+            "img": transaction.book.image,
+            "title": transaction.book.title,
+            "status": transaction.status,
+            "fine": transaction.fine || 0,
+            "act_return_date": formatDate(transaction.actual_date_of_return),
+            "return_date": formatDate(transaction.date_of_return),
+            "iss_date": formatDate(transaction.date_of_issue),
+            "res_date": formatDate(transaction.date_of_reservation),
+            "name": transaction.user.name,
+            "action": {
+                "status": transaction.status,
+                "index": index
+            }
 
 
         }
-      })
+    })
 
     //   console.log(rows);
-      
+
 
     return (
         <ThemeProvider theme={theme}>
-            <Backdrop
+            {/* <Backdrop
                 sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
                 open={loading}
             >
                 <CircularProgress color="inherit" />
-            </Backdrop>
+            </Backdrop> */}
             <Box>
                 <Container maxWidth="xl" style={{
-                    width: !isMobile ? "80%" : "auto",
-                    marginLeft: !isMobile ? '250px' : "auto",
+                    width: !isMobile ? "60%" : "auto",
+                    marginLeft: !isMobile ? '350px' : "auto",
                 }}>
                     <Typography variant="h4" align="center" gutterBottom>
                         Issue Book
@@ -299,39 +317,53 @@ const TransactionTable: React.FC = () => {
                         </Table>
                     </TableContainer> */}
 
-            <Box sx={{ height: 500, width: 1200 }}>
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    initialState={{
-                    pagination: {
-                        paginationModel: {
-                        pageSize: 10,
-                        },
-                    },
-                    }}
-                    pageSizeOptions={[10]}
-                    checkboxSelection
-                    disableRowSelectionOnClick
-                    autoPageSize
-                    />
-                  </Box>
+                    {/* <Box> */}
+                    <div style={{ width: '100%' }}>
 
-                    {/* Floating Dialog */}
-                    {/* <Dialog open={openDialog} onClose={handleCloseDialog}>
-                        <DialogTitle>Issue Book Details</DialogTitle>
-                        <DialogContent>
-                            Render complete details of student and book
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={issueBookHandler} color="primary">
-                                Confirm Issue
-                            </Button>
-                            <Button onClick={handleCloseDialog} color="secondary">
-                                Cancel
-                            </Button>
-                        </DialogActions>
-                    </Dialog> */}
+                        <DataGrid
+                            getRowHeight={() => 100}
+                            style={{
+                                // backgroundColor: '#515151',
+                                color: 'white',
+                                width: !isMobile ? "1200px" : "auto",
+
+                            }}
+                            sx={
+                                {
+                                    '& .super-app-theme--header': {
+                                        backgroundColor: '#140f0f',
+                                        color: 'white',
+                                        fontSize: '20px',
+                                        fontWeight: 'bold',
+                                        height: '120px', // Inc
+                                    },
+
+                                }
+                            }
+                            rows={rows}
+                            columns={columns}
+                            loading={loading}
+                            initialState={{
+                                pagination: {
+                                    paginationModel: {
+                                        pageSize: 6,
+                                    },
+                                },
+                            }}
+                            pageSizeOptions={[6]}
+                            // checkboxSelection
+                            disableRowSelectionOnClick
+                        // getRowClassName={
+                        //     // even and odd row color
+                        //     (params) =>
+                        //         `super-app-theme--${params.getValue(params.id, 'status')}`
+
+
+                        // }
+                        // autoPageSize
+                        />
+                        {/* </Box> */}
+                    </div>
                 </Container>
             </Box>
         </ThemeProvider>

@@ -1,23 +1,26 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
+import { Book } from '../../types';
 
-export const BookTable = ({ books }: { books: Book[] }) => {
+export const BookTable = ({ books,loading }: { books: Book[],loading:boolean }) => {
   // Generate sl no for each book
-  const booksWithSlNo = books.map((book, index) => ({ ...book, slNo: books.length - index }));
 
   const columns: GridColDef[] = [
-    { field: 'slNo', headerName: 'Sl No', flex: 1 },
-    { field: 'ISBN', headerName: 'ISBN', flex: 1 },
-    { field: 'title', headerName: 'Title', flex: 1 },
-    { field: 'author', headerName: 'Author', flex: 1 },
-    { field: 'publisher', headerName: 'Publisher', flex: 1 },
-    { field: 'no_of_copies', headerName: 'No of Copies', flex: 1 },
+    { field: 'ISBN', headerName: 'ISBN', width: 130 },
+    { field: 'title', headerName: 'Title' },
+    { field: 'author', headerName: 'Author' },
+    { field: 'publisher', headerName: 'Publisher' },
+    { field: 'no_of_copies', headerName: 'No of Copies' },
+    { field: 'available_copies', headerName: 'No of Available Copies' },
+    { field: 'virtual_copies', headerName: 'No of Virtual Copies' },
+
+
     {
       field: 'action',
       headerName: 'Action',
       flex: 1,
-      renderCell: (params) => (
+      renderCell: (_) => (
         <IconButton color="error">
           <Delete />
         </IconButton>
@@ -28,12 +31,20 @@ export const BookTable = ({ books }: { books: Book[] }) => {
   return (
     <div style={{ height: 500, width: '100%' }}>
       <DataGrid
-        rows={booksWithSlNo}
+
+        rows={books}
         columns={columns}
-        pageSize={10}
-        disableSelectionOnClick
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 6,
+            },
+          },
+        }}
+        disableRowSelectionOnClick
         autoHeight
-         // Sort by slNo in descending order
+        loading={loading}
+      // Sort by slNo in descending order
       />
     </div>
   );

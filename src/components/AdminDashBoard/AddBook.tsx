@@ -59,9 +59,11 @@ const AddBook = () => {
 
     };
     useEffect(() => {
+        setLoading(true);
         getBooks()
             .then(response => {
                 setBooks(response.data)
+                setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching books:', error);
@@ -88,6 +90,7 @@ const AddBook = () => {
             reader.readAsDataURL(file);
         }
     }
+
     return (
         <>
             <Backdrop
@@ -96,7 +99,12 @@ const AddBook = () => {
             >
                 <CircularProgress color="inherit" />
             </Backdrop>
-            <Container maxWidth="sm">
+            <Container maxWidth="md"
+            // style={{
+            //     width: !isMobile ? '80%' : 'auto',
+            //     marginLeft: !isMobile ? '300px' : 'auto',
+            // }}
+            >
                 <Box sx={{ mt: 3 }}>
                     <Typography variant="h4" gutterBottom>
                         Add Book
@@ -230,21 +238,9 @@ const AddBook = () => {
                         </Grid>
                     </Grid>
                 </Box>
+                <BookTable books={books} loading={loading} />
             </Container>
-            <Container
-  maxWidth="md"
-  sx={{
-    position: 'relative',
-    top: 50,
-    left: 50,
-    width: 1000,
-  }}
->
-  <BookTable books={books} />
-</Container>
 
-
-            
         </>
     );
 };
