@@ -17,6 +17,7 @@ const HomePage = () => {
     const [books, setBooks] = useState<BookData[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [selectedSubject, setSelectedSubject] = useState<string>('all');
+    const [loading,setLoading] = useState<boolean>(false);
     const { token } = useAuth();
     const navigate = useNavigate();
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,8 +35,10 @@ const HomePage = () => {
     // });
 
     useEffect(() => {
+        setLoading(true);
         getBooks().then(res => {
-            setBooks(res.data)
+            setBooks(res.data);
+            setLoading(false)
         })
             .catch(err => console.log(err))
 

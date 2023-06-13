@@ -12,14 +12,15 @@ const IssuerDashboard: React.FC<any> = () => {
   const isMobile = useMediaQuery('(max-width: 600px)');
 
   const addComponentHandler = (comp: string) => {
-    switch (comp) {
-      case "addBook":
-        return <AddBook />;
-      // case "addAuthor":
-      //   return <AddAuthor />;
-      default:
-        return <IssueBookPage />;
-    }
+    return <IssueBookPage />;
+    // switch (comp) {
+    //   case "addBook":
+    //     return <AddBook />;
+    //   // case "addAuthor":
+    //   //   return <AddAuthor />;
+    //   default:
+    //     return <IssueBookPage />;
+    // }
   };
 
   const handleDrawerToggle = () => {

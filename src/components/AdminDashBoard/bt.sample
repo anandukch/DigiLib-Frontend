@@ -1,0 +1,662 @@
+import { Box, Button, Container, TextField, Typography, Grid, Backdrop, CircularProgress } from '@mui/material';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { Book } from '../../types';
+import { addBook, getBooks } from '../../apis/booksApi';
+import { BookTable } from './BookTable';
+const { VITE_CLOUDINARY_UPLOAD_PRESENT, VITE_CLOUDINARY_NAME } = import.meta.env
+
+
+const AddBook = () => {
+    const [books, setBooks] = useState<any>([]);
+    const [imagePreview, setImagePreview] = useState<any>(null);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [bookData, setBookData] = useState<Book>({
+        ISBN: "",
+        title: "",
+        subject: "",
+        publisher: "",
+        language: "",
+        no_of_copies: 0,
+        author: "",
+        image: ""
+    })
+    const handleAddBook = () => {
+
+        const formData = new FormData();
+        formData.append("file", selectedFile!)
+        formData.append("upload_preset", VITE_CLOUDINARY_UPLOAD_PRESENT)
+        formData.append("cloud_name", VITE_CLOUDINARY_NAME)
+        setLoading(true);
+        fetch("https://api.cloudinary.com/v1_1/anandukch/image/upload", {
+            method: "post",
+            body: formData
+        })
+            .then(res => res.json())
+            .then(data => {
+                setBookData({ ...bookData, image: data.url })
+                addBook({ ...bookData, image: data.url })
+                    .then(response => {
+                        setBooks([...books, response.data]);
+                        setLoading(false);
+                        setBookData({
+                            ISBN: "",
+                            title: "",
+                            subject: "",
+                            publisher: "",
+                            language: "",
+                            no_of_copies: 0,
+                            author: "",
+                            image: ""
+                        })
+                    })
+                    .catch(error => {
+                        console.error('Error adding book:', error);
+                    });
+            }
+            )
+
+
+    };
+    useEffect(() => {
+        getBooks()
+            .then(response => {
+                setBooks(response.data)
+            })
+            .catch(error => {
+                console.error('Error fetching books:', error);
+            });
+    }, []);
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setBookData({
+            ...bookData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const handleFileSelect = (event: any) => {
+        setSelectedFile(event.target.files[0]);
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                if (e.target && e.target.result) {
+                    setImagePreview(e.target.result.toString());
+
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+    return (
+        <>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
+                open={loading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+            <Container maxWidth="sm">
+                <Box sx={{ mt: 3 }}>
+                    <Typography variant="h4" gutterBottom>
+                        Add Book
+                    </Typography>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} md={4}>
+                            {/* Book Preview */}
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    minHeight: 300,
+                                    border: '1px solid #ccc',
+                                    borderRadius: 4,
+                                    marginBottom: 2,
+                                }}
+                            >
+                                {imagePreview ? (
+                                    <img src={imagePreview} alt="Book Preview" style={{ maxWidth: '100%', maxHeight: '100%' }} />
+                                ) : (
+                                    <Typography variant="h2" color="textSecondary">
+                                        +
+                                    </Typography>
+                                )}
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <label htmlFor="image-upload">
+                                    <input
+                                        id="image-upload"
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleFileSelect}
+                                        style={{ display: 'none' }}
+                                    />
+                                    <Button variant="outlined" component="span">
+                                        Upload Image
+                                    </Button>
+                                </label>
+                            </Box>
+                        </Grid>
+                        <Grid item xs={12} md={8}>
+                            <Box component="form" noValidate autoComplete="off">
+                                <TextField
+                                    label="ISBN"
+                                    fullWidth
+                                    sx={{ mt: 2 }}
+                                    name="ISBN"
+                                    onChange={handleInputChange}
+                                    value={bookData.ISBN}
+                                />
+
+                                <TextField
+                                    label="Title"
+                                    fullWidth
+                                    sx={{ mt: 2 }}
+                                    name="title"
+                                    onChange={handleInputChange}
+                                    value={bookData.title}
+                                />
+
+                                <TextField
+                                    label="Author"
+
+                                    fullWidth
+                                    sx={{ mt: 2 }}
+                                    name="author"
+                                    onChange={handleInputChange}
+                                    value={bookData.author}
+                                />
+
+
+
+                                <Grid container spacing={2}>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            label="Publisher"
+                                            fullWidth
+                                            sx={{ mt: 2 }}
+                                            name="publisher"
+                                            value={bookData.publisher}
+                                            onChange={handleInputChange}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            label="Language"
+                                            fullWidth
+                                            sx={{ mt: 2 }}
+                                            name="language"
+                                            onChange={handleInputChange}
+                                            value={bookData.language}
+                                        />
+                                    </Grid>
+                                </Grid>
+
+                                <Grid container spacing={2}>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            label="Subject"
+                                            fullWidth
+                                            sx={{ mt: 2 }}
+                                            name="subject"
+                                            onChange={handleInputChange}
+                                            value={bookData.subject}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            label="Number of Copies"
+                                            fullWidth
+                                            sx={{ mt: 2 }}
+                                            type="number"
+                                            name="no_of_copies"
+                                            value={bookData.no_of_copies}
+                                            onChange={handleInputChange}
+                                        />
+                                    </Grid>
+                                </Grid>
+
+                                <Button variant="contained" color="primary" onClick={handleAddBook} sx={{ mt: 3 }}>
+                                    Add Book
+                                </Button>
+                            </Box>
+                        </Grid>
+                    </Grid>
+                </Box>
+            </Container>
+
+            <BookTable books={books} />
+        </>
+    );
+};
+
+export default AddBook;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { Book } from '../../types';
+import { Delete } from '@mui/icons-material';
+import { Box, Container, IconButton, Typography, useMediaQuery } from '@mui/material';
+import {v4} from "uuid";
+
+export const BookTable = ({ books }: { books: Book[] }) => {
+  const isMobile = useMediaQuery('(max-width: 600px)');
+  return (
+    <Box>
+      <Container maxWidth="xl" style={{
+        marginTop: '90px',
+        width: !isMobile ? "80%" : "auto",
+        marginLeft: !isMobile ? '300px' : "auto",
+      }}>
+        <Typography variant="h4" align="center" gutterBottom>
+          All Books
+        </Typography>
+        <TableContainer component={Paper} style={{
+          textAlign: 'center',
+        }}
+          sx={{ border: '1px solid black' }}
+        >
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead sx={{ backgroundColor: '#140f0f' }}>
+              <TableRow >
+                <TableCell align="center" sx={{ fontWeight: 'bold' }}>ISBN</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold' }}>Title</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold' }}>Author</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold' }}>Publisher</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold' }}>No of Copies</TableCell>
+                {/* <TableCell align="center">Publisher</TableCell> */}
+                <TableCell align="center">Action</TableCell>
+
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {books.map((row, index) => (
+                <TableRow
+                  key={v4()}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 }, backgroundColor: index % 2 === 0 ? '#515151' : '#3b3b3b' }}
+                >
+                  <TableCell scope="row" align="center">
+                    {row.ISBN}
+                  </TableCell>
+                  <TableCell align="center">{row.title}</TableCell>
+                  <TableCell align="center">{row.author}</TableCell>
+                  <TableCell align="center">{row.publisher}</TableCell>
+                  <TableCell align="center">{row.no_of_copies}</TableCell>
+
+                  <TableCell align="center">
+                    <IconButton color="error">
+                      <Delete />
+                    </IconButton>
+
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Container>
+    </Box>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useEffect, useState } from 'react';
+import {
+  Box,
+  Button,
+  Container,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  createTheme,
+  ThemeProvider,
+  useMediaQuery,
+  Stack,
+  Chip,
+  Backdrop,
+  CircularProgress,
+} from '@mui/material';
+import { getAllUsers, verifyUser } from '../../apis/userApi';
+import { UserData } from '../../types';
+import { v4 } from 'uuid';
+
+
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
+
+const VerifyUserTable: React.FC = () => {
+  const [userData, setUserData] = useState<UserData[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const isMobile = useMediaQuery('(max-width: 600px)');
+
+  // const handleOpenDialog = (index: number) => {
+  //     setTransIndx(index);
+  //     setOpenDialog(true);
+  // };
+
+  // const handleCloseDialog = () => {
+  //     setOpenDialog(false);
+  // };
+
+
+  const verifyHandler = (id: string) => {
+    setLoading(true)
+    verifyUser(id)
+      .then(_ => {
+        setUserData(userData.map((user) => {
+          if (user.id === id) {
+            return {
+              ...user,
+              is_verified: true
+            }
+          }
+          return user;
+        }))
+        setLoading(false)
+      }
+      ).catch(error => {
+        alert(error.response.data.detail);
+        setLoading(false)
+      }
+      );
+  }
+  useEffect(() => {
+    setLoading(true)
+    getAllUsers()
+      .then(response => {
+        setUserData(response.data);
+        setLoading(false)
+      }).catch(error => {
+        alert(error.response.data.detail);
+        setLoading(false)
+      }
+      );
+    // getNonVerifiedUsers()
+    //   .then(response => {
+    //     setUserData(response.data);
+    //     setLoading(false)
+    //   }).catch(error => {
+    //     alert(error.response.data.detail);
+    //     setLoading(false)
+    //   }
+    //   );
+  }, [])
+
+
+  return (
+    <ThemeProvider theme={theme}>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <Box>
+        <Container maxWidth="xl" style={{
+          width: !isMobile ? "80%" : "auto",
+          marginLeft: !isMobile ? '300px' : "auto",
+        }}>
+          <Typography variant="h4" align="center" gutterBottom>
+            Issue Book
+          </Typography>
+          <TableContainer component={Paper} sx={{ border: '1px solid black' }}>
+            <Table>
+              <TableHead sx={{ backgroundColor: '#140f0f' }}>
+                <TableRow>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Name</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Email</TableCell>
+
+                  <TableCell sx={{ fontWeight: 'bold' }}>Role</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Status</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }}>Action</TableCell>
+
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {userData.map((user, index) => (
+                  <TableRow key={v4()} sx={{ backgroundColor: index % 2 === 0 ? '#515151' : '#3b3b3b' }}>
+                    <TableCell>{user.name}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+
+                    <TableCell>{user.role}</TableCell>
+                    <TableCell>
+                      <Stack direction="row" spacing={1}>
+                        {
+                          user.verified ?
+                            (<Chip label="Verified" color="primary" />) :
+                            (<Chip label="Not Verified" color="secondary" />)
+                        }
+
+                      </Stack>
+                    </TableCell>
+
+                    <TableCell>
+                      {
+                        user.verified ?
+                          (<Button variant="contained" disabled>Verify</Button>) :
+                          (<Button variant="contained" color="primary" onClick={() => verifyHandler(user.id)}>Verify</Button>)
+                      }
+
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Container>
+      </Box>
+    </ThemeProvider>
+  );
+};
+
+export default VerifyUserTable;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useState } from 'react';
+import { AppBar, Box, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, useMediaQuery } from '@mui/material';
+import AddBook from '../components/AdminDashBoard/AddBook';
+import MenuIcon from '@mui/icons-material/Menu';
+import IssueBookPage from './IssuePage';
+import { LogoutOutlined } from '@mui/icons-material';
+import { useNavigate } from 'react-router';
+
+const IssuerDashboard: React.FC<any> = () => {
+  const [renderComp, setRenderComp] = useState("addBook");
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 600px)');
+
+  const addComponentHandler = (comp: string) => {
+    return <IssueBookPage />;
+    // switch (comp) {
+    //   case "addBook":
+    //     return <AddBook />;
+    //   // case "addAuthor":
+    //   //   return <AddAuthor />;
+    //   default:
+    //     return <IssueBookPage />;
+    // }
+  };
+
+  const handleDrawerToggle = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  };
+
+  const handleMenuClick = (comp: string) => {
+    setRenderComp(comp);
+    setIsDrawerOpen(false);
+  };
+ const navigate=useNavigate();
+  const logOutHandler = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
+  return (
+    <>
+      <Box>
+        {isMobile && (
+          <AppBar position="fixed" sx={{ zIndex: 1201 }}>
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                onClick={handleDrawerToggle}
+                sx={{ mr: 2 }}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                Issuer Dashboard
+              </Typography>
+            </Toolbar>
+          </AppBar>
+        )}
+
+        <Drawer
+          title='Admin Dashboard'
+          variant={isMobile ? "temporary" : "permanent"}
+          open={!isMobile || isDrawerOpen}
+          onClose={() => setIsDrawerOpen(false)}
+          sx={{
+            width: isMobile ? '100%' : 240,
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: isMobile ? '100%' : 240,
+              boxSizing: 'border-box',
+              backgroundColor: '#202123',
+              color: 'white'
+            },
+          }}
+        >
+          {isMobile && (
+            <Toolbar />
+          )}
+          <Typography variant="h6" component="div" sx={{ p: 3 }}>
+            Admin Dashboard
+          </Typography>
+          <List>
+            <ListItemButton onClick={() => handleMenuClick("addBook")} style={{ backgroundColor: renderComp === "addBook" ? "#3f51b5" : "" }}>
+              <ListItemIcon>
+                {/* Add your own icons here */}
+              </ListItemIcon>
+              <ListItemText primary="Add book" />
+            </ListItemButton>
+
+            <ListItemButton onClick={() => handleMenuClick("addAuthor")} style={{ backgroundColor: renderComp === "addAuthor" ? "#3f51b5" : "" }}>
+              <ListItemIcon>
+                {/* Add your own icons here */}
+              </ListItemIcon>
+              <ListItemText primary="Add author" />
+            </ListItemButton>
+
+            <ListItemButton onClick={() => handleMenuClick("issueBook")} style={{ backgroundColor: renderComp === "issueBook" ? "#3f51b5" : "" }}>
+              <ListItemIcon>
+                {/* Add your own icons here */}
+              </ListItemIcon>
+              <ListItemText primary="Issue book" />
+            </ListItemButton>
+
+            <ListItemButton onClick={logOutHandler}>
+              <ListItemIcon>
+                <LogoutOutlined/>
+              </ListItemIcon>
+              <ListItemText primary="LogOut" />
+            </ListItemButton>
+          </List>
+        </Drawer>
+
+        <Box sx={{ marginLeft: 0 }}>
+          {!isMobile && <Toolbar />}
+          {addComponentHandler(renderComp)}
+        </Box>
+      </Box>
+    </>
+  );
+};
+
+export default IssuerDashboard;
+
+
+
+
+
+
+
+
