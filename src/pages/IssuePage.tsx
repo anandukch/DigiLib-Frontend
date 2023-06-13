@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { DataGrid, GridApi, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import {
     Box,
     Container,
@@ -23,6 +24,7 @@ import { Edit } from '@mui/icons-material';
 import { BookTransaction } from '../types';
 import { getAllTransactions, issueBook, returnBook } from '../apis/booksApi';
 import { formatDate } from '../utils';
+import { v4 } from 'uuid';
 
 
 const theme = createTheme({
@@ -99,6 +101,123 @@ const TransactionTable: React.FC = () => {
             })
 
     }
+
+
+    const columns: GridColDef[] = [
+        { 
+            field: 'acc_no', 
+        headerName: 'Accession No', 
+        width: 120 
+    },
+        {
+          field: 'img',
+          headerName: 'Book Image',
+          width: 100,
+          editable: true,
+          renderCell: (params) => {
+            // console.log(params.value);
+            
+            return <img style={{width:"100%"}} src={params.value}></img>;
+          }
+        },
+        {
+          field: 'title',
+          headerName: 'Book Title',
+          width: 100,
+          editable: true,
+        },
+        {
+          field: 'name',
+          headerName: 'User Name',
+          width: 100,
+          editable: true,
+        },
+        {
+          field: 'res_date',
+          headerName: 'Reservation Date',
+          width: 100,
+          editable: true,
+        },
+        {
+            field: 'iss_date',
+            headerName: 'Issue Date',
+            width: 100,
+            editable: true,
+          },
+          {
+            field: 'return_date',
+            headerName: 'Date of return',
+            width: 100,
+            editable: true,
+          },
+          {
+            field: 'act_return_date',
+            headerName: 'Actual Date of return',
+           width: 120,
+            editable: true,
+          },
+          {
+            field: 'fine',
+            headerName: 'Fine',
+            width: 100,
+            editable: true,
+          },
+          {
+            field: 'status',
+            headerName: 'Status',
+            width: 100,
+            editable: true,
+          },          
+          {
+            field: 'action',
+            headerName: 'Action',
+            width: 100,
+            editable: true,
+            renderCell: (params) => {
+
+                const {status,index}= params.value
+                return status == 'reserved' ?
+                (<IconButton color="primary" onClick={() => issueBookHandler(index)} style={{ fontSize: 'small' }}>
+                    Issue
+                    <Edit fontSize="small" />
+                </IconButton>) : status == 'issued' ?
+                    (<IconButton color="primary" style={{ fontSize: 'small' }} onClick={() => returnBookHandler(index)}>
+                        Return
+                        <Edit fontSize="small" />
+                    </IconButton>) :
+                    (<IconButton color="primary" style={{ fontSize: 'small' }} disabled>
+                        Return
+                        <Edit fontSize="small" />
+                    </IconButton>)
+              }
+          },
+      ];
+      
+      const rows = transactions.map((transaction,index)=>{
+        return{
+            "id":v4(),
+          "acc_no":transaction.book_item.acc_no,
+          "img":transaction.book.image,
+          "title":transaction.book.title,
+          "status":transaction.status,
+          "fine":transaction.fine,
+          "act_return_date":transaction.actual_date_of_return,
+          "return_date":transaction.date_of_return,
+          "iss_date":transaction.date_of_issue,
+          "res_date":transaction.date_of_reservation,
+          "name":transaction.user.name,
+          "action":{
+            "status":transaction.status,
+            "index":index
+          }
+
+
+        }
+      })
+
+    //   console.log(rows);
+      
+
     return (
         <ThemeProvider theme={theme}>
             <Backdrop
@@ -110,12 +229,12 @@ const TransactionTable: React.FC = () => {
             <Box>
                 <Container maxWidth="xl" style={{
                     width: !isMobile ? "80%" : "auto",
-                    marginLeft: !isMobile ? '300px' : "auto",
+                    marginLeft: !isMobile ? '250px' : "auto",
                 }}>
                     <Typography variant="h4" align="center" gutterBottom>
                         Issue Book
                     </Typography>
-                    <TableContainer component={Paper} sx={{ border: '1px solid black' }}>
+                    {/* <TableContainer component={Paper} sx={{ border: '1px solid black' }}>
                         <Table>
                             <TableHead sx={{ backgroundColor: '#140f0f' }}>
                                 <TableRow>
@@ -178,7 +297,25 @@ const TransactionTable: React.FC = () => {
                                 ))}
                             </TableBody>
                         </Table>
-                    </TableContainer>
+                    </TableContainer> */}
+
+            <Box sx={{ height: 500, width: 1200 }}>
+                <DataGrid
+                    rows={rows}
+                    columns={columns}
+                    initialState={{
+                    pagination: {
+                        paginationModel: {
+                        pageSize: 10,
+                        },
+                    },
+                    }}
+                    pageSizeOptions={[10]}
+                    checkboxSelection
+                    disableRowSelectionOnClick
+                    autoPageSize
+                    />
+                  </Box>
 
                     {/* Floating Dialog */}
                     {/* <Dialog open={openDialog} onClose={handleCloseDialog}>

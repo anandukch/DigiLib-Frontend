@@ -4,12 +4,6 @@ import {
   Button,
   Container,
   Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Typography,
   createTheme,
   ThemeProvider,
@@ -18,11 +12,12 @@ import {
   Chip,
   Backdrop,
   CircularProgress,
+  TextField,
 } from '@mui/material';
+import { DataGrid, GridColDef, GridRowData } from '@mui/x-data-grid';
 import { getAllUsers, verifyUser } from '../../apis/userApi';
 import { UserData } from '../../types';
 import { v4 } from 'uuid';
-
 
 const theme = createTheme({
   palette: {
@@ -30,125 +25,176 @@ const theme = createTheme({
   },
 });
 
+
 const VerifyUserTable: React.FC = () => {
   const [userData, setUserData] = useState<UserData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const isMobile = useMediaQuery('(max-width: 600px)');
-
-  // const handleOpenDialog = (index: number) => {
-  //     setTransIndx(index);
-  //     setOpenDialog(true);
-  // };
-
-  // const handleCloseDialog = () => {
-  //     setOpenDialog(false);
-  // };
-
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [role, setRole] = useState<string>('');
+  const isMobile = useMediaQuery('(max-width: 600px)')
+  const [password, setPassword] = useState<string>('');
+;
 
   const verifyHandler = (id: string) => {
-    setLoading(true)
+    setLoading(true);
     verifyUser(id)
-      .then(_ => {
-        setUserData(userData.map((user) => {
-          if (user.id === id) {
-            return {
-              ...user,
-              is_verified: true
-            }
-          }
-          return user;
-        }))
-        setLoading(false)
-      }
-      ).catch(error => {
+      .then((_) => {
+        setUserData((prevState) =>
+          prevState.map((user) =>
+            user.id === id ? { ...user, is_verified: true } : user
+          )
+        );
+        setLoading(false);
+      })
+      .catch((error) => {
         alert(error.response.data.detail);
-        setLoading(false)
-      }
-      );
-  }
-  useEffect(() => {
-    setLoading(true)
-    getAllUsers()
-      .then(response => {
-        setUserData(response.data);
-        setLoading(false)
-      }).catch(error => {
-        alert(error.response.data.detail);
-        setLoading(false)
-      }
-      );
-    // getNonVerifiedUsers()
-    //   .then(response => {
-    //     setUserData(response.data);
-    //     setLoading(false)
-    //   }).catch(error => {
-    //     alert(error.response.data.detail);
-    //     setLoading(false)
-    //   }
-    //   );
-  }, [])
+        setLoading(false);
+      });
+  };
 
+  const handleAddUser = () => {
+    const newUser: UserData = {
+      id: v4(),
+      name,
+      email,
+      password,
+      role,
+      is_verified: false,
+      slNo: userData.length + 1,
+    };
+    setUserData((prevData) => [...prevData, newUser]);
+    setName('');
+    setEmail('');
+    setPassword('');
+    setRole('');
+  };
+  
+
+  useEffect(() => {
+    setLoading(true);
+    getAllUsers()
+      .then((response) => {
+        // Reverse the order of user data array and add Sl No
+        const reversedUsers = response.data.reverse().map((user, index) => ({
+          ...user,
+          slNo: response.data.length - index,
+        }));
+        setUserData(reversedUsers);
+        setLoading(false);
+      })
+      .catch((error) => {
+        alert(error.response.data.detail);
+        setLoading(false);
+      });
+  }, []);
+
+  const columns: GridColDef[] = [
+    { field: 'slNo', headerName: 'Sl No', flex: 1 },
+    { field: 'name', headerName: 'Name', flex: 1 },
+    { field: 'email', headerName: 'Email', flex: 1 },
+    { field: 'role', headerName: 'Role', flex: 1 },
+    {
+      field: 'is_verified',
+      headerName: 'Status',
+      flex: 1,
+      renderCell: (params) => (
+        <Stack direction="row" spacing={1}>
+          {params.value ? (
+            <Chip label="Verified" color="primary" />
+          ) : (
+            <Chip label="Not Verified" color="secondary" />
+          )}
+        </Stack>
+      ),
+    },
+    {
+      field: 'action',
+      headerName: 'Action',
+      flex: 1,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={params.row.is_verified}
+          onClick={() => verifyHandler(params.row.id)}
+        >
+          {params.row.is_verified ? 'Verified' : 'Verify'}
+        </Button>
+      ),
+    },
+  ];
 
   return (
     <ThemeProvider theme={theme}>
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#f5f5f5', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
         open={loading}
       >
         <CircularProgress color="inherit" />
       </Backdrop>
       <Box>
-        <Container maxWidth="xl" style={{
-          width: !isMobile ? "80%" : "auto",
-          marginLeft: !isMobile ? '300px' : "auto",
-        }}>
-          <Typography variant="h4" align="center" gutterBottom>
-            Issue Book
+        <Container
+          maxWidth="xl"
+          style={{
+            width: !isMobile ? '80%' : 'auto',
+            marginLeft: !isMobile ? '300px' : 'auto',
+          }}
+        >
+          <Typography variant="h3" align="left" gutterBottom>
+            Verify User
           </Typography>
-          <TableContainer component={Paper} sx={{ border: '1px solid black' }}>
-            <Table>
-              <TableHead sx={{ backgroundColor: '#140f0f' }}>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Name</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Email</TableCell>
-
-                  <TableCell sx={{ fontWeight: 'bold' }}>Role</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Status</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }}>Action</TableCell>
-
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {userData.map((user, index) => (
-                  <TableRow key={v4()} sx={{ backgroundColor: index % 2 === 0 ? '#515151' : '#3b3b3b' }}>
-                    <TableCell>{user.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-
-                    <TableCell>{user.role}</TableCell>
-                    <TableCell>
-                      <Stack direction="row" spacing={1}>
-                        {
-                          user.verified ?
-                            (<Chip label="Verified" color="primary" />) :
-                            (<Chip label="Not Verified" color="secondary" />)
-                        }
-
-                      </Stack>
-                    </TableCell>
-
-                    <TableCell>
-                      {
-                        user.verified ?
-                          (<Button variant="contained" disabled>Verify</Button>) :
-                          (<Button variant="contained" color="primary" onClick={() => verifyHandler(user.id)}>Verify</Button>)
-                      }
-
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <Paper style={{ marginBottom: '16px', backgroundColor: 'transparent' }}>
+            <Typography variant="h6" align="left" style={{ padding: '16px' }}>
+              Add User
+            </Typography>
+            <Stack spacing={2} direction="row" alignItems="center" style={{ padding: '16px' }}>
+  <TextField
+    label="Name"
+    variant="outlined"
+    value={name}
+    onChange={(e) => setName(e.target.value)}
+  />
+  <TextField
+    label="Email"
+    variant="outlined"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+  />
+  <TextField
+    label="Password"
+    variant="outlined"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    type="password"
+  />
+  <TextField
+    label="Role"
+    variant="outlined"
+    value={role}
+    onChange={(e) => setRole(e.target.value)}
+  />
+  <Button variant="contained" color="primary" onClick={handleAddUser}>
+    Add
+  </Button>
+</Stack>
+          </Paper>
+          <div style={{ height: 500, width: '100%' }}>
+            <DataGrid
+              rows={userData}
+              columns={columns}
+              disableSelectionOnClick
+              loading={loading}
+              autoPageSize
+              components={{
+                Header: () => (
+                  <div className="custom-header">
+                    <div className="custom-header-label">My Custom Header</div>
+                  </div>
+                ),
+              }}
+            />
+          </div>
         </Container>
       </Box>
     </ThemeProvider>

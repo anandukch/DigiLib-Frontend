@@ -231,8 +231,20 @@ const AddBook = () => {
                     </Grid>
                 </Box>
             </Container>
+            <Container
+  maxWidth="md"
+  sx={{
+    position: 'relative',
+    top: 50,
+    left: 50,
+    width: 1000,
+  }}
+>
+  <BookTable books={books} />
+</Container>
 
-            <BookTable books={books} />
+
+            
         </>
     );
 };
