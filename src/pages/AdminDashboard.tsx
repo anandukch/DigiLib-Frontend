@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router';
 import { FaPlus } from 'react-icons/fa';
 import VerifyUserTable from '../components/AdminDashBoard/VerifyUserTable';
 import BookDetail from './Book';
+import { ManageLib } from '../components/AdminDashBoard/ManageLib';
 
 const AdminDashboard: React.FC<any> = () => {
   const [renderComp, setRenderComp] = useState("addBook");
@@ -20,6 +21,8 @@ const AdminDashboard: React.FC<any> = () => {
         return <AddBook />;
       case "verifyUser":
         return <VerifyUserTable />;
+      case "manageLib":
+        return <ManageLib />;
       default:
         return <IssueBookPage />;
     }
@@ -108,6 +111,12 @@ const AdminDashboard: React.FC<any> = () => {
                 <BookOutlined />
               </ListItemIcon>
               <ListItemText primary="Manage Transactions" />
+            </ListItemButton>
+            <ListItemButton onClick={() => handleMenuClick("manageLib")} style={{ backgroundColor: renderComp === "manageTrans" ? "#3f51b5" : "" }}>
+              <ListItemIcon>
+                <BookOutlined />
+              </ListItemIcon>
+              <ListItemText primary="Manage LIbrary" />
             </ListItemButton>
             <ListItemButton onClick={logOutHandler}>
               <ListItemIcon>
