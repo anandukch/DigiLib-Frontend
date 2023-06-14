@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DataGrid, GridColDef} from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import {
     Box,
     Container,
@@ -138,7 +138,7 @@ const TransactionTable: React.FC = () => {
         {
             field: 'iss_date',
             headerName: 'Issue Date',
-            width: 100,
+            width: 150,
             editable: true,
             // headerClassName: "super-app-theme--header",
 
@@ -146,7 +146,7 @@ const TransactionTable: React.FC = () => {
         {
             field: 'return_date',
             headerName: 'Date of return',
-            width: 100,
+            width: 150,
             editable: true,
             // headerClassName: "super-app-theme--header",
 
@@ -154,7 +154,7 @@ const TransactionTable: React.FC = () => {
         {
             field: 'act_return_date',
             headerName: 'Actual Date of return',
-            width: 120,
+            width: 150,
             editable: true,
             // headerClassName: "super-app-theme--header",
 
@@ -170,18 +170,15 @@ const TransactionTable: React.FC = () => {
         {
             field: 'status',
             headerName: 'Status',
-            width: 100,
+            width: 150,
             editable: true,
             // headerClassName: "super-app-theme--header",
             renderCell: (params) => {
-
-                const { status } = params.value
-                return status == 'reserved' ?
-                    (<Chip label="Reserved" color="primary" />) : status == 'issued' ?
+                return params.value == 'reserved' ?
+                    (<Chip label="Reserved" color="primary" />) : params.value == 'issued' ?
                         (<Chip label="Issued" color="secondary" />) :
                         (<Chip label="Returned" color="success" />)
             }
-
 
         },
         {
@@ -194,6 +191,8 @@ const TransactionTable: React.FC = () => {
             renderCell: (params) => {
 
                 const { status, index } = params.value
+                // console.log(status);
+
                 return status == 'reserved' ?
                     (<IconButton color="primary" onClick={() => issueBookHandler(index)} style={{ fontSize: 'small' }}>
                         Issue
@@ -219,9 +218,9 @@ const TransactionTable: React.FC = () => {
             "title": transaction.book.title,
             "status": transaction.status,
             "fine": transaction.fine || 0,
-            "act_return_date": formatDate(transaction.actual_date_of_return),
-            "return_date": formatDate(transaction.date_of_return),
-            "iss_date": formatDate(transaction.date_of_issue),
+            "act_return_date": transaction.actual_date_of_return ? formatDate(transaction.actual_date_of_return):"-",
+            "return_date":transaction.date_of_return? formatDate(transaction.date_of_return):"-",
+            "iss_date":transaction.date_of_issue? formatDate(transaction.date_of_issue):"-",
             "res_date": formatDate(transaction.date_of_reservation),
             "name": transaction.user.name,
             "action": {
@@ -247,7 +246,7 @@ const TransactionTable: React.FC = () => {
             <Box>
                 <Container maxWidth="xl" style={{
                     width: !isMobile ? "60%" : "auto",
-                    marginLeft: !isMobile ? '350px' : "auto",
+                    marginLeft: !isMobile ? '320px' : "auto",
                 }}>
                     <Typography variant="h4" align="center" gutterBottom>
                         Issue Book
@@ -325,7 +324,7 @@ const TransactionTable: React.FC = () => {
                             style={{
                                 // backgroundColor: '#515151',
                                 color: 'white',
-                                width: !isMobile ? "1200px" : "auto",
+                                width: !isMobile ? "1400px" : "auto",
 
                             }}
                             sx={

@@ -3,10 +3,11 @@ import { AppBar, Box, Drawer, IconButton, List, ListItemButton, ListItemIcon, Li
 import AddBook from '../components/AdminDashBoard/AddBook';
 import MenuIcon from '@mui/icons-material/Menu';
 import IssueBookPage from './IssuePage';
-import { BookOutlined, LogoutOutlined } from '@mui/icons-material';
+import { BookOnlineOutlined, BookOutlined, LogoutOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import { FaPlus } from 'react-icons/fa';
 import VerifyUserTable from '../components/AdminDashBoard/VerifyUserTable';
+import BookDetail from './Book';
 
 const AdminDashboard: React.FC<any> = () => {
   const [renderComp, setRenderComp] = useState("addBook");
@@ -83,6 +84,12 @@ const AdminDashboard: React.FC<any> = () => {
             Admin Dashboard
           </Typography>
           <List>
+            <ListItemButton onClick={() => { navigate("/") }}>
+              <ListItemIcon>
+                <BookOnlineOutlined />
+              </ListItemIcon>
+              <ListItemText primary="Explore Book" />
+            </ListItemButton>
             <ListItemButton onClick={() => handleMenuClick("addBook")} style={{ backgroundColor: renderComp === "addBook" ? "#3f51b5" : "" }}>
               <ListItemIcon>
                 <FaPlus />

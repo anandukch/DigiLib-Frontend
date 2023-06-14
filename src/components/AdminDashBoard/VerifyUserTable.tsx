@@ -13,7 +13,7 @@ import {
   TextField,
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { getAllUsers, verifyUser } from '../../apis/userApi';
+import { createUser, getAllUsers, verifyUser } from '../../apis/userApi';
 import { UserData } from '../../types';
 import { v4 } from 'uuid';
 
@@ -57,20 +57,28 @@ const VerifyUserTable: React.FC = () => {
   }
 
   const handleAddUser = () => {
-    const newUser: any = {
-      id: v4(),
-      name,
-      email,
-      password,
-      role,
-      is_verified: false,
-      slNo: userData.length + 1,
-    };
-    setUserData((prevData) => [...prevData, newUser]);
-    setName('');
-    setEmail('');
-    setPassword('');
-    setRole('');
+    setLoading(true);
+    createUser({ name, email, password, role })
+      .then(response => {
+        getAllUsers()
+          .then((response) => {
+            setUserData(response.data);
+            setLoading(false);
+          })
+          .catch((error) => {
+            alert(error.response.data.detail);
+            setLoading(false);
+          });
+        setName('');
+        setEmail('');
+        setPassword('');
+        setRole('');
+        setLoading(false);
+      }
+      ).catch(error => {
+        alert(error.response.data.detail);
+      }
+      );
   };
 
 
@@ -78,12 +86,6 @@ const VerifyUserTable: React.FC = () => {
     setLoading(true);
     getAllUsers()
       .then((response) => {
-        // Reverse the order of user data array and add Sl No
-        // const reversedUsers = response.data.map((user, index) => ({
-        //   ...user,
-        //   slNo: response.data.length - index,
-        // }));
-        console.log(response.data);
         setUserData(response.data);
         setLoading(false);
       })
