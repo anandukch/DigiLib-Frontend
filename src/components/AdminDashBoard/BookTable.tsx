@@ -3,7 +3,7 @@ import { IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { Book } from '../../types';
 
-export const BookTable = ({ books,loading }: { books: Book[],loading:boolean }) => {
+export const BookTable = ({ books, loading }: { books: Book[], loading: boolean }) => {
   // Generate sl no for each book
 
   const columns: GridColDef[] = [
@@ -44,7 +44,8 @@ export const BookTable = ({ books,loading }: { books: Book[],loading:boolean }) 
         disableRowSelectionOnClick
         autoHeight
         loading={loading}
-      // Sort by slNo in descending order
+        onPaginationModelChange={(e) => console.log(e)}
+
       />
     </div>
   );

@@ -7,9 +7,7 @@ import { BookOnlineOutlined, BookOutlined, LogoutOutlined } from '@mui/icons-mat
 import { useNavigate } from 'react-router';
 import { FaPlus } from 'react-icons/fa';
 import VerifyUserTable from '../components/AdminDashBoard/VerifyUserTable';
-import BookDetail from './Book';
-import  ManageLib from '../components/AdminDashBoard/ManageLib';
-
+import ManageLib from '../components/AdminDashBoard/ManageLib';
 
 const AdminDashboard: React.FC<any> = () => {
   const [renderComp, setRenderComp] = useState("addBook");
@@ -113,7 +111,7 @@ const AdminDashboard: React.FC<any> = () => {
               </ListItemIcon>
               <ListItemText primary="Manage Transactions" />
             </ListItemButton>
-            <ListItemButton onClick={() => handleMenuClick("manageLib")} style={{ backgroundColor: renderComp === "manageTrans" ? "#3f51b5" : "" }}>
+            <ListItemButton onClick={() => handleMenuClick("manageLib")} style={{ backgroundColor: renderComp === "manageLib" ? "#3f51b5" : "" }}>
               <ListItemIcon>
                 <BookOutlined />
               </ListItemIcon>

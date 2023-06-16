@@ -1,5 +1,5 @@
 
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, Container, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { getBook, reserveBook } from '../apis/booksApi';
@@ -36,7 +36,14 @@ const BookDetail = () => {
       }
       );
   }
-  if (!book) return (<div>Book not found</div>)
+  if (!book) return (
+    <Backdrop
+      sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
+      open={book ? false : true}
+    >
+      <CircularProgress color="inherit" />
+    </Backdrop>
+  )
   return (
     <Container
       maxWidth="xl"

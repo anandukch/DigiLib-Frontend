@@ -15,7 +15,6 @@ import {
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { createUser, getAllUsers, verifyUser } from '../../apis/userApi';
 import { UserData } from '../../types';
-import { v4 } from 'uuid';
 
 const theme = createTheme({
   palette: {
@@ -59,7 +58,7 @@ const VerifyUserTable: React.FC = () => {
   const handleAddUser = () => {
     setLoading(true);
     createUser({ name, email, password, role })
-      .then(response => {
+      .then(_ => {
         getAllUsers()
           .then((response) => {
             setUserData(response.data);

@@ -1,5 +1,5 @@
-import { AppBar, Box, Container, createTheme, CssBaseline, IconButton, Toolbar, Typography, ThemeProvider, TextField, Select, MenuItem, Grid, SelectChangeEvent } from '@mui/material';
-import {useEffect, useState } from 'react';
+import { AppBar, Box, Container, createTheme, CssBaseline, IconButton, Toolbar, Typography, ThemeProvider, TextField, Select, MenuItem, Grid, SelectChangeEvent, Backdrop, CircularProgress } from '@mui/material';
+import { useEffect, useState } from 'react';
 // import { Book } from '../types';
 import { AccountCircle } from '@mui/icons-material';
 import { getBooks } from '../apis/booksApi';
@@ -17,7 +17,7 @@ const HomePage = () => {
     const [books, setBooks] = useState<BookData[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [selectedSubject, setSelectedSubject] = useState<string>('all');
-    const [loading,setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const { token } = useAuth();
     const navigate = useNavigate();
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,6 +54,17 @@ const HomePage = () => {
     }
     const onBookClick = (id: string) => {
         navigate(`/book/${id}`)
+    }
+
+    if (loading) {
+        return (
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
+                open={true}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+        )
     }
     return (
         <ThemeProvider theme={theme}>
