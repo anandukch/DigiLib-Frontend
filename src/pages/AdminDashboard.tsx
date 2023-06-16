@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router';
 import { FaPlus } from 'react-icons/fa';
 import VerifyUserTable from '../components/AdminDashBoard/VerifyUserTable';
 import BookDetail from './Book';
-import { ManageLib } from '../components/AdminDashBoard/ManageLib';
+import  ManageLib from '../components/AdminDashBoard/ManageLib';
+
 
 const AdminDashboard: React.FC<any> = () => {
   const [renderComp, setRenderComp] = useState("addBook");
