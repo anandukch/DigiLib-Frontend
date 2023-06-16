@@ -67,17 +67,25 @@ const HomePage = () => {
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <NavBar />
+
+
             <Box sx={{ p: 3 }}>
-                <Container maxWidth="md">
-                    <Box sx={{ mt: 3, display: 'flex', alignItems: 'center', gap: '16px' }}>
+
+
+                <Container maxWidth="lg">
+                    <Box sx={{ mt: 3, display: "flex", alignItems: 'center' }}>
                         <TextField
                             label="Search"
                             variant="filled"
-                            size="small"
+                            size="medium"
+                            fullWidth
                             value={searchTerm}
                             onChange={handleSearch}
+                            style={{
+                                backgroundColor: '#424242',
+                            }}
                         />
-                        <Select
+                        {/* <Select
                             value={selectedSubject}
                             onChange={handleSubjectChange}
                             variant="filled"
@@ -87,9 +95,11 @@ const HomePage = () => {
                             <MenuItem value="science">Science</MenuItem>
                             <MenuItem value="history">History</MenuItem>
                             <MenuItem value="fiction">Fiction</MenuItem>
-                        </Select>
+                        </Select> */}
                     </Box>
                     <Box sx={{ mt: 5 }}>
+
+
                         <Grid container spacing={5}>
                             {books.map((book) => (
                                 <Grid item xs={12} sm={3} key={book.id}>

@@ -145,7 +145,7 @@ const VerifyUserTable: React.FC = () => {
             marginLeft: !isMobile ? '300px' : 'auto',
           }}
         >
-          <Typography variant="h3" align="left" gutterBottom>
+          <Typography variant="h4" align="left" gutterBottom>
             Verify User
           </Typography>
           <Paper style={{ marginBottom: '16px', backgroundColor: 'transparent' }}>

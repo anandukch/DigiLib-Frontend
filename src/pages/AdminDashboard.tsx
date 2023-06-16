@@ -3,7 +3,7 @@ import { AppBar, Box, Drawer, IconButton, List, ListItemButton, ListItemIcon, Li
 import AddBook from '../components/AdminDashBoard/AddBook';
 import MenuIcon from '@mui/icons-material/Menu';
 import IssueBookPage from './IssuePage';
-import { BookOnlineOutlined, LibraryBooksOutlined, LogoutOutlined, LibraryAddCheck } from '@mui/icons-material';
+import { BookOnlineOutlined, LibraryBooksOutlined, LogoutOutlined, LibraryAddCheck, NotificationsOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import { FaPlus, FaUser } from 'react-icons/fa';
 import VerifyUserTable from '../components/AdminDashBoard/VerifyUserTable';
@@ -12,6 +12,7 @@ import ManageLib from '../components/AdminDashBoard/ManageLib';
 const AdminDashboard: React.FC<any> = () => {
   const [renderComp, setRenderComp] = useState("addBook");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width: 600px)');
 
   const addComponentHandler = (comp: string) => {
@@ -39,6 +40,11 @@ const AdminDashboard: React.FC<any> = () => {
   const logOutHandler = () => {
     localStorage.removeItem("token");
     navigate("/login");
+  };
+
+
+  const handleNotificationToggle = () => {
+    setIsNotificationOpen(!isNotificationOpen);
   };
 
   return (
@@ -123,11 +129,25 @@ const AdminDashboard: React.FC<any> = () => {
               </ListItemIcon>
               <ListItemText primary="LogOut" />
             </ListItemButton>
+
+            <ListItemButton
+              
+              onClick={handleNotificationToggle}
+            >
+              <ListItemIcon>
+                <NotificationsOutlined sx={{ marginRight: '5px' }} />
+              </ListItemIcon>
+
+              <ListItemText primary="Notification" />
+            </ListItemButton>
           </List>
+
+
+
         </Drawer>
 
         <Box sx={{ marginLeft: 0 }}>
-          {!isMobile && <Toolbar />}
+          <Toolbar />
           {addComponentHandler(renderComp)}
         </Box>
       </Box>

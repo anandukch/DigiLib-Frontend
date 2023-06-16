@@ -31,6 +31,8 @@ import {
   TextField,
   Button,
   CircularProgress,
+  Stack,
+  useMediaQuery,
 } from '@mui/material';
 import { FaBookOpen } from 'react-icons/fa'; // Importing React Icons
 import { login } from '../apis/authApi';
@@ -44,6 +46,8 @@ const theme = createTheme({
 const Login: React.FC = () => {
 
 
+  const isMobile = useMediaQuery('(max-width: 600px)')
+
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -55,7 +59,13 @@ const Login: React.FC = () => {
         }}
       >
         <Container maxWidth="lg">
-          <Paper sx={{ p: 4 }}>
+          <Paper sx={{ p: 4, height: "50vh" }}>
+            {/* <Stack spacing={2} direction={'row'} alignItems="center" style={{ padding: '16px' }}>
+              <Box sx={{ justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                <FaBookOpen size={150} />
+              </Box>
+              <LoginForm />
+            </Stack> */}
             <Grid container spacing={2}>
               <Grid item xs={6} sx={{ backgroundColor: '#c4d8e2' }}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
@@ -70,13 +80,12 @@ const Login: React.FC = () => {
                   <Typography variant="h4" align="center" gutterBottom>
                     User Login
                   </Typography>
-                  <Box sx={{ mt: 3 }}>
-                    <Box sx={{ p: 3 }}>
-                      <Typography variant="h6" gutterBottom>
-                      </Typography>
-                      <LoginForm />
-                    </Box>
+
+                  <Box sx={{ mt: 3, p: 3 }}>
+
+                    <LoginForm />
                   </Box>
+
                 </Box>
               </Grid>
             </Grid>
@@ -96,7 +105,7 @@ type FormData = {
 };
 const LoginForm: React.FC = () => {
 
-  const { setToken,setRole } = useAuth();
+  const { setToken, setRole } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
@@ -113,7 +122,7 @@ const LoginForm: React.FC = () => {
     setLoading(true);
     login(formData.email, formData.password).then((res) => {
       const token = res.data.access_token;
-      setToken(token);      
+      setToken(token);
       setRole(res.data.role)
       navigate("/dashboard", { replace: true });
     }).catch((err) => {
@@ -156,7 +165,7 @@ const LoginForm: React.FC = () => {
           onChange={handleChange}
         />
 
-        <Button variant="contained" color="primary" type="submit">
+        <Button variant="contained" color="primary" type="submit" sx={{m:"20px"}}>
           Login
         </Button>
         <Button variant="outlined" color="primary" onClick={handleRegister}>

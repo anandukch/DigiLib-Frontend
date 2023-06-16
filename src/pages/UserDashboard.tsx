@@ -68,13 +68,12 @@ const UserDashboard: React.FC<any> = () => {
           open={!isMobile || isDrawerOpen}
           onClose={() => setIsDrawerOpen(false)}
           sx={{
-            width: isMobile ? '100%' : 240,
+            width: isMobile ? '100%' : 300,
             flexShrink: 0,
             '& .MuiDrawer-paper': {
-              width: isMobile ? '100%' : 240,
+              width: isMobile ? '100%' : 300,
               boxSizing: 'border-box',
               backgroundColor: '#202123',
-              color: 'white'
             },
           }}
         >
@@ -121,7 +120,7 @@ const UserDashboard: React.FC<any> = () => {
         </Drawer>
 
         <Box sx={{ marginLeft: 0 }}>
-          {!isMobile && <Toolbar />}
+          <Toolbar />
           {addComponentHandler(renderComp)}
         </Box>
       </Box>

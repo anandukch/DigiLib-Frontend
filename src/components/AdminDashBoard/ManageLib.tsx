@@ -74,7 +74,7 @@ const ManageLib: React.FC = () => {
             marginLeft: !isMobile ? '300px' : 'auto',
           }}
         >
-          <Typography variant="h3" align="left" gutterBottom>
+          <Typography variant="h4" align="left" gutterBottom>
             Fine details
           </Typography>
           <Paper style={{ marginBottom: '16px', backgroundColor: 'transparent' }}>
