@@ -3,9 +3,9 @@ import { AppBar, Box, Drawer, IconButton, List, ListItemButton, ListItemIcon, Li
 import AddBook from '../components/AdminDashBoard/AddBook';
 import MenuIcon from '@mui/icons-material/Menu';
 import IssueBookPage from './IssuePage';
-import { BookOnlineOutlined, BookOutlined, LogoutOutlined } from '@mui/icons-material';
+import { BookOnlineOutlined, LibraryBooksOutlined, LogoutOutlined, LibraryAddCheck } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaUser } from 'react-icons/fa';
 import VerifyUserTable from '../components/AdminDashBoard/VerifyUserTable';
 import ManageLib from '../components/AdminDashBoard/ManageLib';
 
@@ -101,19 +101,19 @@ const AdminDashboard: React.FC<any> = () => {
 
             <ListItemButton onClick={() => handleMenuClick("verifyUser")} style={{ backgroundColor: renderComp === "verifyUser" ? "#3f51b5" : "" }}>
               <ListItemIcon>
-                {/* Add your own icons here */}
+                <FaUser />
               </ListItemIcon>
               <ListItemText primary="Verify User" />
             </ListItemButton>
             <ListItemButton onClick={() => handleMenuClick("manageTrans")} style={{ backgroundColor: renderComp === "manageTrans" ? "#3f51b5" : "" }}>
               <ListItemIcon>
-                <BookOutlined />
+                <LibraryBooksOutlined />
               </ListItemIcon>
               <ListItemText primary="Manage Transactions" />
             </ListItemButton>
             <ListItemButton onClick={() => handleMenuClick("manageLib")} style={{ backgroundColor: renderComp === "manageLib" ? "#3f51b5" : "" }}>
               <ListItemIcon>
-                <BookOutlined />
+                <LibraryAddCheck />
               </ListItemIcon>
               <ListItemText primary="Manage LIbrary" />
             </ListItemButton>

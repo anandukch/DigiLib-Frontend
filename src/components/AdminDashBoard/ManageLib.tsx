@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -9,11 +9,13 @@ import {
   ThemeProvider,
   useMediaQuery,
   Stack,
-  Chip,
   TextField,
   InputAdornment,
+  Backdrop,
+  CircularProgress,
 } from '@mui/material';
-import { AttachMoney } from '@mui/icons-material';
+import { add_lib_config, get_lib_config } from '../../apis/library';
+
 
 const theme = createTheme({
   palette: {
@@ -22,18 +24,48 @@ const theme = createTheme({
 });
 
 const ManageLib: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [fineRate, setFineRate] = useState<string>('0');
   const [days, setDays] = useState<string>('0');
   const isMobile = useMediaQuery('(max-width: 600px)');
 
   const handleUpdate = () => {
-    // Perform the update logic here
-    console.log('Fine Rate:', fineRate);
-    console.log('Days:', days);
+    add_lib_config({ fine_rate: parseInt(fineRate), days_of_return: parseInt(days) })
+      .then(_ => {
+        setFineRate(fineRate);
+        setDays(days);
+
+      }).catch(error => {
+        alert(error.response.data.detail);
+      }
+      );
   };
+
+  useEffect(() => {
+    setLoading(true);
+    get_lib_config()
+      .then(response => {
+        setFineRate(response.data.fine_rate);
+        setDays(response.data.days_of_return);
+        setLoading(false);
+      }
+      ).catch(error => {
+        alert(error.response.data.detail);
+      }
+      );
+  }, [])
+
 
   return (
     <ThemeProvider theme={theme}>
+      {
+        loading && <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      }
       <Box>
         <Container
           maxWidth="xl"
@@ -55,7 +87,13 @@ const ManageLib: React.FC = () => {
                 variant="outlined"
                 type="number"
                 value={fineRate}
-                onChange={(e) => setFineRate(e.target.value)}
+                onChange={(e) => {
+                  const input = e.target.value;
+                  if (input === '' || parseInt(input) >= 0) {
+                    setFineRate(input);
+                  }
+                }}
+
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -69,7 +107,12 @@ const ManageLib: React.FC = () => {
                 variant="outlined"
                 type="number"
                 value={days}
-                onChange={(e) => setDays(e.target.value)}
+                onChange={(e) => {
+                  const input = e.target.value;
+                  if (input === '' || parseInt(input) >= 0) {
+                    setDays(input);
+                  }
+                }}
               />
               <Button variant="contained" color="primary" onClick={handleUpdate}>
                 Update

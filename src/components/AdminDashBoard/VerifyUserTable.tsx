@@ -128,7 +128,7 @@ const VerifyUserTable: React.FC = () => {
             color="primary"
             onClick={() => verifyHandler(params.row.id)}
           >
-            'Verify'
+            Verify
           </Button>)
       ), width: 200
 

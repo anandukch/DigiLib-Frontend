@@ -9,14 +9,24 @@ import UserDashboard from './pages/UserDashboard';
 import IssuerDashboard from './pages/IssuerDashboard';
 import BookDetail from './pages/Book';
 import SamplePage from './pages/Sample';
+import { useEffect } from 'react';
+import { getProfile } from './apis/userApi';
 
 function App() {
-    const {role } = useAuth();
+    const { role, setProfile } = useAuth();
+    useEffect(() => {
+        getProfile().then(res => {
+            console.log(res.data);
+            
+            setProfile(JSON.stringify(res.data))
+        }
+        ).catch(err => console.log(err))
+    }, [])
     return (
         <>
             <Router>
                 <Routes>
-                <Route path="/sample" element={<SamplePage />} />
+                    <Route path="/sample" element={<SamplePage />} />
 
                     <Route path="/" element={<HomePage />} />
                     <Route path="/register" element={<MainPage />} />
@@ -28,7 +38,7 @@ function App() {
                                 : role == "issuer" ? <IssuerDashboard />
                                     : <Navigate to="/login" />
                     } />
-                    <Route path='/book/:id' element={<BookDetail/>}/>
+                    <Route path='/book/:id' element={<BookDetail />} />
                 </Routes>
             </Router>
             {/* <RoutesComp/> */}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AppBar, Box, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, useMediaQuery } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import IssueBookPage from './IssuePage';
-import { LogoutOutlined } from '@mui/icons-material';
+import { BookOnlineOutlined, LogoutOutlined,LibraryBooksOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 
 const IssuerDashboard: React.FC<any> = () => {
@@ -30,7 +30,7 @@ const IssuerDashboard: React.FC<any> = () => {
     setRenderComp(comp);
     setIsDrawerOpen(false);
   };
- const navigate=useNavigate();
+  const navigate = useNavigate();
   const logOutHandler = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -59,7 +59,7 @@ const IssuerDashboard: React.FC<any> = () => {
         )}
 
         <Drawer
-          title='Admin Dashboard'
+          title='Issuer Dashboard'
           variant={isMobile ? "temporary" : "permanent"}
           open={!isMobile || isDrawerOpen}
           onClose={() => setIsDrawerOpen(false)}
@@ -78,33 +78,27 @@ const IssuerDashboard: React.FC<any> = () => {
             <Toolbar />
           )}
           <Typography variant="h6" component="div" sx={{ p: 3 }}>
-            Admin Dashboard
+            Issuer Dashboard
           </Typography>
           <List>
-            <ListItemButton onClick={() => handleMenuClick("addBook")} style={{ backgroundColor: renderComp === "addBook" ? "#3f51b5" : "" }}>
-              <ListItemIcon>
-                {/* Add your own icons here */}
-              </ListItemIcon>
-              <ListItemText primary="Add book" />
-            </ListItemButton>
 
-            <ListItemButton onClick={() => handleMenuClick("addAuthor")} style={{ backgroundColor: renderComp === "addAuthor" ? "#3f51b5" : "" }}>
+            <ListItemButton onClick={() => { navigate("/") }}>
               <ListItemIcon>
-                {/* Add your own icons here */}
+                <BookOnlineOutlined />
               </ListItemIcon>
-              <ListItemText primary="Add author" />
+              <ListItemText primary="Explore Book" />
             </ListItemButton>
-
             <ListItemButton onClick={() => handleMenuClick("issueBook")} style={{ backgroundColor: renderComp === "issueBook" ? "#3f51b5" : "" }}>
               <ListItemIcon>
-                {/* Add your own icons here */}
+                <LibraryBooksOutlined/>
+                
               </ListItemIcon>
               <ListItemText primary="Issue book" />
             </ListItemButton>
 
             <ListItemButton onClick={logOutHandler}>
               <ListItemIcon>
-                <LogoutOutlined/>
+                <LogoutOutlined />
               </ListItemIcon>
               <ListItemText primary="LogOut" />
             </ListItemButton>

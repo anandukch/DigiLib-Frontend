@@ -71,3 +71,9 @@ export type UserData={
   verified:boolean;
 }
 
+
+export type LibConfigType={
+  fine_rate:number;
+  days_of_return:number;
+}
+

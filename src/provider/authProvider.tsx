@@ -6,6 +6,8 @@ interface AuthContextType {
   setToken: (newToken: string | null) => void;
   role: string | null;
   setRole: (newRole: string | null) => void;
+  profile: any | null;
+  setProfile: (newProfile: any | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,6 +22,11 @@ const AuthProvider: React.FC<any> = ({ children }) => {
     localStorage.getItem("role")
   );
 
+  const [profile, setProfile_] = useState<any | null>(
+    localStorage.getItem("profile")
+  );
+
+
   // Function to set the authentication token
   const setToken = (newToken: string | null) => {
     setToken_(newToken);
@@ -28,17 +35,25 @@ const AuthProvider: React.FC<any> = ({ children }) => {
   const setRole = (newRole: string | null) => {
     setRole_(newRole);
   };
-  
+
+  const setProfile = (newProfile: any | null) => {
+    setProfile_(newProfile);
+  };
+
   useEffect(() => {
     if (token && role) {
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
+      localStorage.setItem("profile", profile);
     } else {
       delete axios.defaults.headers.common["Authorization"];
       localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      localStorage.removeItem("profile");
+
     }
-  }, [token,role]);
+  }, [token, role, profile]);
 
   // Memoized value of the authentication context
   const contextValue = useMemo(
@@ -46,9 +61,11 @@ const AuthProvider: React.FC<any> = ({ children }) => {
       token,
       setToken,
       role,
-      setRole
+      setRole,
+      profile,
+      setProfile
     }),
-    [token]
+    [token, profile]
   );
 
   // Provide the authentication context to the children components

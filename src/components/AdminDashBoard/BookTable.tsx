@@ -28,8 +28,12 @@ export const BookTable = ({ books, loading }: { books: Book[], loading: boolean 
     },
   ];
 
+  const paginationHandler = (params: any) => {
+    console.log(params);
+  }
+
   return (
-    <div style={{ height: 500, width: '100%' }}>
+    <div style={{ height: 500, width: '100%',marginTop:"100px" }}>
       <DataGrid
 
         rows={books}
@@ -44,7 +48,7 @@ export const BookTable = ({ books, loading }: { books: Book[], loading: boolean 
         disableRowSelectionOnClick
         autoHeight
         loading={loading}
-        onPaginationModelChange={(e) => console.log(e)}
+        onPaginationModelChange={paginationHandler}
 
       />
     </div>
