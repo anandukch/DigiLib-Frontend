@@ -8,7 +8,6 @@ import { useAuth } from './provider/authProvider';
 import UserDashboard from './pages/UserDashboard';
 import IssuerDashboard from './pages/IssuerDashboard';
 import BookDetail from './pages/Book';
-import SamplePage from './pages/Sample';
 import { useEffect } from 'react';
 import { getProfile } from './apis/userApi';
 
@@ -26,8 +25,6 @@ function App() {
         <>
             <Router>
                 <Routes>
-                    <Route path="/sample" element={<SamplePage />} />
-
                     <Route path="/" element={<HomePage />} />
                     <Route path="/register" element={<MainPage />} />
                     <Route path="/login" element={<Login />} />

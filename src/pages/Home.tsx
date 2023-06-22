@@ -6,10 +6,7 @@ import {
     Typography,
     ThemeProvider,
     TextField,
-    Select,
-    MenuItem,
     Grid,
-    SelectChangeEvent,
     Backdrop,
     CircularProgress
 } from '@mui/material';
@@ -29,15 +26,10 @@ const theme = createTheme({
 const HomePage = () => {
     const [books, setBooks] = useState<BookData[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>('');
-    const [selectedSubject, setSelectedSubject] = useState<string>('all');
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
-    };
-
-    const handleSubjectChange = (event: SelectChangeEvent<string>) => {
-        setSelectedSubject(event.target.value);
     };
     useEffect(() => {
         setLoading(true);

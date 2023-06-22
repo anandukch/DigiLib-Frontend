@@ -11,8 +11,6 @@ import {
   Stack,
   TextField,
   Grid,
-  Backdrop,
-  CircularProgress,
   Select,
   SelectChangeEvent,
   MenuItem,
@@ -26,7 +24,7 @@ const theme = createTheme({
 });
 
 const Notice: React.FC = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
   const [notice, setNotice] = useState<string>('');
   const [recipient, setRecipient] = useState<string>('all');
   const [notices, setNotices] = useState<any[]>([]);
@@ -52,11 +50,11 @@ const Notice: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      {loading && (
+      {/* {loading && (
         <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
           <CircularProgress color="inherit" />
         </Backdrop>
-      )}
+      )} */}
       <Box>
         <Container
           maxWidth="xl"

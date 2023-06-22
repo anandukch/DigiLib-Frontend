@@ -2,24 +2,27 @@ import React, { useState } from 'react';
 import { AppBar, Box, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, useMediaQuery } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import IssueBookPage from './IssuePage';
-import { BookOnlineOutlined, LogoutOutlined,LibraryBooksOutlined } from '@mui/icons-material';
+import { BookOnlineOutlined, LogoutOutlined, LibraryBooksOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
+import { useAuth } from '../provider/authProvider';
+import IssueBook from '../components/IssueBook';
 
 const IssuerDashboard: React.FC<any> = () => {
   const [renderComp, setRenderComp] = useState("addBook");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { logOut } = useAuth()
   const isMobile = useMediaQuery('(max-width: 600px)');
+  const navigate = useNavigate();
 
   const addComponentHandler = (comp: string) => {
-    return <IssueBookPage />;
-    // switch (comp) {
-    //   case "addBook":
-    //     return <AddBook />;
-    //   // case "addAuthor":
-    //   //   return <AddAuthor />;
-    //   default:
-    //     return <IssueBookPage />;
-    // }
+    switch (comp) {
+      case "bookTransaction":
+        return <IssueBookPage />;
+      case "issueBook":
+        return <IssueBook />;
+      default:
+        return <IssueBookPage />;
+    }
   };
 
   const handleDrawerToggle = () => {
@@ -29,11 +32,6 @@ const IssuerDashboard: React.FC<any> = () => {
   const handleMenuClick = (comp: string) => {
     setRenderComp(comp);
     setIsDrawerOpen(false);
-  };
-  const navigate = useNavigate();
-  const logOutHandler = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
   };
 
   return (
@@ -67,7 +65,7 @@ const IssuerDashboard: React.FC<any> = () => {
             width: isMobile ? '100%' : 240,
             flexShrink: 0,
             '& .MuiDrawer-paper': {
-              width: isMobile ? '100%' : 240,
+              width: isMobile ? '100%' : 300,
               boxSizing: 'border-box',
               backgroundColor: '#202123',
               color: 'white'
@@ -90,13 +88,21 @@ const IssuerDashboard: React.FC<any> = () => {
             </ListItemButton>
             <ListItemButton onClick={() => handleMenuClick("issueBook")} style={{ backgroundColor: renderComp === "issueBook" ? "#3f51b5" : "" }}>
               <ListItemIcon>
-                <LibraryBooksOutlined/>
-                
+                <LibraryBooksOutlined />
+
               </ListItemIcon>
               <ListItemText primary="Issue book" />
             </ListItemButton>
 
-            <ListItemButton onClick={logOutHandler}>
+            <ListItemButton onClick={() => handleMenuClick("bookTransaction")} style={{ backgroundColor: renderComp === "bookTransaction" ? "#3f51b5" : "" }}>
+              <ListItemIcon>
+                <LibraryBooksOutlined />
+
+              </ListItemIcon>
+              <ListItemText primary="Book Transaction" />
+            </ListItemButton>
+
+            <ListItemButton onClick={logOut}>
               <ListItemIcon>
                 <LogoutOutlined />
               </ListItemIcon>
@@ -106,7 +112,7 @@ const IssuerDashboard: React.FC<any> = () => {
         </Drawer>
 
         <Box sx={{ marginLeft: 0 }}>
-          {!isMobile && <Toolbar />}
+          <Toolbar />
           {addComponentHandler(renderComp)}
         </Box>
       </Box>
