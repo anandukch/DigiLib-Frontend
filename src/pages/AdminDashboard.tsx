@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router';
 import { FaPlus, FaUser } from 'react-icons/fa';
 import VerifyUserTable from '../components/AdminDashBoard/VerifyUserTable';
 import ManageLib from '../components/AdminDashBoard/ManageLib';
+import Notice from '../components/AdminDashBoard/Notice';
 
 const AdminDashboard: React.FC<any> = () => {
   const [renderComp, setRenderComp] = useState("addBook");
@@ -23,6 +24,8 @@ const AdminDashboard: React.FC<any> = () => {
         return <VerifyUserTable />;
       case "manageLib":
         return <ManageLib />;
+      case "notice":
+        return <Notice />;
       default:
         return <IssueBookPage />;
     }
@@ -121,7 +124,13 @@ const AdminDashboard: React.FC<any> = () => {
               <ListItemIcon>
                 <LibraryAddCheck />
               </ListItemIcon>
-              <ListItemText primary="Manage LIbrary" />
+              <ListItemText primary="Manage Library" />
+            </ListItemButton>
+            <ListItemButton onClick={() => handleMenuClick("notice")} style={{ backgroundColor: renderComp === "notice" ? "#3f51b5" : "" }}>
+              <ListItemIcon>
+                <NotificationsOutlined />
+              </ListItemIcon>
+              <ListItemText primary="Notification" />
             </ListItemButton>
             <ListItemButton onClick={logOutHandler}>
               <ListItemIcon>
@@ -130,16 +139,6 @@ const AdminDashboard: React.FC<any> = () => {
               <ListItemText primary="LogOut" />
             </ListItemButton>
 
-            <ListItemButton
-              
-              onClick={handleNotificationToggle}
-            >
-              <ListItemIcon>
-                <NotificationsOutlined sx={{ marginRight: '5px' }} />
-              </ListItemIcon>
-
-              <ListItemText primary="Notification" />
-            </ListItemButton>
           </List>
 
 
