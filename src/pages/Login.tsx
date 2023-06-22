@@ -1,24 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../provider/authProvider";
 
-// const Login = () => {
-//   const { setToken } = useAuth();
-//   const navigate = useNavigate();
-
-//   const handleLogin = () => {
-//     setToken("this is a test token");
-//     navigate("/", { replace: true });
-//   };
-
-//   setTimeout(() => {
-//     handleLogin();
-//   }, 3 * 1000);
-
-//   return <>Login Page</>;
-// };
-
-// export default Login;
-
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import {
   Box,
@@ -31,8 +13,6 @@ import {
   TextField,
   Button,
   CircularProgress,
-  Stack,
-  useMediaQuery,
 } from '@mui/material';
 import { FaBookOpen } from 'react-icons/fa'; // Importing React Icons
 import { login } from '../apis/authApi';
@@ -44,9 +24,6 @@ const theme = createTheme({
 });
 
 const Login: React.FC = () => {
-
-
-  const isMobile = useMediaQuery('(max-width: 600px)')
 
   return (
     <ThemeProvider theme={theme}>

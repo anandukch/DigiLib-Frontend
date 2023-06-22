@@ -15,7 +15,7 @@ export type Book={
   ISBN:string;
   title:string;
   language:string;
-  subject:string;
+  description:string;
   publisher:string;
   author:string;
   no_of_copies:number;

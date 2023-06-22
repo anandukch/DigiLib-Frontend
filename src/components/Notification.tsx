@@ -1,7 +1,6 @@
-import React from 'react';
 import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
 
-const NotiCard = ({ notice, recipient, dateTime }) => {
+const NotiCard = ({ notice, recipient, dateTime }: { notice: string, recipient: string, dateTime: string }) => {
   return (
     <Card sx={{ backgroundColor: '#162534' }}>
       <CardContent sx={{ textAlign: 'left' }}>

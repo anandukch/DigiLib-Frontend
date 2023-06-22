@@ -14,7 +14,7 @@ const AddBook = () => {
     const [bookData, setBookData] = useState<Book>({
         ISBN: "",
         title: "",
-        subject: "",
+        description: "",
         publisher: "",
         language: "",
         no_of_copies: 0,
@@ -42,7 +42,7 @@ const AddBook = () => {
                         setBookData({
                             ISBN: "",
                             title: "",
-                            subject: "",
+                            description: "",
                             publisher: "",
                             language: "",
                             no_of_copies: 0,
@@ -171,18 +171,42 @@ const AddBook = () => {
                                     onChange={handleInputChange}
                                     value={bookData.title}
                                 />
-
                                 <TextField
-                                    label="Author"
-
-                                    fullWidth
+                                    label="Description"
+                                    variant="outlined"
                                     sx={{ mt: 2 }}
-                                    name="author"
+                                    multiline
+                                    rows={4}
+                                    fullWidth
+                                    name="description"
                                     onChange={handleInputChange}
-                                    value={bookData.author}
+                                    value={bookData.description}
                                 />
 
 
+                                <Grid container spacing={2}>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            label="Author"
+                                            fullWidth
+                                            sx={{ mt: 2 }}
+                                            name="author"
+                                            onChange={handleInputChange}
+                                            value={bookData.author}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <TextField
+                                            label="Number of Copies"
+                                            fullWidth
+                                            sx={{ mt: 2 }}
+                                            type="number"
+                                            name="no_of_copies"
+                                            value={bookData.no_of_copies}
+                                            onChange={handleInputChange}
+                                        />
+                                    </Grid>
+                                </Grid>
 
                                 <Grid container spacing={2}>
                                     <Grid item xs={6}>
@@ -207,29 +231,7 @@ const AddBook = () => {
                                     </Grid>
                                 </Grid>
 
-                                <Grid container spacing={2}>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                            label="Subject"
-                                            fullWidth
-                                            sx={{ mt: 2 }}
-                                            name="subject"
-                                            onChange={handleInputChange}
-                                            value={bookData.subject}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                            label="Number of Copies"
-                                            fullWidth
-                                            sx={{ mt: 2 }}
-                                            type="number"
-                                            name="no_of_copies"
-                                            value={bookData.no_of_copies}
-                                            onChange={handleInputChange}
-                                        />
-                                    </Grid>
-                                </Grid>
+
 
                                 <Button variant="contained" color="primary" onClick={handleAddBook} sx={{ mt: 3 }}>
                                     Add Book

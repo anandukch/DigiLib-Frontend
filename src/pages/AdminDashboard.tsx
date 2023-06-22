@@ -13,7 +13,6 @@ import Notice from '../components/AdminDashBoard/Notice';
 const AdminDashboard: React.FC<any> = () => {
   const [renderComp, setRenderComp] = useState("addBook");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const isMobile = useMediaQuery('(max-width: 600px)');
 
   const addComponentHandler = (comp: string) => {
@@ -43,11 +42,6 @@ const AdminDashboard: React.FC<any> = () => {
   const logOutHandler = () => {
     localStorage.removeItem("token");
     navigate("/login");
-  };
-
-
-  const handleNotificationToggle = () => {
-    setIsNotificationOpen(!isNotificationOpen);
   };
 
   return (

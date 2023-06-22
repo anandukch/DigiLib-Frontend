@@ -8,6 +8,7 @@ interface AuthContextType {
   setRole: (newRole: string | null) => void;
   profile: any | null;
   setProfile: (newProfile: any | null) => void;
+  logOut: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -63,7 +64,12 @@ const AuthProvider: React.FC<any> = ({ children }) => {
       role,
       setRole,
       profile,
-      setProfile
+      setProfile,
+      logOut: () => {
+        setToken(null);
+        setRole(null);
+        setProfile(null);
+      }
     }),
     [token, profile]
   );
