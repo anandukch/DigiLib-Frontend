@@ -218,9 +218,9 @@ const TransactionTable: React.FC = () => {
             "title": transaction.book.title,
             "status": transaction.status,
             "fine": transaction.fine || 0,
-            "act_return_date": transaction.actual_date_of_return ? formatDate(transaction.actual_date_of_return):"-",
-            "return_date":transaction.date_of_return? formatDate(transaction.date_of_return):"-",
-            "iss_date":transaction.date_of_issue? formatDate(transaction.date_of_issue):"-",
+            "act_return_date": transaction.actual_date_of_return ? formatDate(transaction.actual_date_of_return) : "-",
+            "return_date": transaction.date_of_return ? formatDate(transaction.date_of_return) : "-",
+            "iss_date": transaction.date_of_issue ? formatDate(transaction.date_of_issue) : "-",
             "res_date": formatDate(transaction.date_of_reservation),
             "name": transaction.user.name,
             "action": {
@@ -327,21 +327,10 @@ const TransactionTable: React.FC = () => {
                                 width: !isMobile ? "1400px" : "auto",
 
                             }}
-                            sx={
-                                {
-                                    '& .super-app-theme--header': {
-                                        backgroundColor: '#140f0f',
-                                        color: 'white',
-                                        fontSize: '20px',
-                                        fontWeight: 'bold',
-                                        height: '120px', // Inc
-                                    },
 
-                                }
-                            }
                             rows={rows}
                             columns={columns}
-                            loading={loading}
+                            
                             initialState={{
                                 pagination: {
                                     paginationModel: {
@@ -349,19 +338,11 @@ const TransactionTable: React.FC = () => {
                                     },
                                 },
                             }}
-                            pageSizeOptions={[6]}
-                            // checkboxSelection
+
                             disableRowSelectionOnClick
-                        // getRowClassName={
-                        //     // even and odd row color
-                        //     (params) =>
-                        //         `super-app-theme--${params.getValue(params.id, 'status')}`
-
-
-                        // }
-                        // autoPageSize
+                            loading={loading}
                         />
-                        {/* </Box> */}
+
                     </div>
                 </Container>
             </Box>

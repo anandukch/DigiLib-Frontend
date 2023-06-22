@@ -63,7 +63,7 @@ const BookDetail = () => {
       >
         <Box sx={{ width: '40%', marginRight: '1rem' }}>
 
-          <img src={book?.image} alt="Book Cover" style={{ width: '100%', objectFit: 'contain' }} />
+          <img src={book?.image.url} alt="Book Cover" style={{ width: '100%', objectFit: 'contain' }} />
 
 
         </Box>
@@ -75,9 +75,7 @@ const BookDetail = () => {
 
           <Box sx={{ textAlign: 'center' }}>
             <Typography variant="h6" gutterBottom>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mattis ullamcorper risus in imperdiet.
-              Suspendisse potenti. Sed ut diam magna. Suspendisse potenti. Sed ut diam magna. Suspendisse potenti.
-              Sed ut diam magna. Suspendisse potenti. Sed ut diam magna. Suspendisse potenti. Sed ut diam magna.
+             {book?.description}
             </Typography>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', margin: '3rem' }}>

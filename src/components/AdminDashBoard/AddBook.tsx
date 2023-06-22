@@ -16,10 +16,13 @@ const AddBook = () => {
         title: "",
         description: "",
         publisher: "",
-        language: "",
+        subject: "",
         no_of_copies: 0,
         author: "",
-        image: ""
+        image: {
+            url: "",
+            public_id: ""
+        }
     })
     const handleAddBook = () => {
 
@@ -27,27 +30,40 @@ const AddBook = () => {
         formData.append("file", selectedFile!)
         formData.append("upload_preset", VITE_CLOUDINARY_UPLOAD_PRESENT)
         formData.append("cloud_name", VITE_CLOUDINARY_NAME)
-        setLoading(true);
+        // setLoading(true);
         fetch("https://api.cloudinary.com/v1_1/anandukch/image/upload", {
             method: "post",
             body: formData
         })
             .then(res => res.json())
             .then(data => {
-                setBookData({ ...bookData, image: data.url })
-                addBook({ ...bookData, image: data.url })
+                setBookData({
+                    ...bookData, image: {
+                        url: data.url,
+                        public_id: data.public_id
+                    }
+                })
+                addBook({
+                    ...bookData, image: {
+                        url: data.url,
+                        public_id: data.public_id
+                    }
+                })
                     .then(response => {
                         setBooks([...books, response.data]);
-                        setLoading(false);
+                        // setLoading(false);
                         setBookData({
                             ISBN: "",
                             title: "",
                             description: "",
                             publisher: "",
-                            language: "",
+                            subject: "",
                             no_of_copies: 0,
                             author: "",
-                            image: ""
+                            image: {
+                                url: "",
+                                public_id: ""
+                            }
                         })
                     })
                     .catch(error => {
@@ -221,12 +237,12 @@ const AddBook = () => {
                                     </Grid>
                                     <Grid item xs={6}>
                                         <TextField
-                                            label="Language"
+                                            label="Subject"
                                             fullWidth
                                             sx={{ mt: 2 }}
-                                            name="language"
+                                            name="subject"
                                             onChange={handleInputChange}
-                                            value={bookData.language}
+                                            value={bookData.subject}
                                         />
                                     </Grid>
                                 </Grid>

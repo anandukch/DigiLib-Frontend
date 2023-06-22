@@ -14,24 +14,28 @@
 export type Book={
   ISBN:string;
   title:string;
-  language:string;
+  subject:string;
   description:string;
   publisher:string;
   author:string;
   no_of_copies:number;
-  image:string;
+  image:Image;
+}
+
+type Image={
+  url:string;
+  public_id:string;
 }
 
 export type BookData={
   id:string;
   ISBN:string;
   title:string;
-  language:string;
-  subject:string;
+  description:string;
   publisher:string;
   author:string;
   no_of_copies:number;
-  image:string;
+  image:Image;
   available_copies:number;
   virtual_copies:number;
 }
