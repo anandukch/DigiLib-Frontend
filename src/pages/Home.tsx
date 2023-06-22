@@ -19,6 +19,7 @@ import { getBooks } from '../apis/booksApi';
 import { BookData } from '../types';
 import { useNavigate } from 'react-router';
 import { NavBar } from '../components/NavBar';
+import Loader from '../components/Loader/Loader';
 
 const theme = createTheme({
     palette: {
@@ -59,7 +60,7 @@ const HomePage = () => {
                 sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
                 open={true}
             >
-                <CircularProgress color="inherit" />
+                <Loader/>
             </Backdrop>
         )
     }
