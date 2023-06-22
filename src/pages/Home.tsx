@@ -8,7 +8,6 @@ import {
     TextField,
     Grid,
     Backdrop,
-    CircularProgress
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 // import { Book } from '../types';
@@ -36,7 +35,9 @@ const HomePage = () => {
         setLoading(true);
         getBooks().then(res => {
             setBooks(res.data);
-            setLoading(false)
+            setTimeout(() => {
+                setLoading(false);
+            },2000)
         })
             .catch(err => console.log(err))
 
@@ -46,18 +47,15 @@ const HomePage = () => {
         navigate(`/book/${id}`)
     }
 
-    if (loading) {
-        return (
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
-                open={true}
-            >
-                <Loader/>
-            </Backdrop>
-        )
-    }
+
     return (
         <ThemeProvider theme={theme}>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
+                open={loading}
+            >
+                <Loader />
+            </Backdrop>
             <CssBaseline />
             <NavBar />
 
