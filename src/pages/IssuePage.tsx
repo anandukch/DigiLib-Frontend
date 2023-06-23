@@ -45,6 +45,8 @@ const TransactionTable: React.FC = () => {
         setLoading(true);
         getAllTransactions()
             .then(response => {
+                console.log(response.data);
+                
                 setTransactions(response.data);
                 setLoading(false);
             }).catch(error => {
@@ -249,7 +251,7 @@ const TransactionTable: React.FC = () => {
                     marginLeft: !isMobile ? '320px' : "auto",
                 }}>
                     <Typography variant="h4" align="center" gutterBottom>
-                        Issue Book
+                        Book Transactions
                     </Typography>
                     {/* <TableContainer component={Paper} sx={{ border: '1px solid black' }}>
                         <Table>

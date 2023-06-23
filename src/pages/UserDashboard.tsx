@@ -14,10 +14,12 @@ const UserDashboard: React.FC<any> = () => {
     switch (comp) {
       case "transactions":
         return <TransactionTable />;
+      // case "notifications":
+      //   return <Notification />;
       // case "addAuthor":
       //   return <AddAuthor />;
-      // default:
-      // return <IssueBookPage />;
+      default:
+      return <TransactionTable />;
     }
   };
 
@@ -95,6 +97,12 @@ const UserDashboard: React.FC<any> = () => {
                 {/* Add your own icons here */}
               </ListItemIcon>
               <ListItemText primary="All Transactions" />
+            </ListItemButton>
+            <ListItemButton onClick={() => handleMenuClick("notifications")} style={{ backgroundColor: renderComp === "transactions" ? "#3f51b5" : "" }}>
+              <ListItemIcon>
+                {/* Add your own icons here */}
+              </ListItemIcon>
+              <ListItemText primary="Notifications" />
             </ListItemButton>
 
 

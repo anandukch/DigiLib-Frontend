@@ -1,6 +1,6 @@
 import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
 
-const NotiCard = ({ notice, recipient, dateTime }: { notice: string, recipient: string, dateTime: string }) => {
+const NotiCard = ({ text, recipient, dateTime }: { text: string, recipient: string, dateTime: string }) => {
   return (
     <Card sx={{ backgroundColor: '#162534' }}>
       <CardContent sx={{ textAlign: 'left' }}>
@@ -11,7 +11,7 @@ const NotiCard = ({ notice, recipient, dateTime }: { notice: string, recipient: 
         </Grid>
         <Box sx={{ width: '100%' }}>
           <Typography variant="body1" gutterBottom sx={{ wordWrap: 'break-word' }}>
-            {notice}
+            {text}
           </Typography>
         </Box>
         <Grid container justifyContent="flex-end" alignItems="flex-end">

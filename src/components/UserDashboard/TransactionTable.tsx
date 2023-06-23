@@ -79,7 +79,7 @@ const TransactionTable: React.FC = () => {
                                     <TableRow key={transaction.id} sx={{ backgroundColor: index % 2 === 0 ? '#515151' : '#3b3b3b' }}>
                                         <TableCell>{transaction.book_item.acc_no}</TableCell>
                                         <TableCell>
-                                            <img src={transaction.book.image} alt="Cover" style={{ width: '50px' }} />
+                                            <img src={transaction.book.image.url} alt="Cover" style={{ width: '50px' }} />
                                         </TableCell>
                                         <TableCell>{transaction.book.title}</TableCell>
                                         <TableCell>{transaction.user.name}</TableCell>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -15,7 +15,8 @@ import {
   SelectChangeEvent,
   MenuItem,
 } from '@mui/material';
-import NotiCard from '../Notification';
+import NotiCard from '../NotificationCard';
+import { getNotifications, sendNotification } from '../../apis/notifications';
 
 const theme = createTheme({
   palette: {
@@ -34,19 +35,39 @@ const Notice: React.FC = () => {
     const currentDate = new Date();
     const dateTimeString = currentDate.toLocaleString();
 
-    const newNotice = {
-      notice,
-      recipient,
-      dateTime: dateTimeString,
-    };
+    sendNotification({ text: notice, recipient_type: recipient, time: dateTimeString }).then((_) => {
+      const newNotice = {
+        text:notice,
+        recipient_type:recipient,
+        time: dateTimeString,
+      };
 
-    setNotices((prevNotices) => [...prevNotices, newNotice]);
-    setNotice('');
+      setNotices((prevNotices) => [...prevNotices, newNotice]);
+      setNotice('');
+    }
+    ).catch(error => {
+      alert(error.response.data.detail);
+    }
+    );
+
   };
 
   const handleRecipientChange = (event: SelectChangeEvent) => {
     setRecipient(event.target.value as string);
   };
+
+  useEffect(() => {
+    getNotifications().then((response) => {
+      console.log(response.data);
+      
+      setNotices(response.data);
+    }
+    ).catch(error => {
+      alert(error.response.data.detail);
+    }
+    );
+  }
+    , []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -75,6 +96,7 @@ const Notice: React.FC = () => {
                 <TextField
                   label="Notice Text"
                   variant="outlined"
+                  name='text'
                   multiline
                   rows={4}
                   fullWidth
@@ -94,12 +116,13 @@ const Notice: React.FC = () => {
                     value={recipient}
                     onChange={handleRecipientChange}
                     label="Send To"
+                    name='recipient_type'
                     sx={{ minWidth: '200px' }}
                   >
                     <MenuItem value="all">All</MenuItem>
                     <MenuItem value="issuer">Issuer</MenuItem>
                     <MenuItem value="faculty">Faculty</MenuItem>
-                    <MenuItem value="user">User</MenuItem>
+                    <MenuItem value="student">User</MenuItem>
                   </Select>
                   <Button variant="contained" color="primary" onClick={handleSendNotice}>
                     Send
@@ -113,7 +136,7 @@ const Notice: React.FC = () => {
           </Typography>
           {notices.map((n, index) => (
             <Box key={index} sx={{ marginBottom: '16px' }}>
-              <NotiCard notice={n.notice} recipient={n.recipient} dateTime={n.dateTime} />
+              <NotiCard text={n.text} recipient={n.recipient_type} dateTime={n.time} />
             </Box>
           ))}
         </Container>
