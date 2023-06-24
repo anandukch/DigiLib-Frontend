@@ -20,6 +20,7 @@ export type Book={
   author:string;
   no_of_copies:number;
   image:Image;
+  semester:number;
 }
 
 type Image={
@@ -38,6 +39,8 @@ export type BookData={
   image:Image;
   available_copies:number;
   virtual_copies:number;
+  subject:string;
+  semester:number;
 }
 
 type BookItem={

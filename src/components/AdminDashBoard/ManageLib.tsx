@@ -71,13 +71,6 @@ const ManageLib: React.FC = () => {
         </Backdrop>
       }
       <Box>
-        <Container
-          maxWidth="xl"
-          style={{
-            width: !isMobile ? '80%' : 'auto',
-            marginLeft: !isMobile ? '300px' : 'auto',
-          }}
-        >
           <Typography variant="h4" align="left" gutterBottom>
             Fine details
           </Typography>
@@ -128,7 +121,6 @@ const ManageLib: React.FC = () => {
               )}
             </Stack>
           </Paper>
-        </Container>
       </Box>
     </ThemeProvider>
   );

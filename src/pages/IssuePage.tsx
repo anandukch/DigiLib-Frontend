@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import {
     Box,
-    Container,
     IconButton,
     Typography,
     createTheme,
@@ -29,24 +28,12 @@ const TransactionTable: React.FC = () => {
     // const [transIndx, setTransIndx] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const isMobile = useMediaQuery('(max-width: 600px)');
-
-    // const handleOpenDialog = (index: number) => {
-    //     setTransIndx(index);
-    //     setOpenDialog(true);
-    // };
-
-    // const handleCloseDialog = () => {
-    //     setOpenDialog(false);
-    // };
-
-
-
     useEffect(() => {
         setLoading(true);
         getAllTransactions()
             .then(response => {
                 console.log(response.data);
-                
+
                 setTransactions(response.data);
                 setLoading(false);
             }).catch(error => {
@@ -101,13 +88,12 @@ const TransactionTable: React.FC = () => {
             field: 'acc_no',
             headerName: 'Accession No',
             width: 120,
-            // headerClassName: "super-app-theme--header"
         },
         {
             field: 'img',
             headerName: 'Book Image',
             width: 100,
-            // headerClassName: "super-app-theme--header",
+
             renderCell: (params) => {
 
                 return <img style={{ width: "100%" }} src={params.value}></img>;
@@ -118,7 +104,7 @@ const TransactionTable: React.FC = () => {
             headerName: 'Book Title',
             width: 100,
             editable: true,
-            // headerClassName: "super-app-theme--header",
+
 
         },
         {
@@ -126,7 +112,7 @@ const TransactionTable: React.FC = () => {
             headerName: 'User Name',
             width: 110,
             editable: true,
-            // headerClassName: "super-app-theme--header",
+
 
         },
         {
@@ -134,7 +120,7 @@ const TransactionTable: React.FC = () => {
             headerName: 'Reservation Date',
             width: 130,
             editable: true,
-            // headerClassName: "super-app-theme--header",
+
 
         },
         {
@@ -142,7 +128,7 @@ const TransactionTable: React.FC = () => {
             headerName: 'Issue Date',
             width: 150,
             editable: true,
-            // headerClassName: "super-app-theme--header",
+
 
         },
         {
@@ -150,7 +136,7 @@ const TransactionTable: React.FC = () => {
             headerName: 'Date of return',
             width: 150,
             editable: true,
-            // headerClassName: "super-app-theme--header",
+
 
         },
         {
@@ -158,7 +144,7 @@ const TransactionTable: React.FC = () => {
             headerName: 'Actual Date of return',
             width: 150,
             editable: true,
-            // headerClassName: "super-app-theme--header",
+
 
         },
         {
@@ -166,7 +152,7 @@ const TransactionTable: React.FC = () => {
             headerName: 'Fine',
             width: 100,
             editable: true,
-            // headerClassName: "super-app-theme--header",
+
 
         },
         {
@@ -174,7 +160,7 @@ const TransactionTable: React.FC = () => {
             headerName: 'Status',
             width: 150,
             editable: true,
-            // headerClassName: "super-app-theme--header",
+
             renderCell: (params) => {
                 return params.value == 'reserved' ?
                     (<Chip label="Reserved" color="primary" />) : params.value == 'issued' ?
@@ -185,7 +171,7 @@ const TransactionTable: React.FC = () => {
         },
         {
             field: 'action',
-            // headerClassName: "super-app-theme--header",
+
 
             headerName: 'Action',
             width: 100,
@@ -193,7 +179,7 @@ const TransactionTable: React.FC = () => {
             renderCell: (params) => {
 
                 const { status, index } = params.value
-                // console.log(status);
+             
 
                 return status == 'reserved' ?
                     (<IconButton color="primary" onClick={() => issueBookHandler(index)} style={{ fontSize: 'small' }}>
@@ -234,9 +220,6 @@ const TransactionTable: React.FC = () => {
         }
     })
 
-    //   console.log(rows);
-
-
     return (
         <ThemeProvider theme={theme}>
             {/* <Backdrop
@@ -246,14 +229,11 @@ const TransactionTable: React.FC = () => {
                 <CircularProgress color="inherit" />
             </Backdrop> */}
             <Box>
-                <Container maxWidth="xl" style={{
-                    width: !isMobile ? "60%" : "auto",
-                    marginLeft: !isMobile ? '320px' : "auto",
-                }}>
-                    <Typography variant="h4" align="center" gutterBottom>
-                        Book Transactions
-                    </Typography>
-                    {/* <TableContainer component={Paper} sx={{ border: '1px solid black' }}>
+
+                <Typography variant="h4" align="center" gutterBottom>
+                    Book Transactions
+                </Typography>
+                {/* <TableContainer component={Paper} sx={{ border: '1px solid black' }}>
                         <Table>
                             <TableHead sx={{ backgroundColor: '#140f0f' }}>
                                 <TableRow>
@@ -318,35 +298,35 @@ const TransactionTable: React.FC = () => {
                         </Table>
                     </TableContainer> */}
 
-                    {/* <Box> */}
-                    <div style={{ width: '100%' }}>
+                {/* <Box> */}
+                <div style={{ width: '100%' }}>
 
-                        <DataGrid
-                            getRowHeight={() => 100}
-                            style={{
-                                // backgroundColor: '#515151',
-                                color: 'white',
-                                width: !isMobile ? "1400px" : "auto",
+                    <DataGrid
+                        getRowHeight={() => 100}
+                        style={{
+                            // backgroundColor: '#515151',
+                            color: 'white',
+                            width: !isMobile ? "1400px" : "auto",
 
-                            }}
+                        }}
 
-                            rows={rows}
-                            columns={columns}
-                            
-                            initialState={{
-                                pagination: {
-                                    paginationModel: {
-                                        pageSize: 6,
-                                    },
+                        rows={rows}
+                        columns={columns}
+
+                        initialState={{
+                            pagination: {
+                                paginationModel: {
+                                    pageSize: 6,
                                 },
-                            }}
+                            },
+                        }}
 
-                            disableRowSelectionOnClick
-                            loading={loading}
-                        />
+                        disableRowSelectionOnClick
+                        loading={loading}
+                    />
 
-                    </div>
-                </Container>
+                </div>
+
             </Box>
         </ThemeProvider>
     );

@@ -151,7 +151,7 @@ const HomePage = () => {
                                             width: '100%',
                                         }}
                                     >
-                                        <img src={book.image.url} alt={book.title} width="100%" height="100%" />
+                                        <img loading='lazy' src={book.image.url} alt={"book.title"} width={"100%"} height={"100%"} />
                                         <Typography variant="body2" align="center">
                                             {book.title}
                                         </Typography>

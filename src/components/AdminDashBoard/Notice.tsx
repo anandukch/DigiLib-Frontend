@@ -77,13 +77,13 @@ const Notice: React.FC = () => {
         </Backdrop>
       )} */}
       <Box>
-        <Container
+        {/* <Container
           maxWidth="xl"
           style={{
             width: !isMobile ? '80%' : 'auto',
             marginLeft: !isMobile ? '300px' : 'auto',
           }}
-        >
+        > */}
           <Typography variant="h4" align="left" gutterBottom>
             Notification Form
           </Typography>
@@ -139,7 +139,6 @@ const Notice: React.FC = () => {
               <NotiCard text={n.text} recipient={n.recipient_type} dateTime={n.time} />
             </Box>
           ))}
-        </Container>
       </Box>
     </ThemeProvider>
   );

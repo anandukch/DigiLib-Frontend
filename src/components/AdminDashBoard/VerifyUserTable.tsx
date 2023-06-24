@@ -138,13 +138,6 @@ const VerifyUserTable: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <Box>
-        <Container
-          maxWidth="xl"
-          style={{
-            width: !isMobile ? '80%' : 'auto',
-            marginLeft: !isMobile ? '300px' : 'auto',
-          }}
-        >
           <Typography variant="h4" align="left" gutterBottom>
             Verify User
           </Typography>
@@ -185,12 +178,6 @@ const VerifyUserTable: React.FC = () => {
           </Paper>
           <div>
             <DataGrid
-              // style={{
-              //   // backgroundColor: '#515151',
-              //   color: 'white',
-              //   width: !isMobile ? "1200px" : "auto",
-
-              // }}
               rows={userData}
               columns={columns}
               disableRowSelectionOnClick
@@ -203,17 +190,9 @@ const VerifyUserTable: React.FC = () => {
                 },
               }}
               pageSizeOptions={[6]}
-            // autoPageSize
-            // components={{
-            //   Header: () => (
-            //     <div className="custom-header">
-            //       <div className="custom-header-label">My Custom Header</div>
-            //     </div>
-            //   ),
-            // }}
+          
             />
           </div>
-        </Container>
       </Box>
     </ThemeProvider>
   );

@@ -6,6 +6,7 @@ import { BookOnlineOutlined, LogoutOutlined, LibraryBooksOutlined } from '@mui/i
 import { useNavigate } from 'react-router';
 import { useAuth } from '../provider/authProvider';
 import IssueBook from '../components/IssueBook';
+import Layout from '../components/Layout';
 
 const IssuerDashboard: React.FC<any> = () => {
   const [renderComp, setRenderComp] = useState("addBook");
@@ -113,7 +114,10 @@ const IssuerDashboard: React.FC<any> = () => {
 
         <Box sx={{ marginLeft: 0 }}>
           <Toolbar />
-          {addComponentHandler(renderComp)}
+          <Layout>
+            {addComponentHandler(renderComp)}
+          </Layout>
+
         </Box>
       </Box>
     </>

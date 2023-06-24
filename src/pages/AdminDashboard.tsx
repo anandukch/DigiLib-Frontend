@@ -9,6 +9,7 @@ import { FaPlus, FaUser } from 'react-icons/fa';
 import VerifyUserTable from '../components/AdminDashBoard/VerifyUserTable';
 import ManageLib from '../components/AdminDashBoard/ManageLib';
 import Notice from '../components/AdminDashBoard/Notice';
+import Layout from '../components/Layout';
 
 const AdminDashboard: React.FC<any> = () => {
   const [renderComp, setRenderComp] = useState("addBook");
@@ -141,7 +142,9 @@ const AdminDashboard: React.FC<any> = () => {
 
         <Box sx={{ marginLeft: 0 }}>
           <Toolbar />
-          {addComponentHandler(renderComp)}
+          <Layout>
+            {addComponentHandler(renderComp)}
+          </Layout>
         </Box>
       </Box>
     </>
