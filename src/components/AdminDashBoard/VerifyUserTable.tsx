@@ -22,7 +22,6 @@ const theme = createTheme({
   },
 });
 
-
 const VerifyUserTable: React.FC = () => {
   const [userData, setUserData] = useState<UserData[]>([]);
   const [loading, setLoading] = useState<boolean>(false);

@@ -67,60 +67,60 @@ const ManageLib: React.FC = () => {
           sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={loading}
         >
-          <Loader/>
+          <Loader />
         </Backdrop>
       }
       <Box>
-          <Typography variant="h4" align="left" gutterBottom>
-            Fine details
+        <Typography variant="h4" align="left" gutterBottom>
+          Fine details
+        </Typography>
+        <Paper style={{ marginBottom: '16px', backgroundColor: 'transparent' }}>
+          <Typography variant="h6" align="left" style={{ padding: '16px' }}>
+            Enter the fine details
           </Typography>
-          <Paper style={{ marginBottom: '16px', backgroundColor: 'transparent' }}>
-            <Typography variant="h6" align="left" style={{ padding: '16px' }}>
-              Enter the fine details
-            </Typography>
-            <Stack spacing={2} direction={!isMobile ? 'row' : 'column'} alignItems="center" style={{ padding: '16px' }}>
-              <TextField
-                label="Fine Rate (in Rupees)"
-                variant="outlined"
-                type="number"
-                value={fineRate}
-                onChange={(e) => {
-                  const input = e.target.value;
-                  if (input === '' || parseInt(input) >= 0) {
-                    setFineRate(input);
-                  }
-                }}
+          <Stack spacing={2} direction={!isMobile ? 'row' : 'column'} alignItems="center" style={{ padding: '16px' }}>
+            <TextField
+              label="Fine Rate (in Rupees)"
+              variant="outlined"
+              type="number"
+              value={fineRate}
+              onChange={(e) => {
+                const input = e.target.value;
+                if (input === '' || parseInt(input) >= 0) {
+                  setFineRate(input);
+                }
+              }}
 
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      ₹
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextField
-                label="Days"
-                variant="outlined"
-                type="number"
-                value={days}
-                onChange={(e) => {
-                  const input = e.target.value;
-                  if (input === '' || parseInt(input) >= 0) {
-                    setDays(input);
-                  }
-                }}
-              />
-              <Button variant="contained" color="primary" onClick={handleUpdate}>
-                Update
-              </Button>
-              {showComment && ( 
-                <Typography variant="body2" style={{ marginLeft: '16px', color: 'green' }}>
-                  Fine has been updated!
-                </Typography>
-              )}
-            </Stack>
-          </Paper>
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    ₹
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              label="Days"
+              variant="outlined"
+              type="number"
+              value={days}
+              onChange={(e) => {
+                const input = e.target.value;
+                if (input === '' || parseInt(input) >= 0) {
+                  setDays(input);
+                }
+              }}
+            />
+            <Button variant="contained" color="primary" onClick={handleUpdate}>
+              Update
+            </Button>
+            {showComment && (
+              <Typography variant="body2" style={{ marginLeft: '16px', color: 'green' }}>
+                Fine has been updated!
+              </Typography>
+            )}
+          </Stack>
+        </Paper>
       </Box>
     </ThemeProvider>
   );
