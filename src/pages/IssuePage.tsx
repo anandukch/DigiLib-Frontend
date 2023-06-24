@@ -32,8 +32,6 @@ const TransactionTable: React.FC = () => {
         setLoading(true);
         getAllTransactions()
             .then(response => {
-                console.log(response.data);
-
                 setTransactions(response.data);
                 setLoading(false);
             }).catch(error => {
@@ -95,7 +93,6 @@ const TransactionTable: React.FC = () => {
             width: 100,
 
             renderCell: (params) => {
-
                 return <img style={{ width: "100%" }} src={params.value}></img>;
             }
         },
@@ -202,7 +199,7 @@ const TransactionTable: React.FC = () => {
         return {
             "id": v4(),
             "acc_no": transaction.book_item.acc_no,
-            "img": transaction.book.image,
+            "img": transaction.book.image.url,
             "title": transaction.book.title,
             "status": transaction.status,
             "fine": transaction.fine || 0,

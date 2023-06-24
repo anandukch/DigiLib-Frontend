@@ -247,6 +247,27 @@ const IssueBook = () => {
               </Grid>
             </Box>
           </Grid>
+          {/* <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <TextField
+                label="Subject"
+                fullWidth
+                sx={{ mt: 2 }}
+                name="subject"
+                disabled
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="Number of Copies"
+                fullWidth
+                sx={{ mt: 2 }}
+                type="number"
+                name="no_of_copies"
+                disabled
+              />
+            </Grid>
+          </Grid> */}
         </Grid>
         <Button variant="contained" color="primary" sx={{ mt: 3 }} >
           Issue Book

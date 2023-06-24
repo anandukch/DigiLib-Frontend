@@ -32,7 +32,7 @@ const AddBook = () => {
         formData.append("file", selectedFile!)
         formData.append("upload_preset", VITE_CLOUDINARY_UPLOAD_PRESENT)
         formData.append("cloud_name", VITE_CLOUDINARY_NAME)
-        // setLoading(true);
+        setLoading(true);
         fetch("https://api.cloudinary.com/v1_1/anandukch/image/upload", {
             method: "post",
             body: formData
@@ -68,7 +68,10 @@ const AddBook = () => {
                                 public_id: ""
                             }
                         })
+                        setLoading(false);
+                        alert("Book Added Successfully")
                     })
+
                     .catch(error => {
                         console.error('Error adding book:', error);
                     });
@@ -118,12 +121,7 @@ const AddBook = () => {
             >
                 <CircularProgress color="inherit" />
             </Backdrop>
-            {/* <Container maxWidth="lg"
-            style={{
-                width: !isMobile ? '80%' : 'auto',
-                marginLeft: !isMobile ? '300px' : 'auto',
-            }}
-            > */}
+
             <Box sx={{ mt: 3 }}>
                 <Typography variant="h4" gutterBottom>
                     Add Book
@@ -278,7 +276,6 @@ const AddBook = () => {
                 </Grid>
             </Box>
             <BookTable books={books} loading={loading} />
-            {/* </Container> */}
 
         </>
     );
