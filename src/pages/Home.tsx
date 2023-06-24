@@ -10,6 +10,7 @@ import {
     Backdrop,
     MenuItem,
     Select,
+    SelectChangeEvent,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 // import { Book } from '../types';
@@ -37,13 +38,13 @@ const HomePage = () => {
         setSearchTerm(event.target.value);
     };
 
-    const handleSemesterChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const handleSemesterChange = (event: SelectChangeEvent) => {
         const semester = event.target.value as string;
         setSelectedSemester(semester);
-        setSelectedSubject('all');
+        // setSelectedSubject('all');
     };
 
-    const handleSubjectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const handleSubjectChange = (event: SelectChangeEvent) => {
         setSelectedSubject(event.target.value as string);
     };
 
@@ -67,7 +68,7 @@ const HomePage = () => {
         if (selectedSemester === 'all' && selectedSubject === 'all') {
             return true;
         }
-        if (selectedSemester !== 'all' && book.semester !== selectedSemester) {
+        if (selectedSemester !== 'all' && book.semester !== parseInt(selectedSemester)) {
             return false;
         }
         if (selectedSubject !== 'all' && book.subject !== selectedSubject) {
@@ -107,14 +108,13 @@ const HomePage = () => {
                             size="small"
                         >
                             <MenuItem value="all">All Semesters</MenuItem>
-                            <MenuItem value="sem1">Semester 1</MenuItem>
-                            <MenuItem value="sem2">Semester 2</MenuItem>
-                            <MenuItem value="sem3">Semester 3</MenuItem>
-                            <MenuItem value="sem4">Semester 4</MenuItem>
-                            <MenuItem value="sem5">Semester 5</MenuItem>
-                            <MenuItem value="sem6">Semester 6</MenuItem>
-                            <MenuItem value="sem7">Semester 7</MenuItem>
-                            <MenuItem value="sem8">Semester 8</MenuItem>
+                            <MenuItem value={1}>Semester 1</MenuItem>
+                            <MenuItem value={2}>Semester 2</MenuItem>
+                            <MenuItem value={3}>Semester 4</MenuItem>
+                            <MenuItem value={4}>Semester 5</MenuItem>
+                            <MenuItem value={5}>Semester 6</MenuItem>
+                            <MenuItem value={6}>Semester 7</MenuItem>
+                            <MenuItem value={7}>Semester 8</MenuItem>
                         </Select>
                         <Select
                             value={selectedSubject}

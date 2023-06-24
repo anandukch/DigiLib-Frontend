@@ -1,7 +1,7 @@
 import { List, ListItemButton, ListItemText, TextField } from "@mui/material"
 
 
-const SelectTextField = ({ label, name, onChange,listClickHandler, items }) => {
+const SelectTextField = ({ label, name, onChange, listClickHandler, items, type = "user" }) => {
 
   return (
     <>
@@ -22,7 +22,13 @@ const SelectTextField = ({ label, name, onChange,listClickHandler, items }) => {
                   style={{ backgroundColor: index % 2 === 0 ? '#515151' : '#3b3b3b' }}
                   onClick={() => listClickHandler(result)}
                 >
-                  <ListItemText primary={result.name} />
+                  {
+                    type === "user" ?
+                      <ListItemText primary={result.name} secondary={result.adm_no} />
+                      : <ListItemText primary={result.title} secondary={result.ISBN} />
+
+                  }
+
                 </ListItemButton>
               ))}
             </List>

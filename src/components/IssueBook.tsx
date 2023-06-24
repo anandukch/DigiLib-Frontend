@@ -2,12 +2,15 @@ import { Box, Button, Container, TextField, Typography, Grid, useMediaQuery, Bac
 import { searchUser } from '../apis/userApi';
 import { useEffect, useState } from 'react';
 import SelectTextField from './SelecTextField';
+import { searchBook } from '../apis/booksApi';
 
 const IssueBook = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [users, setUsers] = useState<any[]>([]);
   const [user, setUser] = useState<any>(null);
+  const [books, setBooks] = useState<any[]>([]);
+  const [book, setBook] = useState<any>(null);
   const onChangeRegNo = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value === '') {
       setUsers([]);
@@ -22,14 +25,31 @@ const IssueBook = () => {
       setLoading(false);
 
     })
-
-
-
   }
-
-  const listClickHandler = (value) => {
+  const listClickHandler = (value, type: string = "user") => {
+    if (type === "book") {
+      setBook(value);
+      setBooks([]);
+      return;
+    }
     setUser(value);
     setUsers([]);
+  }
+
+  const onSearchBook = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value === '') {
+      setBooks([]);
+      return;
+    }
+    setLoading(true);
+
+    searchBook(event.target.value).then(response => {
+      console.log(response.data);
+
+      setBooks(response.data);
+      setLoading(false);
+
+    })
   }
 
 
@@ -57,7 +77,7 @@ const IssueBook = () => {
                 label="Reg Number"
                 name="adm_no"
                 onChange={onChangeRegNo}
-                listClickHandler={listClickHandler}
+                listClickHandler={(e) => listClickHandler(e, "user")}
                 items={users}
               />
               {/* <TextField
@@ -154,11 +174,12 @@ const IssueBook = () => {
               </Typography>
 
               <SelectTextField
-                label="Title"
+                label="Search Book"
                 name="title"
-                onChange={onChangeRegNo}
-                listClickHandler={listClickHandler}
-                items={users}
+                onChange={onSearchBook}
+                listClickHandler={(e) => listClickHandler(e, "book")}
+                items={books}
+                type='book'
               />
               <TextField
                 label="Title"
@@ -178,16 +199,6 @@ const IssueBook = () => {
 
 
 
-              <TextField
-                label="Author"
-                disabled
-                fullWidth
-                sx={{ mt: 2 }}
-                name="author"
-              />
-
-
-
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <TextField
@@ -200,14 +211,18 @@ const IssueBook = () => {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    label="Language"
+                    label="Author"
                     fullWidth
                     sx={{ mt: 2 }}
-                    name="language"
+                    name="suthor"
                     disabled
                   />
                 </Grid>
               </Grid>
+
+
+
+
 
               <Grid container spacing={2}>
                 <Grid item xs={6}>
