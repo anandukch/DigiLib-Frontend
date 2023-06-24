@@ -63,7 +63,7 @@ const BookDetail = () => {
       >
         <Box sx={{ width: '40%', marginRight: '1rem' }}>
 
-          <img src={book?.image.url} alt="Book Cover" style={{ width: '100%', objectFit: 'contain' }} />
+          <img src={book?.image.url} alt="Book Cover" style={{ objectFit: 'fill' }} />
 
 
         </Box>
