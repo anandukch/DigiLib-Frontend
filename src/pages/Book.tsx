@@ -34,6 +34,15 @@ const BookDetail = () => {
   const reserveBookHandler = (book_id: string) => {
     reserveBook(book_id)
       .then(_ => {
+
+        getBook(id)
+          .then(response => {
+            setBook(response.data)
+          }
+          ).catch(error => {
+            console.error('Error fetching book:', error);
+          }
+          );
         setShowSnackbar(true);
       }
       ).catch(error => {

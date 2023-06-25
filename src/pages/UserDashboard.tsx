@@ -4,6 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { LogoutOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import TransactionTable from '../components/UserDashboard/TransactionTable';
+import Login from './Login';
 
 const UserDashboard: React.FC<any> = () => {
   const [renderComp, setRenderComp] = useState("transactions");
@@ -14,8 +15,8 @@ const UserDashboard: React.FC<any> = () => {
     switch (comp) {
       case "transactions":
         return <TransactionTable />;
-      // case "notifications":
-      //   return <Notification />;
+      case "notifications":
+        return <Login />;
       // case "addAuthor":
       //   return <AddAuthor />;
       default:
@@ -98,7 +99,7 @@ const UserDashboard: React.FC<any> = () => {
               </ListItemIcon>
               <ListItemText primary="All Transactions" />
             </ListItemButton>
-            <ListItemButton onClick={() => handleMenuClick("notifications")} style={{ backgroundColor: renderComp === "transactions" ? "#3f51b5" : "" }}>
+            <ListItemButton onClick={() => handleMenuClick("notifications")} style={{ backgroundColor: renderComp === "notifications" ? "#3f51b5" : "" }}>
               <ListItemIcon>
                 {/* Add your own icons here */}
               </ListItemIcon>
