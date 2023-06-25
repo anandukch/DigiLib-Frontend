@@ -11,10 +11,14 @@ import {
   Stack,
   Chip,
   TextField,
+  Snackbar
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { createUser, getAllUsers, verifyUser } from '../../apis/userApi';
 import { UserData } from '../../types';
+import { Alert } from '@mui/lab';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Popup from '../Popup';
 
 const theme = createTheme({
   palette: {
@@ -30,7 +34,11 @@ const VerifyUserTable: React.FC = () => {
   const [role, setRole] = useState<string>('');
   const isMobile = useMediaQuery('(max-width: 600px)')
   const [password, setPassword] = useState<string>('');
-  ;
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const closeSnackbar = () => {
+    setShowSnackbar(false);
+  };
 
   const verifyHandler = (id: string) => {
     setLoading(true)
@@ -53,6 +61,7 @@ const VerifyUserTable: React.FC = () => {
       }
       );
   }
+  
 
   const handleAddUser = () => {
     setLoading(true);
@@ -72,6 +81,7 @@ const VerifyUserTable: React.FC = () => {
         setPassword('');
         setRole('');
         setLoading(false);
+        setShowSnackbar(true);
       }
       ).catch(error => {
         alert(error.response.data.detail);
@@ -132,6 +142,22 @@ const VerifyUserTable: React.FC = () => {
       ), width: 200
 
     },
+    
+  {
+    field: 'delete',
+    headerName: '',
+    renderCell: (params) => (
+      <Button
+        color="error"
+        onClick={() => handleDeleteUser(params.row.id)}
+        startIcon={<DeleteIcon />}
+      >
+      </Button>
+    ),
+    width: 150,
+    sortable: false,
+    filterable: false,
+  },
   ];
 
   return (
@@ -193,6 +219,9 @@ const VerifyUserTable: React.FC = () => {
             />
           </div>
       </Box>
+      {showSnackbar && (
+        <Popup onClose={closeSnackbar} message="User Added Successfully" icon="✅" />
+      )}
     </ThemeProvider>
   );
 };

@@ -6,10 +6,16 @@ import { getBook, reserveBook } from '../apis/booksApi';
 import { BookData } from '../types';
 import { NavBar } from '../components/NavBar';
 import Loader from '../components/Loader/Loader';
+import Popup from '../components/Popup';
 
 const BookDetail = () => {
   const { id } = useParams<{ id: string }>();
   const [book, setBook] = useState<BookData>();
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const closeSnackbar = () => {
+    setShowSnackbar(false);
+  };
   useEffect(() => {
     if (id) {
       getBook(id)
@@ -28,7 +34,7 @@ const BookDetail = () => {
   const reserveBookHandler = (book_id: string) => {
     reserveBook(book_id)
       .then(_ => {
-        alert('Book reserved successfully');
+        setShowSnackbar(true);
       }
       ).catch(error => {
 
@@ -95,6 +101,9 @@ const BookDetail = () => {
         </Box>
 
       </Container>
+      {showSnackbar && (
+        <Popup onClose={closeSnackbar} message="Notification Sent" icon="✅" />
+      )}
     </>
   );
 };

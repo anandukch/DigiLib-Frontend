@@ -1,8 +1,10 @@
-import { Box, Button, Container, TextField, Typography, Grid, useMediaQuery, Backdrop, CircularProgress, Autocomplete, ListItem, ListItemText, List, makeStyles, ListItemButton } from '@mui/material';
+import { Box, Button, Container, TextField, Typography, Grid, useMediaQuery, Backdrop, CircularProgress, Autocomplete, ListItem, ListItemText, List, makeStyles, ListItemButton,Snackbar} from '@mui/material';
 import { searchUser } from '../apis/userApi';
 import { useReducer, useState } from 'react';
 import SelectTextField from './SelecTextField';
 import { immediateIssue, searchBook } from '../apis/booksApi';
+import Popup from './Popup';
+import Loader from './Loader/Loader';
 
 type DateData = {
   issue_date: string;
@@ -19,6 +21,11 @@ const IssueBook = () => {
   const [user, setUser] = useState<any>(null);
   const [books, setBooks] = useState<any[]>([]);
   const [book, setBook] = useState<any>(null);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const closeSnackbar = () => {
+    setShowSnackbar(false);
+  };
   const onChangeRegNo = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value === '') {
       setUsers([]);
@@ -71,7 +78,7 @@ const IssueBook = () => {
       acc_no: book.acc_no,
       ...dateFields
     }).then(_ => {
-      alert("Book Issued");
+      setShowSnackbar(true);
     }).catch(err => {
       alert(err.response.data.detail);
     })
@@ -85,7 +92,7 @@ const IssueBook = () => {
         sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
         open={loading}
       >
-        <CircularProgress color="inherit" />
+        <Loader/>
       </Backdrop>
 
       <Box sx={{ mt: 3 }}>
@@ -291,6 +298,9 @@ const IssueBook = () => {
           Issue Book
         </Button>
       </Box>
+      {showSnackbar && (
+        <Popup onClose={closeSnackbar} message="Book Issued Successfully" icon="✅" />
+      )}
 
 
 

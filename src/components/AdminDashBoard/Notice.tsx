@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import NotiCard from '../NotificationCard';
 import { getNotifications, sendNotification } from '../../apis/notifications';
+import Popup from '../Popup';
 
 const theme = createTheme({
   palette: {
@@ -30,6 +31,11 @@ const Notice: React.FC = () => {
   const [recipient, setRecipient] = useState<string>('all');
   const [notices, setNotices] = useState<any[]>([]);
   const isMobile = useMediaQuery('(max-width: 600px)');
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const closeSnackbar = () => {
+    setShowSnackbar(false);
+  };
 
   const handleSendNotice = () => {
     const currentDate = new Date();
@@ -44,6 +50,7 @@ const Notice: React.FC = () => {
 
       setNotices((prevNotices) => [...prevNotices, newNotice]);
       setNotice('');
+      setShowSnackbar(true);
     }
     ).catch(error => {
       alert(error.response.data.detail);
@@ -140,6 +147,9 @@ const Notice: React.FC = () => {
             </Box>
           ))}
       </Box>
+      {showSnackbar && (
+        <Popup onClose={closeSnackbar} message="Notification Sent" icon="✅" />
+      )}
     </ThemeProvider>
   );
 };
