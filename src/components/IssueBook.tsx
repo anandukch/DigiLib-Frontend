@@ -113,62 +113,6 @@ const IssueBook = () => {
                 listClickHandler={(e) => listClickHandler(e, "user")}
                 items={users}
               />
-              {/* <TextField
-                label="Reg Number"
-                fullWidth
-                sx={{ mt: 2 }}
-                onChange={onChangeRegNo}
-                name="adm_no"
-              />
-              {users.length > 0 && (
-                <div style={{ position: 'relative' }}>
-                  <List style={{ top: '100%', left: 0, right: 0, zIndex: 1, maxHeight: "210px", overflow: "auto" }}>
-                    {users.map((result: any, index: number) => (
-                      <ListItemButton
-                        key={result.id}
-                        style={{ backgroundColor: index % 2 === 0 ? '#515151' : '#3b3b3b' }}
-                        onClick={() => listClickHandler(result)}
-                      >
-                        <ListItemText primary={result.name} />
-                      </ListItemButton>
-                    ))}
-                  </List>
-                </div>
-              )} */}
-
-
-              {/* <Autocomplete
-                id="user-search"
-                sx={{ mt: 2 }}
-                loading={loading}
-                options={users}
-                autoHighlight
-                fullWidth
-                getOptionLabel={(option) => option.name}
-                // renderOption={(props, option) => (
-                //   <Box component="li" {...props}>
-                //     {option.name} ({option.name}) +{option.name}
-                //   </Box>
-                // )}
-              
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Enter Registration Number"
-                    name='adm_no'
-                    onChange={onChangeRegNo}
-                    InputProps={{
-                      ...params.InputProps,
-                      endAdornment: (
-                        <>
-                          {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                          {params.InputProps.endAdornment}
-                        </>
-                      ),
-                    }}
-                  />
-                )}
-              /> */}
 
               <Grid container spacing={2}>
                 <Grid item xs={6}>

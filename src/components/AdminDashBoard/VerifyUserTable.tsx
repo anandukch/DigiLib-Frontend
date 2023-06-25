@@ -14,9 +14,8 @@ import {
   Snackbar
 } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { createUser, getAllUsers, verifyUser } from '../../apis/userApi';
+import { createUser, deleteUser, getAllUsers, verifyUser } from '../../apis/userApi';
 import { UserData } from '../../types';
-import { Alert } from '@mui/lab';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Popup from '../Popup';
 
@@ -61,7 +60,7 @@ const VerifyUserTable: React.FC = () => {
       }
       );
   }
-  
+
 
   const handleAddUser = () => {
     setLoading(true);
@@ -88,6 +87,26 @@ const VerifyUserTable: React.FC = () => {
       }
       );
   };
+
+  const handleDeleteUser = (id: string) => {
+    console.log(id);
+
+    deleteUser(id).then(_ => {
+      getAllUsers()
+        .then((response) => {
+          setUserData(response.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          alert(error.response.data.detail);
+          setLoading(false);
+        });
+    }
+    ).catch(error => {
+      alert(error.response.data.detail);
+    }
+    );
+  }
 
 
   useEffect(() => {
@@ -142,22 +161,22 @@ const VerifyUserTable: React.FC = () => {
       ), width: 200
 
     },
-    
-  {
-    field: 'delete',
-    headerName: '',
-    renderCell: (params) => (
-      <Button
-        color="error"
-        onClick={() => handleDeleteUser(params.row.id)}
-        startIcon={<DeleteIcon />}
-      >
-      </Button>
-    ),
-    width: 150,
-    sortable: false,
-    filterable: false,
-  },
+
+    {
+      field: 'delete',
+      headerName: '',
+      renderCell: (params) => (
+        <Button
+          color="error"
+          onClick={() => handleDeleteUser(params.row.id)}
+          startIcon={<DeleteIcon />}
+        >
+        </Button>
+      ),
+      width: 150,
+      sortable: false,
+      filterable: false,
+    },
   ];
 
   return (

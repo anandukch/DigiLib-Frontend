@@ -111,7 +111,7 @@ const BookDetail = () => {
 
       </Container>
       {showSnackbar && (
-        <Popup onClose={closeSnackbar} message="Notification Sent" icon="✅" />
+        <Popup onClose={closeSnackbar} message="Success" icon="✅" />
       )}
     </>
   );

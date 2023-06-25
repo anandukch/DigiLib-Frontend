@@ -11,7 +11,6 @@ import {
   useMediaQuery,
   Snackbar,
 } from '@mui/material';
-import { Alert } from '@mui/lab';
 import { Book } from '../../types';
 import { addBook, getBooks } from '../../apis/booksApi';
 import { BookTable } from './BookTable';
