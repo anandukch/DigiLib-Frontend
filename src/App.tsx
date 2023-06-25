@@ -16,7 +16,7 @@ function App() {
     useEffect(() => {
         getProfile().then(res => {
             console.log(res.data);
-            
+
             setProfile(JSON.stringify(res.data))
         }
         ).catch(err => console.log(err))
@@ -31,8 +31,9 @@ function App() {
 
                     <Route path="/dashboard" element={
                         role == "admin" ? <AdminDashboard />
-                            : role == "student" || "faculty" ? <UserDashboard />
-                                : role == "issuer" ? <IssuerDashboard />
+                            : role == "issuer" ? <IssuerDashboard />
+                                : role == "student" || role == "faculty" ? <UserDashboard />
+
                                     : <Navigate to="/login" />
                     } />
                     <Route path='/book/:id' element={<BookDetail />} />
