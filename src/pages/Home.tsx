@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 // import { Book } from '../types';
-import { getBooks } from '../apis/booksApi';
+import { getBooks, getSubjects } from '../apis/booksApi';
 import { BookData } from '../types';
 import { useNavigate } from 'react-router';
 import { NavBar } from '../components/NavBar';
@@ -33,6 +33,7 @@ const HomePage = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [selectedSemester, setSelectedSemester] = useState<string>('all');
     const [selectedSubject, setSelectedSubject] = useState<string>('all');
+    const [subjects, setSubjects] = useState<string[]>([]);
     const navigate = useNavigate();
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,6 +60,10 @@ const HomePage = () => {
 
             })
             .catch((err) => console.log(err));
+        getSubjects().then((res) => {
+            setSubjects(res.data);
+
+        }).catch((err) => console.log(err));
     }, []);
 
     const onBookClick = (id: string) => {
@@ -125,13 +130,14 @@ const HomePage = () => {
                             variant="filled"
                             size="small"
                         >
+
                             <MenuItem value="all">All Subjects</MenuItem>
-                            <MenuItem value="ds">Data Structues</MenuItem>
-                            <MenuItem value="dbms">DBMS</MenuItem>
-                            <MenuItem value="gt">Graphy theory</MenuItem>
-                            <MenuItem value="aad">Algorithm Analysis and Design</MenuItem>
-                            <MenuItem value="cd">Compiler Design</MenuItem>
-                            <MenuItem value="cd">Computer Graphics</MenuItem>
+                            {
+                                subjects.map((subject) => (
+                                    <MenuItem key={subject} value={subject}>{subject}</MenuItem>
+                                ))
+
+                            }
 
                         </Select>
                     </Box>

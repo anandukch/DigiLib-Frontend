@@ -1,17 +1,17 @@
-import { Box, Button, Container, TextField, Typography, Grid, Backdrop, CircularProgress, useMediaQuery } from '@mui/material';
+import { Box, Button, Container, TextField, Typography, Grid, Backdrop, CircularProgress, useMediaQuery, Autocomplete } from '@mui/material';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Book } from '../../types';
-import { addBook, getBooks } from '../../apis/booksApi';
+import { addBook, getBooks, getSubjects } from '../../apis/booksApi';
 import { BookTable } from './BookTable';
 import Loader from '../Loader/Loader';
 const { VITE_CLOUDINARY_UPLOAD_PRESENT, VITE_CLOUDINARY_NAME } = import.meta.env
-
 
 const AddBook = () => {
     const [books, setBooks] = useState<any>([]);
     const [imagePreview, setImagePreview] = useState<any>(null);
     const [selectedFile, setSelectedFile] = useState(null);
     const [loading, setLoading] = useState<boolean>(false);
+    const [subjects, setSubjects] = useState<string[]>([]);
     const [bookData, setBookData] = useState<Book>({
         ISBN: "",
         title: "",
@@ -47,7 +47,8 @@ const AddBook = () => {
                     }
                 })
                 addBook({
-                    ...bookData, image: {
+                    ...bookData,
+                    image: {
                         url: data.url,
                         public_id: data.public_id
                     }
@@ -74,12 +75,11 @@ const AddBook = () => {
                     })
 
                     .catch(error => {
+                        setLoading(false);
                         console.error('Error adding book:', error);
                     });
             }
             )
-
-
     };
     useEffect(() => {
         setLoading(true);
@@ -91,6 +91,15 @@ const AddBook = () => {
             .catch(error => {
                 console.error('Error fetching books:', error);
             });
+        getSubjects()
+            .then(response => {
+                setSubjects(response.data)
+            }
+            )
+            .catch(error => {
+                console.error('Error fetching subjects:', error);
+            }
+            );
     }, []);
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setBookData({
@@ -256,19 +265,41 @@ const AddBook = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <TextField
+                                    <Autocomplete
+                                        id="combo-box-demo"
+                                        options={subjects}
+                                        sx={{ mt: 2 }}
+                                        freeSolo
+                                        // onChange={(event, newValue) => {
+                                        //     setBookData({
+                                        //         ...bookData,
+                                        //         subject: newValue
+                                        //     })
+                                        // }}
+                                        // value={bookData.subject}
+                                        renderInput={(params) => <TextField {...params} label="Subject"
+                                            onChange={(event) => {
+                                                const newValue = event.target.value;
+                                                if (newValue && !subjects.includes(newValue)) {
+                                                    setBookData({
+                                                        ...bookData,
+                                                        subject: newValue
+                                                    })
+                                                }
+
+                                            }}
+                                        />}
+                                    />
+                                    {/* <TextField
                                         label="Subject"
                                         fullWidth
                                         sx={{ mt: 2 }}
                                         name="subject"
                                         onChange={handleInputChange}
                                         value={bookData.subject}
-                                    />
+                                    /> */}
                                 </Grid>
                             </Grid>
-
-
-
                             <Button variant="contained" color="primary" onClick={handleAddBook} sx={{ mt: 3 }}>
                                 Add Book
                             </Button>
@@ -276,7 +307,7 @@ const AddBook = () => {
                     </Grid>
                 </Grid>
             </Box>
-            <BookTable books={books} loading={loading} setBooks={setBooks}/>
+            <BookTable books={books} loading={loading} setBooks={setBooks} />
 
         </>
     );

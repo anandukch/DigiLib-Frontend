@@ -33,9 +33,7 @@ export const BookTable = ({ books, loading, setBooks }: { books: BookData[], loa
       flex: 1,
       minWidth: 130,
       renderCell: (params) => {
-        console.log(params);
-        
-        return(
+        return (
           <IconButton color="error" onClick={() => onDeleteBook(params.value)}>
             <Delete />
           </IconButton>
