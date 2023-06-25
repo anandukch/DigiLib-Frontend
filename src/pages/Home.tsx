@@ -71,10 +71,10 @@ const HomePage = () => {
     };
 
     const filteredBooks = books.filter((book) => {
-        if (selectedSemester === 'all' && selectedSubject === 'all') {
+        if (selectedSemester === 'all' && selectedSubject === 'all' && book.title.toLowerCase().includes(searchTerm.toLowerCase())) {
             return true;
         }
-        if(searchTerm !== '' && !book.title.toLowerCase().includes(searchTerm.toLowerCase())){
+        if (searchTerm !== '' && !book.title.toLowerCase().includes(searchTerm.toLowerCase())) {
             return false;
         }
 
@@ -93,7 +93,7 @@ const HomePage = () => {
                 sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
                 open={loading}
             >
-                <Loader/>
+                <Loader />
             </Backdrop>
             <CssBaseline />
             <NavBar />
