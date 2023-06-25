@@ -36,15 +36,15 @@ const VerifyUserTable: React.FC = () => {
     setLoading(true)
     verifyUser(id)
       .then(_ => {
-        setUserData(userData.map((user) => {
-          if (user.id === id) {
-            return {
-              ...user,
-              is_verified: true
-            }
-          }
-          return user;
-        }))
+        getAllUsers()
+          .then((response) => {
+            setUserData(response.data);
+            setLoading(false);
+          })
+          .catch((error) => {
+            alert(error.response.data.detail);
+            setLoading(false);
+          });
         setLoading(false)
       }
       ).catch(error => {
@@ -137,61 +137,61 @@ const VerifyUserTable: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <Box>
-          <Typography variant="h4" align="left" gutterBottom>
-            Verify User
+        <Typography variant="h4" align="left" gutterBottom>
+          Verify User
+        </Typography>
+        <Paper style={{ marginBottom: '16px', backgroundColor: 'transparent' }}>
+          <Typography variant="h6" align="left" style={{ padding: '16px' }}>
+            Add User
           </Typography>
-          <Paper style={{ marginBottom: '16px', backgroundColor: 'transparent' }}>
-            <Typography variant="h6" align="left" style={{ padding: '16px' }}>
-              Add User
-            </Typography>
-            <Stack spacing={2} direction={!isMobile ? "row" : "column"} alignItems="center" style={{ padding: '16px' }}>
-              <TextField
-                label="Name"
-                variant="outlined"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-              <TextField
-                label="Email"
-                variant="outlined"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <TextField
-                label="Password"
-                variant="outlined"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-              />
-              <TextField
-                label="Role"
-                variant="outlined"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-              />
-              <Button variant="contained" color="primary" onClick={handleAddUser}>
-                Add
-              </Button>
-            </Stack>
-          </Paper>
-          <div>
-            <DataGrid
-              rows={userData}
-              columns={columns}
-              disableRowSelectionOnClick
-              loading={loading}
-              initialState={{
-                pagination: {
-                  paginationModel: {
-                    pageSize: 6,
-                  },
-                },
-              }}
-              pageSizeOptions={[6]}
-          
+          <Stack spacing={2} direction={!isMobile ? "row" : "column"} alignItems="center" style={{ padding: '16px' }}>
+            <TextField
+              label="Name"
+              variant="outlined"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
-          </div>
+            <TextField
+              label="Email"
+              variant="outlined"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              label="Password"
+              variant="outlined"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+            />
+            <TextField
+              label="Role"
+              variant="outlined"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+            />
+            <Button variant="contained" color="primary" onClick={handleAddUser}>
+              Add
+            </Button>
+          </Stack>
+        </Paper>
+        <div>
+          <DataGrid
+            rows={userData}
+            columns={columns}
+            disableRowSelectionOnClick
+            loading={loading}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 6,
+                },
+              },
+            }}
+            pageSizeOptions={[6]}
+
+          />
+        </div>
       </Box>
     </ThemeProvider>
   );
