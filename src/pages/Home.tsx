@@ -11,6 +11,7 @@ import {
     MenuItem,
     Select,
     SelectChangeEvent,
+    CircularProgress,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 // import { Book } from '../types';
@@ -53,9 +54,9 @@ const HomePage = () => {
         getBooks()
             .then((res) => {
                 setBooks(res.data);
-                setTimeout(() => {
-                    setLoading(false);
-                }, 2000);
+
+                setLoading(false);
+
             })
             .catch((err) => console.log(err));
     }, []);
@@ -83,7 +84,7 @@ const HomePage = () => {
                 sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
                 open={loading}
             >
-                <Loader />
+                <CircularProgress color="inherit" />
             </Backdrop>
             <CssBaseline />
             <NavBar />
@@ -110,11 +111,13 @@ const HomePage = () => {
                             <MenuItem value="all">All Semesters</MenuItem>
                             <MenuItem value={1}>Semester 1</MenuItem>
                             <MenuItem value={2}>Semester 2</MenuItem>
-                            <MenuItem value={3}>Semester 4</MenuItem>
-                            <MenuItem value={4}>Semester 5</MenuItem>
-                            <MenuItem value={5}>Semester 6</MenuItem>
-                            <MenuItem value={6}>Semester 7</MenuItem>
-                            <MenuItem value={7}>Semester 8</MenuItem>
+                            <MenuItem value={3}>Semester 3</MenuItem>
+                            <MenuItem value={4}>Semester 4</MenuItem>
+                            <MenuItem value={5}>Semester 5</MenuItem>
+                            <MenuItem value={6}>Semester 6</MenuItem>
+                            <MenuItem value={7}>Semester 7</MenuItem>
+                            <MenuItem value={8}>Semester 8</MenuItem>
+
                         </Select>
                         <Select
                             value={selectedSubject}
@@ -129,7 +132,7 @@ const HomePage = () => {
                             <MenuItem value="aad">Algorithm Analysis and Design</MenuItem>
                             <MenuItem value="cd">Compiler Design</MenuItem>
                             <MenuItem value="cd">Computer Graphics</MenuItem>
-                    
+
                         </Select>
                     </Box>
                     <Box sx={{ mt: 5 }}>

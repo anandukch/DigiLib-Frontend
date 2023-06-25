@@ -1,12 +1,20 @@
 import { Box, Button, Container, TextField, Typography, Grid, useMediaQuery, Backdrop, CircularProgress, Autocomplete, ListItem, ListItemText, List, makeStyles, ListItemButton } from '@mui/material';
 import { searchUser } from '../apis/userApi';
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
 import SelectTextField from './SelecTextField';
-import { searchBook } from '../apis/booksApi';
+import { immediateIssue, searchBook } from '../apis/booksApi';
 
+type DateData = {
+  issue_date: string;
+  return_date: string;
+}
 const IssueBook = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [dateFields, setDateFields] = useState<DateData>({
+    issue_date: new Date().toISOString().slice(0, 10),
+    return_date: new Date().toISOString().slice(0, 10)
+  })
   const [users, setUsers] = useState<any[]>([]);
   const [user, setUser] = useState<any>(null);
   const [books, setBooks] = useState<any[]>([]);
@@ -19,11 +27,15 @@ const IssueBook = () => {
     setLoading(true);
 
     searchUser(event.target.value).then(response => {
-      console.log(response.data);
-
       setUsers(response.data);
       setLoading(false);
 
+    })
+  }
+  const onChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDateFields({
+      ...dateFields,
+      [event.target.name]: event.target.value
     })
   }
   const listClickHandler = (value, type: string = "user") => {
@@ -52,6 +64,20 @@ const IssueBook = () => {
     })
   }
 
+  const onIssueHandler = () => {
+    immediateIssue({
+      book_id: book.id,
+      user_id: user.id,
+      acc_no: book.acc_no,
+      ...dateFields
+    }).then(_ => {
+      alert("Book Issued");
+    }).catch(err => {
+      alert(err.response.data.detail);
+    })
+    setUser(null);
+    setBook(null);
+  }
 
   return (
     <>
@@ -181,37 +207,9 @@ const IssueBook = () => {
                 fullWidth
                 sx={{ mt: 2 }}
                 name="title"
-
-              />
-
-              <TextField
-                label="Book number"
-                fullWidth
-                sx={{ mt: 2 }}
-                name="acc_no"
                 disabled
+                value={book?.title ? book?.title : "Title"}
               />
-
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <TextField
-                    label="Publisher"
-                    fullWidth
-                    sx={{ mt: 2 }}
-                    name="publisher"
-                    disabled
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    label="Author"
-                    fullWidth
-                    sx={{ mt: 2 }}
-                    name="author"
-                    disabled
-                  />
-                </Grid>
-              </Grid>
 
               <Grid container spacing={2}>
                 <Grid item xs={6}>
@@ -220,20 +218,46 @@ const IssueBook = () => {
                     fullWidth
                     sx={{ mt: 2 }}
                     name="subject"
+                    value={book?.subject ? book?.subject : "Subject"}
                     disabled
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    label="Number of Copies"
+                    label="Accession Number"
                     fullWidth
                     sx={{ mt: 2 }}
                     type="number"
-                    name="no_of_copies"
+                    name="acc_no"
+                    value={book?.acc_no ? book?.acc_no : 0}
                     disabled
                   />
                 </Grid>
               </Grid>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Publisher"
+                    fullWidth
+                    sx={{ mt: 2 }}
+                    name="publisher"
+                    disabled
+                    value={book?.publisher ? book?.publisher : "Publisher"}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Author"
+                    fullWidth
+                    sx={{ mt: 2 }}
+                    name="author"
+                    value={book?.author ? book?.author : "Author"}
+                    disabled
+                  />
+                </Grid>
+              </Grid>
+
+
             </Box>
 
           </Grid>
@@ -247,6 +271,8 @@ const IssueBook = () => {
               sx={{ mt: 2 }}
               name="issue_date"
               type="date"
+              onChange={onChangeDate}
+              defaultValue={dateFields.issue_date}
             />
           </Grid>
           <Grid item xs={6}>
@@ -256,10 +282,12 @@ const IssueBook = () => {
               sx={{ mt: 2 }}
               type="date"
               name="return_date"
+              onChange={onChangeDate}
+              defaultValue={dateFields.return_date}
             />
           </Grid>
         </Grid>
-        <Button variant="contained" color="primary" sx={{ mt: 3 }} >
+        <Button variant="contained" color="primary" sx={{ mt: 3 }} onClick={onIssueHandler} >
           Issue Book
         </Button>
       </Box>

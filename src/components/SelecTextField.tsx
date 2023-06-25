@@ -1,4 +1,4 @@
-import { List, ListItemButton, ListItemText, TextField } from "@mui/material"
+import { Chip, List, ListItemButton, ListItemText, TextField } from "@mui/material"
 
 
 const SelectTextField = ({ label, name, onChange, listClickHandler, items, type = "user" }) => {
@@ -27,6 +27,11 @@ const SelectTextField = ({ label, name, onChange, listClickHandler, items, type 
                       <ListItemText primary={result.name} secondary={result.adm_no} />
                       : <ListItemText primary={result.title} secondary={result.ISBN} />
 
+                  }
+                  {
+                    type == "book" && (
+                      <Chip label={result.available ? "available" : "not available"} color="success" />
+                    )
                   }
 
                 </ListItemButton>
