@@ -5,6 +5,7 @@ import { useParams } from 'react-router';
 import { getBook, reserveBook } from '../apis/booksApi';
 import { BookData } from '../types';
 import { NavBar } from '../components/NavBar';
+import Loader from '../components/Loader/Loader';
 
 const BookDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -42,7 +43,7 @@ const BookDetail = () => {
       sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
       open={book ? false : true}
     >
-      <CircularProgress color="inherit" />
+      <Loader/>
     </Backdrop>
   )
   return (
@@ -61,20 +62,21 @@ const BookDetail = () => {
           marginTop: '2rem'
         }}
       >
-        <Box sx={{ width: '40%', marginRight: '1rem' }}>
-
-          <img src={book?.image.url} alt="Book Cover" style={{ objectFit: 'fill' }} />
-
-
-        </Box>
+        <Box sx={{ width: '20%', marginRight: '1rem', overflow: 'hidden' }}>
+  <img
+    src={book?.image.url}
+    alt="Book Cover"
+    style={{ objectFit: 'contain', width: '100%', height: '100%' }}
+  />
+</Box>
         <Box sx={{ flex: 1 }} justifyContent="center">
 
-          <Typography variant="h4" align="center" sx={{ marginBottom: '1rem', fontWeight: 'bold', textDecoration: 'underline' }}>
+          <Typography variant="h4" align="left" sx={{ marginBottom: '1rem',marginLeft:"2rem", fontWeight: 'bold', textDecoration: 'underline' }}>
             {book?.title}
           </Typography>
 
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="h6" gutterBottom>
+          <Box sx={{ textAlign: 'left',marginLeft:"2rem" }}>
+            <Typography variant="h8" gutterBottom>
              {book?.description}
             </Typography>
           </Box>

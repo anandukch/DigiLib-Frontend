@@ -84,7 +84,7 @@ const HomePage = () => {
                 sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
                 open={loading}
             >
-                <CircularProgress color="inherit" />
+                <Loader/>
             </Backdrop>
             <CssBaseline />
             <NavBar />

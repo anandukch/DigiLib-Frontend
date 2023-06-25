@@ -3,6 +3,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { Book } from '../../types';
 import { addBook, getBooks } from '../../apis/booksApi';
 import { BookTable } from './BookTable';
+import Loader from '../Loader/Loader';
 const { VITE_CLOUDINARY_UPLOAD_PRESENT, VITE_CLOUDINARY_NAME } = import.meta.env
 
 
@@ -119,7 +120,7 @@ const AddBook = () => {
                 sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
                 open={loading}
             >
-                <CircularProgress color="inherit" />
+                <Loader/>
             </Backdrop>
 
             <Box sx={{ mt: 3 }}>
