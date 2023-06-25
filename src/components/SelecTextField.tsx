@@ -24,7 +24,7 @@ const SelectTextField = ({ label, name, onChange, listClickHandler, items, type 
                 >
                   {
                     type === "user" ?
-                      <ListItemText primary={result.name} secondary={result.adm_no} />
+                      <ListItemText primary={result.name} secondary={result.reg_no} />
                       : <ListItemText primary={result.title} secondary={result.ISBN} />
 
                   }
