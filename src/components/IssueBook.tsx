@@ -1,6 +1,6 @@
 import { Box, Button, Container, TextField, Typography, Grid, useMediaQuery, Backdrop, CircularProgress, Autocomplete, ListItem, ListItemText, List, makeStyles, ListItemButton } from '@mui/material';
 import { searchUser } from '../apis/userApi';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import SelectTextField from './SelecTextField';
 import { searchBook } from '../apis/booksApi';
 
@@ -137,10 +137,6 @@ const IssueBook = () => {
                 )}
               /> */}
 
-
-
-
-
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <TextField
@@ -163,8 +159,6 @@ const IssueBook = () => {
                   />
                 </Grid>
               </Grid>
-
-
             </Box>
           </Grid>
           <Grid item xs={6}>
@@ -181,6 +175,7 @@ const IssueBook = () => {
                 items={books}
                 type='book'
               />
+
               <TextField
                 label="Title"
                 fullWidth
@@ -190,14 +185,12 @@ const IssueBook = () => {
               />
 
               <TextField
-                label="ISBN"
+                label="Book number"
                 fullWidth
                 sx={{ mt: 2 }}
-                name="ISBN"
+                name="acc_no"
                 disabled
               />
-
-
 
               <Grid container spacing={2}>
                 <Grid item xs={6}>
@@ -214,15 +207,11 @@ const IssueBook = () => {
                     label="Author"
                     fullWidth
                     sx={{ mt: 2 }}
-                    name="suthor"
+                    name="author"
                     disabled
                   />
                 </Grid>
               </Grid>
-
-
-
-
 
               <Grid container spacing={2}>
                 <Grid item xs={6}>
@@ -246,28 +235,29 @@ const IssueBook = () => {
                 </Grid>
               </Grid>
             </Box>
+
           </Grid>
-          {/* <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <TextField
-                label="Subject"
-                fullWidth
-                sx={{ mt: 2 }}
-                name="subject"
-                disabled
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Number of Copies"
-                fullWidth
-                sx={{ mt: 2 }}
-                type="number"
-                name="no_of_copies"
-                disabled
-              />
-            </Grid>
-          </Grid> */}
+
+        </Grid>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <TextField
+              label="Issue date"
+              fullWidth
+              sx={{ mt: 2 }}
+              name="issue_date"
+              type="date"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="Return date"
+              fullWidth
+              sx={{ mt: 2 }}
+              type="date"
+              name="return_date"
+            />
+          </Grid>
         </Grid>
         <Button variant="contained" color="primary" sx={{ mt: 3 }} >
           Issue Book

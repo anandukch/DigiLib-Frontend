@@ -1,9 +1,20 @@
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
-import { Book } from '../../types';
+import { Book, BookData } from '../../types';
+import { deleteBook } from '../../apis/booksApi';
 
-export const BookTable = ({ books, loading }: { books: Book[], loading: boolean }) => {
+export const BookTable = ({ books, loading, setBooks }: { books: BookData[], loading: boolean, setBooks: Function }) => {
+
+  const onDeleteBook = (id: string) => {
+    deleteBook(id).then(_ => {
+      setBooks(books.filter((book) => book.id !== id));
+    }
+    ).catch(error => {
+      alert(error.response.data.detail);
+    })
+  }
+
   // Generate sl no for each book
 
   const columns: GridColDef[] = [
@@ -21,13 +32,32 @@ export const BookTable = ({ books, loading }: { books: Book[], loading: boolean 
       headerName: 'Action',
       flex: 1,
       minWidth: 130,
-      renderCell: (_) => (
-        <IconButton color="error">
-          <Delete />
-        </IconButton>
-      ),
+      renderCell: (params) => {
+        console.log(params);
+        
+        return(
+          <IconButton color="error" onClick={() => onDeleteBook(params.value)}>
+            <Delete />
+          </IconButton>
+        )
+      },
     },
   ];
+
+  const rows = books.map((book, index) => {
+    return {
+      "id": book.id,
+      "ISBN": book.ISBN,
+      "title": book.title,
+      "author": book.author,
+      "publisher": book.publisher,
+      "no_of_copies": book.no_of_copies,
+      "available_copies": book.available_copies,
+      "virtual_copies": book.virtual_copies,
+      "action": book.id
+    }
+
+  })
 
   const paginationHandler = (params: any) => {
     console.log(params);
@@ -37,7 +67,7 @@ export const BookTable = ({ books, loading }: { books: Book[], loading: boolean 
     <div style={{ height: 500, width: '100%', marginTop: "100px" }}>
       <DataGrid
 
-        rows={books}
+        rows={rows}
         columns={columns}
         initialState={{
           pagination: {

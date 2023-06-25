@@ -275,7 +275,7 @@ const AddBook = () => {
                     </Grid>
                 </Grid>
             </Box>
-            <BookTable books={books} loading={loading} />
+            <BookTable books={books} loading={loading} setBooks={setBooks}/>
 
         </>
     );
