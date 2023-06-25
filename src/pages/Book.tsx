@@ -43,7 +43,7 @@ const BookDetail = () => {
       sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
       open={book ? false : true}
     >
-      <Loader/>
+      <Loader />
     </Backdrop>
   )
   return (
@@ -63,21 +63,21 @@ const BookDetail = () => {
         }}
       >
         <Box sx={{ width: '20%', marginRight: '1rem', overflow: 'hidden' }}>
-  <img
-    src={book?.image.url}
-    alt="Book Cover"
-    style={{ objectFit: 'contain', width: '100%', height: '100%' }}
-  />
-</Box>
+          <img
+            src={book?.image.url}
+            alt="Book Cover"
+            style={{ objectFit: 'contain', width: '100%', height: '100%' }}
+          />
+        </Box>
         <Box sx={{ flex: 1 }} justifyContent="center">
 
-          <Typography variant="h4" align="left" sx={{ marginBottom: '1rem',marginLeft:"2rem", fontWeight: 'bold', textDecoration: 'underline' }}>
+          <Typography variant="h4" align="left" sx={{ marginBottom: '1rem', marginLeft: "2rem", fontWeight: 'bold', textDecoration: 'underline' }}>
             {book?.title}
           </Typography>
 
-          <Box sx={{ textAlign: 'left',marginLeft:"2rem" }}>
-            <Typography variant="h8" gutterBottom>
-             {book?.description}
+          <Box sx={{ textAlign: 'left', marginLeft: "2rem" }}>
+            <Typography variant="body1" gutterBottom>
+              {book?.description}
             </Typography>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', margin: '3rem' }}>
@@ -93,7 +93,7 @@ const BookDetail = () => {
             Reserve
           </Button>
         </Box>
-        
+
       </Container>
     </>
   );
