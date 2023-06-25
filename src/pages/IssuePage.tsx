@@ -161,8 +161,9 @@ const TransactionTable: React.FC = () => {
             renderCell: (params) => {
                 return params.value == 'reserved' ?
                     (<Chip label="Reserved" color="primary" />) : params.value == 'issued' ?
-                        (<Chip label="Issued" color="secondary" />) :
-                        (<Chip label="Returned" color="success" />)
+                        (<Chip label="Issued" color="secondary" />) : params.value == 'returned' ?
+                            (<Chip label="Returned" color="success" />) :
+                            (<Chip label="In Queue" color="info" />)
             }
 
         },
@@ -176,10 +177,10 @@ const TransactionTable: React.FC = () => {
             renderCell: (params) => {
 
                 const { status, index } = params.value
-             
+
 
                 return status == 'reserved' ?
-                    (<IconButton color="primary" onClick={() => issueBookHandler(index)} style={{ fontSize: 'small' }}>
+                    (<IconButton color="success" onClick={() => issueBookHandler(index)} style={{ fontSize: 'small' }}>
                         Issue
                         <Edit fontSize="small" />
                     </IconButton>) : status == 'issued' ?
@@ -188,7 +189,7 @@ const TransactionTable: React.FC = () => {
                             <Edit fontSize="small" />
                         </IconButton>) :
                         (<IconButton color="primary" style={{ fontSize: 'small' }} disabled>
-                            Return
+                            
                             <Edit fontSize="small" />
                         </IconButton>)
             }
@@ -198,7 +199,7 @@ const TransactionTable: React.FC = () => {
     const rows = transactions.map((transaction, index) => {
         return {
             "id": v4(),
-            "acc_no": transaction.book_item.acc_no,
+            "acc_no": transaction.book_item?.acc_no ? transaction.book_item.acc_no : "-",
             "img": transaction.book.image.url,
             "title": transaction.book.title,
             "status": transaction.status,
@@ -230,72 +231,7 @@ const TransactionTable: React.FC = () => {
                 <Typography variant="h4" align="center" gutterBottom>
                     Book Transactions
                 </Typography>
-                {/* <TableContainer component={Paper} sx={{ border: '1px solid black' }}>
-                        <Table>
-                            <TableHead sx={{ backgroundColor: '#140f0f' }}>
-                                <TableRow>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Accession No</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Book Image</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Book Title</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>User Name</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Reservation Date</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Issue Date</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Date of return</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Actual Date of return</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Fine</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Status</TableCell>
-                                    <TableCell sx={{ fontWeight: 'bold' }}>Action</TableCell>
 
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {transactions.map((transaction, index) => (
-                                    <TableRow key={transaction.id} sx={{ backgroundColor: index % 2 === 0 ? '#515151' : '#3b3b3b' }}>
-                                        <TableCell>{transaction.book_item.acc_no}</TableCell>
-                                        <TableCell>
-                                            <img src={transaction.book.image} alt="Cover" style={{ width: '50px' }} />
-                                        </TableCell>
-                                        <TableCell>{transaction.book.title}</TableCell>
-                                        <TableCell>{transaction.user.name}</TableCell>
-
-                                        <TableCell>{formatDate(transaction.date_of_reservation)}</TableCell>
-                                        <TableCell>{transaction.date_of_issue ? formatDate(transaction.date_of_issue) : '-'}</TableCell>
-                                        <TableCell>{transaction.date_of_return ? formatDate(transaction.date_of_return) : '-'}</TableCell>
-                                        <TableCell>{transaction.actual_date_of_return ? formatDate(transaction.actual_date_of_return) : '-'}</TableCell>
-
-                                        <TableCell>{transaction.fine ?? 0}</TableCell>
-
-                                        <TableCell>
-                                            <Stack direction="row" spacing={1}>
-                                                <Chip label={transaction.status} color="primary" />
-                                            </Stack>
-                                        </TableCell>
-
-                                        <TableCell>
-                                            {
-                                                transaction.status == 'reserved' ?
-                                                    (<IconButton color="primary" onClick={() => issueBookHandler(index)} style={{ fontSize: 'small' }}>
-                                                        Issue
-                                                        <Edit fontSize="small" />
-                                                    </IconButton>) : transaction.status == 'issued' ?
-                                                        (<IconButton color="primary" style={{ fontSize: 'small' }} onClick={() => returnBookHandler(index)}>
-                                                            Return
-                                                            <Edit fontSize="small" />
-                                                        </IconButton>) :
-                                                        (<IconButton color="primary" style={{ fontSize: 'small' }} disabled>
-                                                            Return
-                                                            <Edit fontSize="small" />
-                                                        </IconButton>)
-                                            }
-
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer> */}
-
-                {/* <Box> */}
                 <div style={{ width: '100%' }}>
 
                     <DataGrid

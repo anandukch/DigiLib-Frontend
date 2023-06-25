@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     Box,
-
     Container,
-
     Paper,
     Table,
     TableBody,
@@ -38,6 +36,8 @@ const TransactionTable: React.FC = () => {
     useEffect(() => {
         getUserTransactions()
             .then(response => {
+                console.log(response.data);
+                
                 setTransactions(response.data);
             }).catch(error => {
                 console.error('Error fetching book:', error);
@@ -77,7 +77,7 @@ const TransactionTable: React.FC = () => {
                             <TableBody>
                                 {transactions.map((transaction, index) => (
                                     <TableRow key={transaction.id} sx={{ backgroundColor: index % 2 === 0 ? '#515151' : '#3b3b3b' }}>
-                                        <TableCell>{transaction.book_item.acc_no}</TableCell>
+                                        <TableCell>{transaction.book_item?.acc_no ? transaction.book_item.acc_no : "-"}</TableCell>
                                         <TableCell>
                                             <img src={transaction.book.image.url} alt="Cover" style={{ width: '50px' }} />
                                         </TableCell>
