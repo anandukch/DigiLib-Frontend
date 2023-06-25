@@ -5,6 +5,7 @@ import { LogoutOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router';
 import TransactionTable from '../components/UserDashboard/TransactionTable';
 import Login from './Login';
+import Notifications from '../components/Notifications';
 
 const UserDashboard: React.FC<any> = () => {
   const [renderComp, setRenderComp] = useState("transactions");
@@ -16,7 +17,7 @@ const UserDashboard: React.FC<any> = () => {
       case "transactions":
         return <TransactionTable />;
       case "notifications":
-        return <Login />;
+        return <Notifications />;
       // case "addAuthor":
       //   return <AddAuthor />;
       default:

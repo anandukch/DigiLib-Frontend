@@ -37,12 +37,6 @@ const Login: React.FC = () => {
       >
         <Container maxWidth="lg">
           <Paper sx={{ p: 4}}>
-            {/* <Stack spacing={2} direction={'row'} alignItems="center" style={{ padding: '16px' }}>
-              <Box sx={{ justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                <FaBookOpen size={150} />
-              </Box>
-              <LoginForm />
-            </Stack> */}
             <Grid container spacing={2}>
               <Grid item xs={6} sx={{ backgroundColor: '#c4d8e2' ,}}>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>

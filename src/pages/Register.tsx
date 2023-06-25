@@ -81,7 +81,7 @@ const MainPage: React.FC = () => {
                         <Typography variant="h6" gutterBottom>
                           Teacher Registration Form
                         </Typography>
-                        <RegisterPage userType="teacher" />
+                        <RegisterPage userType="faculty" />
                       </Box>
                     )}
                   </Box>

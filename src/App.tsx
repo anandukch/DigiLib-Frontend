@@ -31,7 +31,7 @@ function App() {
 
                     <Route path="/dashboard" element={
                         role == "admin" ? <AdminDashboard />
-                            : role == "student" ? <UserDashboard />
+                            : role == "student" || "faculty" ? <UserDashboard />
                                 : role == "issuer" ? <IssuerDashboard />
                                     : <Navigate to="/login" />
                     } />

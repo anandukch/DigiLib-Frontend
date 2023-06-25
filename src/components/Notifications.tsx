@@ -17,6 +17,8 @@ const Notifications: React.FC = () => {
   useEffect(() => {
     getNotifications()
       .then(response => {
+        console.log(response.data);
+        
         setNotifications(response.data);
       }
       ).catch(error => {
@@ -46,7 +48,7 @@ const Notifications: React.FC = () => {
           </Typography>
           {notifications?.map((n, index) => (
             <Box key={index} sx={{ marginBottom: '16px' }}>
-              <NotiCard text={n.notice} recipient={n.recipient} dateTime={n.dateTime} />
+              <NotiCard text={n.text} recipient={n.recipient} dateTime={n.time} />
             </Box>
           ))}
         </Container>

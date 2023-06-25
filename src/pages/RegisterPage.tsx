@@ -7,11 +7,9 @@ import { useNavigate } from 'react-router';
 type FormData = {
   name: string;
   email: string;
-  adm_no: string;
+  reg_no: string;
   password: string;
-  semester: any;
-  department: any;
-  designation: any;
+  semester: number;
   role: any;
 };
 
@@ -24,11 +22,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ userType }) => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
-    adm_no: '',
+    reg_no: '',
     password: '',
-    semester: '',
-    department: '',
-    designation: '',
+    semester: 1,
     role: '',
   });
 
@@ -36,14 +32,21 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ userType }) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Handle form submission based on the user type
-    registerUser({
-      ...formData,
-      role: userType,
-    }).then((res) => {
+    const reqData = userType === 'student' ? {
+      ...formData, role: userType
+    } : {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+      reg_no: formData.reg_no,
+      role: userType
+    }
+
+    registerUser(reqData).then((res) => {
       const token = res.data.access_token;
       setToken(token);
       setRole(res.data.role);
@@ -59,14 +62,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ userType }) => {
     switch (userType) {
       case 'student':
         return (
-          <> <TextField
-            label="admission number"
-            fullWidth
-            margin="normal"
-            name="adm_no"
-            value={formData.adm_no}
-            onChange={handleChange}
-          />
+          <>
             <TextField
               label="Semester"
               fullWidth
@@ -79,17 +75,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ userType }) => {
           </>
 
         );
-      case 'teacher':
-        return (
-          <TextField
-            label="Designation"
-            fullWidth
-            margin="normal"
-            name="designation"
-            value={formData.designation}
-            onChange={handleChange}
-          />
-        );
+
       default:
         return null;
     }
@@ -124,12 +110,20 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ userType }) => {
         onChange={handleChange}
       />
 
-      <TextField
+      {/* <TextField
         label="Department"
         fullWidth
         margin="normal"
         name="department"
         value={formData.department}
+        onChange={handleChange}
+      /> */}
+      <TextField
+        label="registration number"
+        fullWidth
+        margin="normal"
+        name="reg_no"
+        value={formData.reg_no}
         onChange={handleChange}
       />
       {renderFormFields()}

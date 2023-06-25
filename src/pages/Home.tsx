@@ -37,7 +37,7 @@ const HomePage = () => {
     const navigate = useNavigate();
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(event.target.value as string);
+        setSearchTerm(event.target.value);
     };
 
     const handleSemesterChange = (event: SelectChangeEvent) => {
@@ -71,15 +71,17 @@ const HomePage = () => {
     };
 
     const filteredBooks = books.filter((book) => {
-        if (selectedSemester === 'all' && selectedSubject === 'all' && searchTerm === '') {
+        if (selectedSemester === 'all' && selectedSubject === 'all') {
             return true;
         }
-        if (selectedSemester !== 'all' &&
-            book.semester !== parseInt(selectedSemester) &&
-            book.title.toLowerCase() == searchTerm.toLowerCase()) {
+        if(searchTerm !== '' && !book.title.toLowerCase().includes(searchTerm.toLowerCase())){
             return false;
         }
-        if (selectedSubject !== 'all' && book.subject !== selectedSubject && book.title.toLowerCase() != searchTerm.toLowerCase()) {
+
+        if (selectedSemester !== 'all' && book.semester !== parseInt(selectedSemester)) {
+            return false;
+        }
+        if (selectedSubject !== 'all' && book.subject !== selectedSubject) {
             return false;
         }
         return true;
@@ -91,7 +93,7 @@ const HomePage = () => {
                 sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
                 open={loading}
             >
-                <Loader />
+                <Loader/>
             </Backdrop>
             <CssBaseline />
             <NavBar />
