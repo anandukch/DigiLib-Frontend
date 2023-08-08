@@ -1,7 +1,6 @@
 import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
 
 const NotiCard = ({ text, recipient, dateTime }: { text: string, recipient: string, dateTime: string }) => {
-  console.log(text, recipient, dateTime);
   
   return (
     <Card sx={{ backgroundColor: '#162534' }}>

@@ -3,6 +3,8 @@ import { Button, TextField } from '@mui/material';
 import { registerUser } from '../apis/authApi';
 import { useAuth } from '../provider/authProvider';
 import { useNavigate } from 'react-router';
+import Popup from './Popup';
+import { AxiosError } from 'axios';
 
 type FormData = {
   name: string;
@@ -19,6 +21,8 @@ type RegistrationFormProps = {
 
 const RegistrationForm: React.FC<RegistrationFormProps> = ({ userType }) => {
   const { setToken, setRole } = useAuth();
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [errMess, setErrMess] = useState<string>('')
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -52,10 +56,14 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ userType }) => {
       setRole(res.data.role);
       navigate('/login', { replace: true });
     }).catch((err) => {
-      console.log(err);
+      setShowSnackbar(true);
+      setErrMess(err.response.data.detail);
     });
 
 
+  };
+  const closeSnackbar = () => {
+    setShowSnackbar(false);
   };
 
   const renderFormFields = () => {
@@ -82,7 +90,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ userType }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <><form onSubmit={handleSubmit}>
       <TextField
         label="Name"
         fullWidth
@@ -109,15 +117,6 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ userType }) => {
         value={formData.password}
         onChange={handleChange}
       />
-
-      {/* <TextField
-        label="Department"
-        fullWidth
-        margin="normal"
-        name="department"
-        value={formData.department}
-        onChange={handleChange}
-      /> */}
       <TextField
         label="registration number"
         fullWidth
@@ -131,6 +130,12 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ userType }) => {
         Register
       </Button>
     </form>
+
+      {showSnackbar && (
+        <Popup onClose={closeSnackbar} message={errMess} icon="" severity='error' />
+      )}
+    </>
+
   );
 };
 

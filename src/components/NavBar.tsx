@@ -41,9 +41,7 @@ export const NavBar = () => {
           )
 
         }
-        {/* <IconButton color="inherit" edge="end" aria-label="profile" onClick={profileHandler}>
-                        <AccountCircle />
-                    </IconButton> */}
+
       </Toolbar>
     </AppBar>
   )

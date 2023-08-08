@@ -11,7 +11,7 @@ import {
   ThemeProvider,
 } from '@mui/material';
 import { FaBookOpen, FaUserGraduate, FaUserTie } from 'react-icons/fa'; // Importing React Icons
-import RegisterPage from './RegisterPage';
+import RegisterPage from '../components/RegisterPage';
 
 const theme = createTheme({
   palette: {
