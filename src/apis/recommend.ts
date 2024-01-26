@@ -1,6 +1,4 @@
-import axios from "axios";
-const api = "http://localhost:5000"
-// export const getPopularBooks = async () => {
-//     const response = await axios.get(`${api}/books/recommendations`);
-//     return response.data;
-// };
+import api from ".";
+
+export const getPopularBooks = async () => api.get(`/books/recommendations`);
+export const getBook = async (title:String) => api.get("/books/recommendations?title="+title);

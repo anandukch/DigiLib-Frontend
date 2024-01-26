@@ -12,4 +12,4 @@ export const returnBook = async(id:string) => api.post(`/books/${id}/return`);
 export const searchBook = async (title:string) => api.get(`/books/search?title=${title}`);
 export const deleteBook = async (id:string) => api.delete(`/books/${id}`);
 export const immediateIssue = async (data:any) => api.post(`/books/issue`,data);
-export const getPopularBooks = async () => api.get(`/books/recommendations`);
+// export const getPopularBooks = async () => api.get(`/books/recommendations`);

@@ -1,58 +1,38 @@
 
 import { Backdrop, Box, Button, CircularProgress, Container, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import { getBook, reserveBook } from '../apis/booksApi';
-import { BookData } from '../types';
+import { useNavigate, useParams } from 'react-router';
 import { NavBar } from '../components/NavBar';
 import Loader from '../components/Loader/Loader';
 import Popup from '../components/Popup';
+import { getBook } from '../apis/recommend';
+import { BookData } from './RecommendationHome';
 
 const BookRecommendation = () => {
-  const { id } = useParams<{ id: string }>();
+  const { name } = useParams<{ name: string }>();
   const [book, setBook] = useState<BookData>();
   const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const navigate = useNavigate();
 
   const closeSnackbar = () => {
     setShowSnackbar(false);
   };
   useEffect(() => {
-    if (id) {
-      getBook(id)
+    if (name) {
+      getBook(name)
         .then(response => {
           setBook(response.data)
         }
         ).catch(error => {
           console.error('Error fetching book:', error);
+          navigate('/book/recommendations');
         }
         );
 
     }
 
-  }, [id])
-
-  const reserveBookHandler = (book_id: string) => {
-    reserveBook(book_id)
-      .then(_ => {
-
-        getBook(id)
-          .then(response => {
-            setBook(response.data)
-          }
-          ).catch(error => {
-            console.error('Error fetching book:', error);
-          }
-          );
-        setShowSnackbar(true);
-      }
-      ).catch(error => {
-
-        const { status, data } = error.response;
-        if (status === 401) alert('You should login first');
-        else alert(data.detail);
-      }
-      );
-  }
+  }, [name])
   if (!book) return (
     <Backdrop
       sx={{ color: '#fff', zIndex: (theme: any) => theme.zIndex.drawer + 1 }}
@@ -79,7 +59,7 @@ const BookRecommendation = () => {
       >
         <Box sx={{ width: '20%', marginRight: '1rem', overflow: 'hidden' }}>
           <img
-            src={book?.image.url}
+            src={book?.image}
             alt="Book Cover"
             style={{ objectFit: 'contain', width: '100%', height: '100%' }}
           />
@@ -87,32 +67,14 @@ const BookRecommendation = () => {
         <Box sx={{ flex: 1 }} justifyContent="center">
 
           <Typography variant="h4" align="left" sx={{ marginBottom: '1rem', marginLeft: "2rem", fontWeight: 'bold', textDecoration: 'underline' }}>
-            {book?.title}
+            {book?.book_name}
           </Typography>
 
-          <Box sx={{ textAlign: 'left', marginLeft: "2rem" }}>
-            <Typography variant="body1" gutterBottom>
-              {book?.description}
-            </Typography>
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', margin: '3rem' }}>
-            <Typography variant="body1" sx={{ fontWeight: 'bold', fontSize: '1.2rem', marginRight: '0.5rem' }}>
-              Number of Copies:
-            </Typography>
-            <Typography variant="body1" sx={{ fontSize: '1.2rem' }}>{book?.available_copies}</Typography>
-            <Typography variant="body1" sx={{ marginLeft: '1rem', fontSize: '1rem', color: '#666666' }}>
-              (virtual_copies: {book?.virtual_copies})
-            </Typography>
-          </Box>
-          <Button variant="contained" color="primary" onClick={() => { reserveBookHandler(book.id) }}>
-            Reserve
-          </Button>
         </Box>
 
       </Container>
-      {showSnackbar && (
-        <Popup onClose={closeSnackbar} message="Success" icon="✅" />
-      )}
+      {/* create a continer to disppalt recommended books */}
+      
     </>
   );
 };

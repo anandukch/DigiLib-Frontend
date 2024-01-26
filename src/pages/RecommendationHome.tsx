@@ -15,11 +15,12 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 // import { Book } from '../types';
-import { getBooks, getPopularBooks, getSubjects } from "../apis/booksApi";
+import { getBooks, getSubjects } from "../apis/booksApi";
 // import { BookData } from "../types";
 import { useNavigate } from "react-router";
 import { NavBar } from "../components/NavBar";
 import Loader from "../components/Loader/Loader";
+import { getBook, getPopularBooks } from "../apis/recommend";
 // import { getPopularBooks } from "../apis/recommend";
 
 const theme = createTheme({
@@ -27,7 +28,7 @@ const theme = createTheme({
     mode: "dark",
   },
 });
-type BookData = {
+export type BookData = {
   book_name: string;
   author: string;
   image: string;
@@ -44,6 +45,19 @@ const RecommendationHome = () => {
   const onBookClick = (id: string) => {
     navigate(`/book/${id}`);
   };
+
+  const getBookDetail = (book_name: string) => {
+    setLoading(true);
+    navigate(`/book/recommendations/${book_name}`);
+    // getBook(book_name)
+    //   .then((res) => {
+    //     console.log(res.data);
+        
+    //     // navigate(`/book/${res.data.book_id}`);
+    //   })
+    //   .catch((err) => console.log(err))
+    //   .finally(() => setLoading(false));
+  }
 
   useEffect(() => {
     getPopularBooks()
@@ -70,7 +84,7 @@ const RecommendationHome = () => {
               {books.map((book) => (
                 <Grid item xs={12} sm={3} >
                   <Box
-                    // onClick={() => onBookClick(book.id)}
+                    onClick={() => getBookDetail(book.book_name)}
                     sx={{
                       cursor: "pointer",
                       display: "flex",
