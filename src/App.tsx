@@ -10,6 +10,8 @@ import IssuerDashboard from './pages/IssuerDashboard';
 import BookDetail from './pages/Book';
 import { useEffect } from 'react';
 import { getProfile } from './apis/userApi';
+import RecommendationHome from './pages/RecommendationHome';
+import BookRecommendation from './pages/Recommendation';
 
 function App() {
     const { role, setProfile } = useAuth();
@@ -37,6 +39,8 @@ function App() {
                                     : <Navigate to="/login" />
                     } />
                     <Route path='/book/:id' element={<BookDetail />} />
+                    <Route path="/book/recommendations" element={<RecommendationHome/>} />
+                    <Route path="/book/recommendations/:name" element={<BookRecommendation/>} />
                 </Routes>
             </Router>
             {/* <RoutesComp/> */}
