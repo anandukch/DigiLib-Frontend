@@ -1,6 +1,6 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 const { VITE_API, VITE_LOCAL_API, VITE_ENV } = import.meta.env;
-const api_url = VITE_ENV == "production" ? VITE_API : VITE_LOCAL_API;
+const api_url = VITE_ENV == "prod" ? VITE_API : VITE_LOCAL_API;
 const api = axios.create({
   baseURL: api_url,
   headers: {

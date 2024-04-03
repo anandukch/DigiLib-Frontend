@@ -1,0 +1,23 @@
+.App {
+  text-align: center;
+}
+
+.question-box {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 500px;
+}
+
+.options {
+  margin-top: 10px;
+}
+
+.nav-buttons {
+  margin-top: 20px;
+}
+
+.buttons {
+  margin-top: 20px;
+}

@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 import { getProfile } from './apis/userApi';
 import RecommendationHome from './pages/RecommendationHome';
 import BookRecommendation from './pages/Recommendation';
+import RecommendV2 from './pages/recommend/home';
 
 function App() {
     const { role, setProfile } = useAuth();
@@ -41,6 +42,10 @@ function App() {
                     <Route path='/book/:id' element={<BookDetail />} />
                     <Route path="/book/recommendations" element={<RecommendationHome/>} />
                     <Route path="/book/recommendations/:name" element={<BookRecommendation/>} />
+
+                    
+                    <Route path="/v2/recommend" element={<RecommendV2/>} />
+                    
                 </Routes>
             </Router>
             {/* <RoutesComp/> */}
