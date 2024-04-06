@@ -40,11 +40,11 @@ function App() {
                                     : <Navigate to="/login" />
                     } />
                     <Route path='/book/:id' element={<BookDetail />} />
-                    <Route path="/book/recommendations" element={<RecommendationHome/>} />
-                    <Route path="/book/recommendations/:name" element={<BookRecommendation/>} />
+                    {/* <Route path="/book/recommendations" element={<RecommendationHome/>} />
+                    <Route path="/book/recommendations/:name" element={<BookRecommendation/>} /> */}
 
                     
-                    <Route path="/v2/recommend" element={<RecommendV2/>} />
+                    <Route path="/books/recommendations" element={<RecommendV2/>} />
                     
                 </Routes>
             </Router>

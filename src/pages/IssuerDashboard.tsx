@@ -1,18 +1,34 @@
-import React, { useState } from 'react';
-import { AppBar, Box, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, useMediaQuery } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import IssueBookPage from './IssuePage';
-import { BookOnlineOutlined, LogoutOutlined, LibraryBooksOutlined } from '@mui/icons-material';
-import { useNavigate } from 'react-router';
-import { useAuth } from '../provider/authProvider';
-import IssueBook from '../components/IssueBook';
-import Layout from '../components/Layout';
+import React, { useState } from "react";
+import {
+  AppBar,
+  Box,
+  Drawer,
+  IconButton,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import IssueBookPage from "./IssuePage";
+import {
+  BookOnlineOutlined,
+  LogoutOutlined,
+  LibraryBooksOutlined,
+} from "@mui/icons-material";
+import { useNavigate } from "react-router";
+import { useAuth } from "../provider/authProvider";
+import IssueBook from "../components/IssueBook";
+import Layout from "../components/Layout";
 
 const IssuerDashboard: React.FC<any> = () => {
   const [renderComp, setRenderComp] = useState("addBook");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { logOut } = useAuth()
-  const isMobile = useMediaQuery('(max-width: 600px)');
+  const { logOut } = useAuth();
+  const isMobile = useMediaQuery("(max-width: 600px)");
   const navigate = useNavigate();
 
   const addComponentHandler = (comp: string) => {
@@ -58,47 +74,57 @@ const IssuerDashboard: React.FC<any> = () => {
         )}
 
         <Drawer
-          title='Issuer Dashboard'
+          title="Issuer Dashboard"
           variant={isMobile ? "temporary" : "permanent"}
           open={!isMobile || isDrawerOpen}
           onClose={() => setIsDrawerOpen(false)}
           sx={{
-            width: isMobile ? '100%' : 240,
+            width: isMobile ? "100%" : 240,
             flexShrink: 0,
-            '& .MuiDrawer-paper': {
-              width: isMobile ? '100%' : 300,
-              boxSizing: 'border-box',
-              backgroundColor: '#202123',
-              color: 'white'
+            "& .MuiDrawer-paper": {
+              width: isMobile ? "100%" : 300,
+              boxSizing: "border-box",
+              backgroundColor: "#202123",
+              color: "white",
             },
           }}
         >
-          {isMobile && (
-            <Toolbar />
-          )}
+          {isMobile && <Toolbar />}
           <Typography variant="h6" component="div" sx={{ p: 3 }}>
             Issuer Dashboard
           </Typography>
           <List>
-
-            <ListItemButton onClick={() => { navigate("/") }}>
+            <ListItemButton
+              onClick={() => {
+                navigate("/");
+              }}
+            >
               <ListItemIcon>
                 <BookOnlineOutlined />
               </ListItemIcon>
               <ListItemText primary="Explore Book" />
             </ListItemButton>
-            <ListItemButton onClick={() => handleMenuClick("issueBook")} style={{ backgroundColor: renderComp === "issueBook" ? "#3f51b5" : "" }}>
+            <ListItemButton
+              onClick={() => handleMenuClick("issueBook")}
+              style={{
+                backgroundColor: renderComp === "issueBook" ? "#3f51b5" : "",
+              }}
+            >
               <ListItemIcon>
                 <LibraryBooksOutlined />
-
               </ListItemIcon>
               <ListItemText primary="Issue book" />
             </ListItemButton>
 
-            <ListItemButton onClick={() => handleMenuClick("bookTransaction")} style={{ backgroundColor: renderComp === "bookTransaction" ? "#3f51b5" : "" }}>
+            <ListItemButton
+              onClick={() => handleMenuClick("bookTransaction")}
+              style={{
+                backgroundColor:
+                  renderComp === "bookTransaction" ? "#3f51b5" : "",
+              }}
+            >
               <ListItemIcon>
                 <LibraryBooksOutlined />
-
               </ListItemIcon>
               <ListItemText primary="Book Transaction" />
             </ListItemButton>
@@ -114,10 +140,7 @@ const IssuerDashboard: React.FC<any> = () => {
 
         <Box sx={{ marginLeft: 0 }}>
           <Toolbar />
-          <Layout>
-            {addComponentHandler(renderComp)}
-          </Layout>
-
+          <Layout>{addComponentHandler(renderComp)}</Layout>
         </Box>
       </Box>
     </>
