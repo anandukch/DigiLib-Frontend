@@ -3,6 +3,7 @@ import "./style.css";
 import { getBookRecommendations } from "../../apis/recommend";
 import { Box, Grid, Typography } from "@mui/material";
 import Loader from "../../components/Loader/Loader";
+import Popup from "../../components/Popup";
 
 function RecommendV2() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -43,9 +44,13 @@ function RecommendV2() {
       let v = answers.map((answer) => (answer === "yes" ? 1 : 0));
       console.log(v);
 
-      const results = await getBookRecommendations(v);
-      setResults(results.data);
-      setLoading(false);
+      try {
+        const results = await getBookRecommendations(v);
+        setResults(results.data);
+        setLoading(false);
+      } catch (error) {
+        setValidationError(true);
+      }
     }
   };
 
@@ -94,9 +99,9 @@ function RecommendV2() {
             No
           </label>
         </div>
-        {validationError && (
+        {/* {validationError && (
           <p className="error-message">Please answer this question.</p>
-        )}
+        )} */}
         <div className="nav-buttons">
           <button
             onClick={handlePrevQuestion}
@@ -121,47 +126,57 @@ function RecommendV2() {
         </div>
       )}
 
-      {
-        // Display loading spinner while waiting for API response
-        loading ? (
-          <Loader />
-        ) : (
-          <Box sx={{ mt: 5 }}>
-            <Grid container spacing={5}>
-              {results.map((book) => (
-                <Grid item xs={12} sm={3} key={book.id}>
-                  <Box
-                    // onClick={() => onBookClick(book.id)}
-                    sx={{
-                      cursor: "pointer",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: "8px",
-                      p: 2,
-                      borderRadius: "8px",
-                      backgroundColor: "#424242",
-                      height: "100%",
-                      width: "100%",
-                    }}
-                  >
-                    <img
-                      loading="lazy"
-                      src={book.image}
-                      alt={"book.title"}
-                      width={"100%"}
-                      height={"100%"}
-                    />
-                    <Typography variant="body2" align="center">
-                      {book.book_name}
-                    </Typography>
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-        )
-      }
+      {validationError && (
+        <Popup
+          message="Please answer all questions before submitting."
+          onClose={() => {
+            setValidationError(false);
+          
+            setLoading(false);
+          }}
+          severity="warning"
+          icon="❌"
+        />
+      )}
+
+      {loading && !validationError ? (
+        <Loader />
+      ) : (
+        <Box sx={{ mt: 5 }}>
+          <Grid container spacing={5}>
+            {results.map((book) => (
+              <Grid item xs={12} sm={3} key={book.id}>
+                <Box
+                  // onClick={() => onBookClick(book.id)}
+                  sx={{
+                    cursor: "pointer",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "8px",
+                    p: 2,
+                    borderRadius: "8px",
+                    backgroundColor: "#424242",
+                    height: "100%",
+                    width: "100%",
+                  }}
+                >
+                  <img
+                    loading="lazy"
+                    src={book.image}
+                    alt={"book.title"}
+                    width={"100%"}
+                    height={"100%"}
+                  />
+                  <Typography variant="body2" align="center">
+                    {book.book_name}
+                  </Typography>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      )}
     </div>
   );
 }
