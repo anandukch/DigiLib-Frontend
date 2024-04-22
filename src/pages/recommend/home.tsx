@@ -41,7 +41,7 @@ function RecommendV2() {
       //   document.body.appendChild(link);
       //   link.click();
       console.log(answers);
-      let v = answers.map((answer) => (answer === "yes" ? 1 : 0));
+      const v = answers.map((answer) => (answer === "yes" ? 1 : 0));
       console.log(v);
 
       try {
@@ -49,25 +49,19 @@ function RecommendV2() {
         setResults(results.data);
         setLoading(false);
       } catch (error) {
+        console.log(error);
+        
         setValidationError(true);
       }
     }
   };
 
   const handleReset = () => {
-    setAnswers(Array(20).fill("")); // Reset answers to empty strings
+    setAnswers(Array(10).fill("")); // Reset answers to empty strings
     setCurrentQuestionIndex(0); // Reset to first question
     setValidationError(false); // Reset validation error
   };
 
-  const generateCSV = () => {
-    let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent +=
-      "q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14,q15,q16,q17,q18,q19,q20\n";
-    csvContent +=
-      answers.map((answer) => (answer === "yes" ? "1" : "0")).join(",") + "\n";
-    return csvContent;
-  };
 
   return (
     <div className="App">
@@ -182,26 +176,16 @@ function RecommendV2() {
 }
 
 const questions = [
-  "Is the story mainly about characters having experiences and adventures in imaginary places?",
-  "Does the plot revolve around a central mystery or puzzle that characters need to solve?",
-  "Does the story involve historical events or provide an account of the past?",
-  "Is there a strong emphasis on the development of romantic relationships?",
-  "Does the book give a detailed account of a real person's life and experiences?",
-  "Does the plot include technological advancements and their impact on society?",
-  "Is there a significant element of fear or horror meant to create suspense?",
-  "Is the storytelling presented in a sequential, illustrated format with speech bubbles?",
-  "Do the characters embark on a journey or adventure throughout the narrative?",
-  "Does the narrative incorporate elements of poetry and rhythmic language?",
-  "Does the plot involve magical elements, mythical creatures, or alternate worlds?",
-  "Is there a focus on musical or performance-related content?",
-  "Does the narrative aim to evoke tension and anticipation?",
-  "Is the storyline primarily centered around solving a crime or uncovering hidden truths?",
-  "Does the work provide an account of significant events in the past?",
-  "Does the plot revolve around personal relationships and emotional struggles?",
-  "Is the narrative set in a futuristic world with advanced technology?",
-  "Does the story involve characters facing supernatural or paranormal phenomena?",
-  "Is there a central element of surprise or unexpected twists in the plot?",
-  "Does the work include elements that create a sense of awe and wonder?",
+  "Do you enjoy reading about real people's lives?",
+  "Are you interested in famous people's stories?",
+  "Do you prefer true stories over made-up ones?",
+  "Do you enjoy learning about past events?",
+  "Are you interested in how societies have changed over time?",
+  "Do you like reading about what actually happened in the past?",
+  "Do you like looking at pictures while you read?",
+  "Do you enjoy stories with both words and pictures?",
+  "Would you like to read a story in comic book form?",
+  "Do you like reading poems?"
 ];
 
 export default RecommendV2;
