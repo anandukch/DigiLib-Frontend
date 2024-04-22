@@ -47,6 +47,8 @@ function RecommendV2() {
 
       try {
         const results = await getBookRecommendations(v);
+        console.log(results.data);
+        
         setResults(results.data);
         setGenere(results.data[0].class)
         setLoading(false);
@@ -140,7 +142,7 @@ function RecommendV2() {
         <Loader />
       ) : (
         <Box sx={{ mt: 5 }}>
-          <h2>class : </h2><div>{genere}</div>
+          {/* <h2>class : </h2><div>{genere}</div> */}
 
           <Grid container spacing={5}>
             {results.map((book) => (
@@ -181,16 +183,16 @@ function RecommendV2() {
 }
 
 const questions = [
-  "Do you enjoy reading about real people's lives?",
-  "Are you interested in famous people's stories?",
+  "Do you enjoy reading about real people's lives?", //biography
+  "Are you interested in famous people's stories?", //biography
   "Do you prefer true stories over made-up ones?",
-  "Do you enjoy learning about past events?",
+  "Do you enjoy learning about past events?", //history
   "Are you interested in how societies have changed over time?",
-  "Do you like reading about what actually happened in the past?",
-  "Do you like looking at pictures while you read?",
-  "Do you enjoy stories with both words and pictures?",
-  "Would you like to read a story in comic book form?",
-  "Do you like reading poems?"
+  "Do you like reading about what actually happened in the past?", //history
+  "Do you like looking at pictures while you read?", //comic
+  "Do you enjoy stories with both words and pictures?", //comic
+  "Would you like to read a story in comic book form?", //comic
+  "Do you like reading poems?" //poetry
 ];
 
 export default RecommendV2;
