@@ -11,6 +11,7 @@ function RecommendV2() {
   const [validationError, setValidationError] = useState(false);
   const [loading, setLoading] = useState(false); // Loading state for API requests
   const [results, setResults] = useState([]); // Array to store book recommendations
+  const [genere, setGenere] = useState("")
 
   const handleAnswerChange = (answer) => {
     const newAnswers = [...answers];
@@ -47,7 +48,9 @@ function RecommendV2() {
       try {
         const results = await getBookRecommendations(v);
         setResults(results.data);
+        setGenere(results.data[0].class)
         setLoading(false);
+        
       } catch (error) {
         console.log(error);
         
@@ -137,6 +140,8 @@ function RecommendV2() {
         <Loader />
       ) : (
         <Box sx={{ mt: 5 }}>
+          <h2>class : </h2><div>{genere}</div>
+
           <Grid container spacing={5}>
             {results.map((book) => (
               <Grid item xs={12} sm={3} key={book.id}>
