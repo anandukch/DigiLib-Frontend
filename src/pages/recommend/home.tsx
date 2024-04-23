@@ -11,7 +11,7 @@ function RecommendV2() {
   const [validationError, setValidationError] = useState(false);
   const [loading, setLoading] = useState(false); // Loading state for API requests
   const [results, setResults] = useState([]); // Array to store book recommendations
-  const [genere, setGenere] = useState("")
+  // const [genere, setGenere] = useState("")
 
   const handleAnswerChange = (answer) => {
     const newAnswers = [...answers];
@@ -50,7 +50,7 @@ function RecommendV2() {
         console.log(results.data);
         
         setResults(results.data);
-        setGenere(results.data[0].class)
+        // setGenere(results.data[0].class)
         setLoading(false);
         
       } catch (error) {
