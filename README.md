@@ -1,6 +1,6 @@
 # Digilib - Library Management System (Frontend)
 
-Digilib is a library management system built as a mini-project for our college. It provides a user-friendly interface for students, faculty, and library staff to manage library resources efficiently. This repository contains the frontend code for Digilib, built using React and Material-UI, and it communicates with the backend server built with FastAPI.
+Digilib is a library management system built for college libraries. It provides a user-friendly interface for students, faculty, and library staff to manage library resources efficiently. This repository contains the frontend code for Digilib, built using React and Material-UI, and it communicates with the backend server built with FastAPI.
 
 ## Features
 
